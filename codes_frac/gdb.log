@@ -1,0 +1,1870 @@
+NVIDIA (R) CUDA Debugger
+9.1 release
+Portions Copyright (C) 2007-2017 NVIDIA Corporation
+GNU gdb (GDB) 7.12
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word".
+[?1034h(cuda-gdb) file pwa
+Reading symbols from pwa...done.
+(cuda-gdb) set args ../newbase/conf2
+(cuda-gdb) start
+Temporary breakpoint 1 at 0x41edfb: file pwa.C, line 390.
+Starting program: /home/sdqiu/mypwa/codes_frac/pwa ../newbase/conf2
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib64/libthread_db.so.1".
+
+[1mRooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby[0m 
+                Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
+                All rights reserved, please read http://roofit.sourceforge.net/license.txt
+
+
+Temporary breakpoint 1, main (argc=2, argv=0x7fffffffe1d8) at pwa.C:390
+390	    stringstream ss;
+(cuda-gdb) n
+391	    ss << argv[1];
+(cuda-gdb) n
+392	    string config_file = ss.str(); // config_file 配置文件
+(cuda-gdb) n
+393	    PWA_CTRL pwa_ctrl; // PWA_CTRL 读取配置文件以后参数存放的结构体
+(cuda-gdb) n
+394	    cout << "pwa_config file is " << config_file << endl;
+(cuda-gdb) n
+pwa_config file is ../newbase/conf2
+395	    refresh_pwa_ctrl(config_file, pwa_ctrl);
+(cuda-gdb) n
+Begin readConfigFile
+value = f01000a_mss_,f01000a_wdt_,f21000a_mss_,f21000a_wdt_
+Begin readConfigFile
+value = f01000,f21000,f00980,f01370,f01500,f01710,f02020,f02100,f02200,f02330,f02201,f21270,f21525,f21501,f21810,f21910,f22150,f22300
+Begin readConfigFile
+value = NONE
+Begin readConfigFile
+value = NONE
+Begin readConfigFile
+value = ../newbase/phsp_pwa_pipi_200000.dat
+Begin readConfigFile
+value = ../newbase/phsp_pwa_kk_200000.dat
+Begin readConfigFile
+value = ../newbase/data_pwa_pipi_weight_superlength_all.dat
+Begin readConfigFile
+value = ../newbase/data_pwa_kk_weight_superlength_all.dat
+Begin readConfigFile
+value = NONE
+Begin readConfigFile
+value = ../newbase/
+Begin readConfigFile
+value = conf2_fitresult.root
+Begin readConfigFile
+value = conf2_outf_phipp.root
+Begin readConfigFile
+value = conf2_outf_phikk.root
+Begin readConfigFile
+value = conf2_proj_phipp.root
+Begin readConfigFile
+Begin readConfigFile
+value = ../newbase/idp_pp_all.dat 
+Begin readConfigFile
+phsp_phipp = ../newbase/phsp_pwa_pipi_200000.dat
+data_phipp = ../newbase/data_pwa_pipi_weight_superlength_all.dat
+idx_pp = ../newbase/idp_pp_all.dat 
+397	    cout << pwa_ctrl.reloadFitParaFile << endl;
+(cuda-gdb) n
+NONE
+398	    if (argc == 2) {
+(cuda-gdb) n
+399	        pwa_ana(pwa_ctrl);
+(cuda-gdb) n
+haha: 498
+10
+f01000a_mss_
+f01000a_wdt_
+f21000a_mss_
+f21000a_wdt_
+*f01000a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01000a_mss_ =     1.35 In(     1.2,      1.5) L   0.5 R   0.5
+*f01000a_wdt_ =    10000 In(       0,    20000) L   0.5 R   0.5
+ f01000p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f01000k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f01000a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01000a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01000a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01000a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01000a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f01000a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21000a_mss_ =     1.35 In(     1.2,      1.5) L   0.5 R   0.5
+*f21000a_wdt_ =    10000 In(       0,    20000) L   0.5 R   0.5
+ f21000p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21000k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21000a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21000a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21000a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21000a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21000a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21000a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f00980a_typ_ =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f00980a_mss_ =     0.99 In(    0.93,     1.05) L   0.5 R   0.5
+ f00980a_g10_ =    0.165 In(     0.1,        1) L0.0722222 R0.927778
+ f00980a_g20_ =    0.695 In(     0.1,      1.5) L 0.425 R 0.575
+ f00980p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f00980k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f00980a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f00980a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f00980a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f00980a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f00980a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f00980a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01370a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01370a_mss_ =     1.35 In(     1.2,      1.5) L   0.5 R   0.5
+ f01370a_wdt_ =     0.35 In(     0.2,      0.5) L   0.5 R   0.5
+ f01370p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f01370k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f01370a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01370a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01370a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01370a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01370a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f01370a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01500a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01500a_mss_ =    1.504 In(   1.486,    1.522) L   0.5 R   0.5
+ f01500a_wdt_ =    0.109 In(   0.088,     0.13) L   0.5 R   0.5
+ f01500p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f01500k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f01500a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01500a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01500a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01500a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01500a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f01500a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01710a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01710a_mss_ =    1.723 In(   1.705,    1.741) L   0.5 R   0.5
+ f01710a_wdt_ =    0.139 In(   0.115,    0.163) L   0.5 R   0.5
+ f01710p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f01710k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f01710a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01710a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01710a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01710a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01710a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f01710a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02020a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02020a_mss_ =    1.992 In(   1.944,     2.04) L   0.5 R   0.5
+ f02020a_wdt_ =    0.442 In(   0.262,    0.622) L   0.5 R   0.5
+ f02020p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02020k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02020a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02020a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02020a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02020a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02020a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02020a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02100a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02100a_mss_ =   2.1295 In(   2.079,     2.18) L   0.5 R   0.5
+ f02100a_wdt_ =   0.3925 In(   0.155,     0.63) L   0.5 R   0.5
+ f02100p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02100k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02100a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02100a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02100a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02100a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02100a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02100a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02200a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02200a_mss_ =    2.189 In(    2.15,    2.228) L   0.5 R   0.5
+ f02200a_wdt_ =    0.238 In(   0.088,    0.388) L   0.5 R   0.5
+ f02200p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02200k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02200a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02200a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02200a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02200a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02200a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02200a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02330a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02330a_mss_ =    2.314 In(   2.239,    2.389) L   0.5 R   0.5
+ f02330a_wdt_ =      0.2 In(   0.084,    0.316) L   0.5 R   0.5
+ f02330p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02330k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02330a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02330a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02330a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02330a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02330a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02330a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02201a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02201a_mss_ =    2.972 In(   1.944,        4) L   0.5 R   0.5
+ f02201a_wdt_ =    0.357 In(   0.084,     0.63) L   0.5 R   0.5
+ f02201p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02201k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02201a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02201a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02201a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02201a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02201a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02201a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_mss_ =   1.2255 In(  1.1731,   1.2779) L   0.5 R   0.5
+ f21270a_wdt_ =   0.1856 In(  0.1779,   0.1933) L   0.5 R   0.5
+ f21270p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21270k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21270a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21270a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21270a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21270a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21270a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21270a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_mss_ =    1.525 In(    1.51,     1.54) L   0.5 R   0.5
+ f21525a_wdt_ =   0.0745 In(   0.058,    0.091) L   0.5 R   0.5
+ f21525p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21525k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21525a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21525a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21525a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21525a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21525a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21525a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_mss_ =    1.499 In(    1.33,    1.668) L   0.5 R   0.5
+ f21501a_wdt_ =     0.16 In(       0,     0.32) L   0.5 R   0.5
+ f21501p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21501k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21501a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21501a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21501a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21501a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21501a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21501a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_mss_ =    1.836 In(    1.71,    1.962) L   0.5 R   0.5
+ f21810a_wdt_ =   0.2355 In(   0.131,     0.34) L   0.5 R   0.5
+ f21810p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21810k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21810a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21810a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21810a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21810a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21810a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21810a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_mss_ =    1.921 In(    1.86,    1.982) L   0.5 R   0.5
+ f21910a_wdt_ =   0.1835 In(   0.021,    0.346) L   0.5 R   0.5
+ f21910p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21910k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21910a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21910a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21910a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21910a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21910a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21910a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21950a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21950a_mss_ =     1.96 In(    1.79,     2.13) L   0.5 R   0.5
+ f21950a_wdt_ =    0.559 In(   0.418,      0.7) L   0.5 R   0.5
+ f21950p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21950k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21950a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21950a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21950a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21950a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21950a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21950a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21950a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21950a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21950a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21950a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21950a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21950a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21950a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21950a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21950a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_mss_ =     2.18 In(   2.121,    2.239) L   0.5 R   0.5
+ f22150a_wdt_ =    0.241 In(   0.062,     0.42) L   0.5 R   0.5
+ f22150p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f22150k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f22150a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f22150a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22150a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22150a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22150a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22150a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_mss_ =    2.297 In(   2.213,    2.381) L   0.5 R   0.5
+ f22300a_wdt_ =    0.159 In(   0.029,    0.289) L   0.5 R   0.5
+ f22300p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f22300k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f22300a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f22300a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22300a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22300a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22300a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22300a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22201a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22201a_mss_ =        3 In(       2,        4) L   0.5 R   0.5
+ f22201a_wdt_ =   0.2195 In(   0.021,    0.418) L   0.5 R   0.5
+ f22201p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f22201k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f22201a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f22201a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22201a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22201a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22201a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22201a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22201a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22201a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22201a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22201a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22201a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22201a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22201a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22201a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22201a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*1m1800a_typ_ =        4 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ 1m1800a_mss_ =     1.75 In(     1.5,        2) L   0.5 R   0.5
+ 1m1800a_wdt_ =     0.15 In(       0,      0.3) L   0.5 R   0.5
+ 1m1800a_rho_ =        0 In(    -100,      100) L   0.5 R   0.5
+ 1m1800k_rho_ =        0 In(    -100,      100) L   0.5 R   0.5
+*1m1800a_spn1 =      111 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*1m1800a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ 1m1800a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*1p1800a_typ_ =        4 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ 1p1800a_mss_ =     1.75 In(     1.5,        2) L   0.5 R   0.5
+ 1p1800a_wdt_ =     0.15 In(       0,      0.3) L   0.5 R   0.5
+ 1p1800p_rho_ =        0 In(    -100,      100) L   0.5 R   0.5
+ 1p1800k_rho_ =        0 In(    -100,      100) L   0.5 R   0.5
+*1p1800a_spn1 =       11 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*1p1800a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ 1p1800a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*1p1800a_spn2 =       12 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ 1p1800a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ 1p1800a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*1p1800a_spn3 =       13 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ 1p1800a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ 1p1800a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*1p1800a_spn4 =       14 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ 1p1800a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ 1p1800a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+-----------------
+[#1] INFO:DataHandling -- RooDataSet::read: reading file ../newbase/idp_pp_all.dat
+[#0] ERROR:DataHandling -- RooDataSet::read(static): read error at line 11017
+[#1] INFO:DataHandling -- RooDataSet::read: read 11016 events (ignored 0 out of range events)
+RooDataSet::dataset[idp,weight,blindState] = 11016 entries
+haha: 511
+haha: 513
+RooDataSet::dataset[idp,blindState,weight:weight] = 11016 entries (9886.41 weighted)
+-----------------
+[#1] INFO:DataHandling -- RooDataSet::read: read 0 events (ignored 0 out of range events)
+RooDataSet::dataset[idp,weight,blindState] = 0 entries
+RooDataSet::dataset[idp,blindState,weight:weight] = 0 entries (0 weighted)
+RooDataSet is initialized!!
+[DPFPWAPoint] ==> Creating DPFPWAPoint !
+[DPFPWAPoint] ==> Creating DPFPWAPoint !
+DPFPWAPoint is intialized!!
+idp=idpidp=idpDPFPWAPdf is intialized!!
+YYYYY
+test = f01000
+f01000a_typ_
+f01000a_phi1
+f01000a_frc1
+f01000p_rho_
+f01000a_wdt_
+f01000a_mss_
+f01000a_spn1
+f01000a_typ_
+f01000a_phi2
+f01000a_frc2
+f01000p_rho_
+f01000a_wdt_
+f01000a_mss_
+f01000a_spn2
+f01000a_typ_
+f01000a_phi1
+f01000a_frc1
+f01000k_rho_
+f01000a_wdt_
+f01000a_mss_
+f01000a_spn1
+f01000a_typ_
+f01000a_phi2
+f01000a_frc2
+f01000k_rho_
+f01000a_wdt_
+f01000a_mss_
+f01000a_spn2
+test = f21000
+f21000a_typ_
+f21000a_phi1
+f21000a_frc1
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn1
+f21000a_typ_
+f21000a_phi2
+f21000a_frc2
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn2
+f21000a_typ_
+f21000a_phi3
+f21000a_frc3
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn3
+f21000a_typ_
+f21000a_phi4
+f21000a_frc4
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn4
+f21000a_typ_
+f21000a_phi5
+f21000a_frc5
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn5
+f21000a_typ_
+f21000a_phi1
+f21000a_frc1
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn1
+f21000a_typ_
+f21000a_phi2
+f21000a_frc2
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn2
+f21000a_typ_
+f21000a_phi3
+f21000a_frc3
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn3
+f21000a_typ_
+f21000a_phi4
+f21000a_frc4
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn4
+f21000a_typ_
+f21000a_phi5
+f21000a_frc5
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn5
+test = f00980
+f00980a_typ_
+f00980a_phi1
+f00980a_frc1
+f00980p_rho_
+f00980a_g20_
+f00980a_g10_
+f00980a_mss_
+f00980a_spn1
+f00980a_typ_
+f00980a_phi2
+f00980a_frc2
+f00980p_rho_
+f00980a_g20_
+f00980a_g10_
+f00980a_mss_
+f00980a_spn2
+f00980a_typ_
+f00980a_phi1
+f00980a_frc1
+f00980k_rho_
+f00980a_g20_
+f00980a_g10_
+f00980a_mss_
+f00980a_spn1
+f00980a_typ_
+f00980a_phi2
+f00980a_frc2
+f00980k_rho_
+f00980a_g20_
+f00980a_g10_
+f00980a_mss_
+f00980a_spn2
+test = f01370
+f01370a_typ_
+f01370a_phi1
+f01370a_frc1
+f01370p_rho_
+f01370a_wdt_
+f01370a_mss_
+f01370a_spn1
+f01370a_typ_
+f01370a_phi2
+f01370a_frc2
+f01370p_rho_
+f01370a_wdt_
+f01370a_mss_
+f01370a_spn2
+f01370a_typ_
+f01370a_phi1
+f01370a_frc1
+f01370k_rho_
+f01370a_wdt_
+f01370a_mss_
+f01370a_spn1
+f01370a_typ_
+f01370a_phi2
+f01370a_frc2
+f01370k_rho_
+f01370a_wdt_
+f01370a_mss_
+f01370a_spn2
+test = f01500
+f01500a_typ_
+f01500a_phi1
+f01500a_frc1
+f01500p_rho_
+f01500a_wdt_
+f01500a_mss_
+f01500a_spn1
+f01500a_typ_
+f01500a_phi2
+f01500a_frc2
+f01500p_rho_
+f01500a_wdt_
+f01500a_mss_
+f01500a_spn2
+f01500a_typ_
+f01500a_phi1
+f01500a_frc1
+f01500k_rho_
+f01500a_wdt_
+f01500a_mss_
+f01500a_spn1
+f01500a_typ_
+f01500a_phi2
+f01500a_frc2
+f01500k_rho_
+f01500a_wdt_
+f01500a_mss_
+f01500a_spn2
+test = f01710
+f01710a_typ_
+f01710a_phi1
+f01710a_frc1
+f01710p_rho_
+f01710a_wdt_
+f01710a_mss_
+f01710a_spn1
+f01710a_typ_
+f01710a_phi2
+f01710a_frc2
+f01710p_rho_
+f01710a_wdt_
+f01710a_mss_
+f01710a_spn2
+f01710a_typ_
+f01710a_phi1
+f01710a_frc1
+f01710k_rho_
+f01710a_wdt_
+f01710a_mss_
+f01710a_spn1
+f01710a_typ_
+f01710a_phi2
+f01710a_frc2
+f01710k_rho_
+f01710a_wdt_
+f01710a_mss_
+f01710a_spn2
+test = f02020
+f02020a_typ_
+f02020a_phi1
+f02020a_frc1
+f02020p_rho_
+f02020a_wdt_
+f02020a_mss_
+f02020a_spn1
+f02020a_typ_
+f02020a_phi2
+f02020a_frc2
+f02020p_rho_
+f02020a_wdt_
+f02020a_mss_
+f02020a_spn2
+f02020a_typ_
+f02020a_phi1
+f02020a_frc1
+f02020k_rho_
+f02020a_wdt_
+f02020a_mss_
+f02020a_spn1
+f02020a_typ_
+f02020a_phi2
+f02020a_frc2
+f02020k_rho_
+f02020a_wdt_
+f02020a_mss_
+f02020a_spn2
+test = f02100
+f02100a_typ_
+f02100a_phi1
+f02100a_frc1
+f02100p_rho_
+f02100a_wdt_
+f02100a_mss_
+f02100a_spn1
+f02100a_typ_
+f02100a_phi2
+f02100a_frc2
+f02100p_rho_
+f02100a_wdt_
+f02100a_mss_
+f02100a_spn2
+f02100a_typ_
+f02100a_phi1
+f02100a_frc1
+f02100k_rho_
+f02100a_wdt_
+f02100a_mss_
+f02100a_spn1
+f02100a_typ_
+f02100a_phi2
+f02100a_frc2
+f02100k_rho_
+f02100a_wdt_
+f02100a_mss_
+f02100a_spn2
+test = f02200
+f02200a_typ_
+f02200a_phi1
+f02200a_frc1
+f02200p_rho_
+f02200a_wdt_
+f02200a_mss_
+f02200a_spn1
+f02200a_typ_
+f02200a_phi2
+f02200a_frc2
+f02200p_rho_
+f02200a_wdt_
+f02200a_mss_
+f02200a_spn2
+f02200a_typ_
+f02200a_phi1
+f02200a_frc1
+f02200k_rho_
+f02200a_wdt_
+f02200a_mss_
+f02200a_spn1
+f02200a_typ_
+f02200a_phi2
+f02200a_frc2
+f02200k_rho_
+f02200a_wdt_
+f02200a_mss_
+f02200a_spn2
+test = f02330
+f02330a_typ_
+f02330a_phi1
+f02330a_frc1
+f02330p_rho_
+f02330a_wdt_
+f02330a_mss_
+f02330a_spn1
+f02330a_typ_
+f02330a_phi2
+f02330a_frc2
+f02330p_rho_
+f02330a_wdt_
+f02330a_mss_
+f02330a_spn2
+f02330a_typ_
+f02330a_phi1
+f02330a_frc1
+f02330k_rho_
+f02330a_wdt_
+f02330a_mss_
+f02330a_spn1
+f02330a_typ_
+f02330a_phi2
+f02330a_frc2
+f02330k_rho_
+f02330a_wdt_
+f02330a_mss_
+f02330a_spn2
+test = f02201
+f02201a_typ_
+f02201a_phi1
+f02201a_frc1
+f02201p_rho_
+f02201a_wdt_
+f02201a_mss_
+f02201a_spn1
+f02201a_typ_
+f02201a_phi2
+f02201a_frc2
+f02201p_rho_
+f02201a_wdt_
+f02201a_mss_
+f02201a_spn2
+f02201a_typ_
+f02201a_phi1
+f02201a_frc1
+f02201k_rho_
+f02201a_wdt_
+f02201a_mss_
+f02201a_spn1
+f02201a_typ_
+f02201a_phi2
+f02201a_frc2
+f02201k_rho_
+f02201a_wdt_
+f02201a_mss_
+f02201a_spn2
+test = f21270
+f21270a_typ_
+f21270a_phi1
+f21270a_frc1
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn1
+f21270a_typ_
+f21270a_phi2
+f21270a_frc2
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn2
+f21270a_typ_
+f21270a_phi3
+f21270a_frc3
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn3
+f21270a_typ_
+f21270a_phi4
+f21270a_frc4
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn4
+f21270a_typ_
+f21270a_phi5
+f21270a_frc5
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn5
+f21270a_typ_
+f21270a_phi1
+f21270a_frc1
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn1
+f21270a_typ_
+f21270a_phi2
+f21270a_frc2
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn2
+f21270a_typ_
+f21270a_phi3
+f21270a_frc3
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn3
+f21270a_typ_
+f21270a_phi4
+f21270a_frc4
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn4
+f21270a_typ_
+f21270a_phi5
+f21270a_frc5
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn5
+test = f21525
+f21525a_typ_
+f21525a_phi1
+f21525a_frc1
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn1
+f21525a_typ_
+f21525a_phi2
+f21525a_frc2
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn2
+f21525a_typ_
+f21525a_phi3
+f21525a_frc3
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn3
+f21525a_typ_
+f21525a_phi4
+f21525a_frc4
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn4
+f21525a_typ_
+f21525a_phi5
+f21525a_frc5
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn5
+f21525a_typ_
+f21525a_phi1
+f21525a_frc1
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn1
+f21525a_typ_
+f21525a_phi2
+f21525a_frc2
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn2
+f21525a_typ_
+f21525a_phi3
+f21525a_frc3
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn3
+f21525a_typ_
+f21525a_phi4
+f21525a_frc4
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn4
+f21525a_typ_
+f21525a_phi5
+f21525a_frc5
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn5
+test = f21501
+f21501a_typ_
+f21501a_phi1
+f21501a_frc1
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn1
+f21501a_typ_
+f21501a_phi2
+f21501a_frc2
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn2
+f21501a_typ_
+f21501a_phi3
+f21501a_frc3
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn3
+f21501a_typ_
+f21501a_phi4
+f21501a_frc4
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn4
+f21501a_typ_
+f21501a_phi5
+f21501a_frc5
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn5
+f21501a_typ_
+f21501a_phi1
+f21501a_frc1
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn1
+f21501a_typ_
+f21501a_phi2
+f21501a_frc2
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn2
+f21501a_typ_
+f21501a_phi3
+f21501a_frc3
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn3
+f21501a_typ_
+f21501a_phi4
+f21501a_frc4
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn4
+f21501a_typ_
+f21501a_phi5
+f21501a_frc5
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn5
+test = f21810
+f21810a_typ_
+f21810a_phi1
+f21810a_frc1
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn1
+f21810a_typ_
+f21810a_phi2
+f21810a_frc2
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn2
+f21810a_typ_
+f21810a_phi3
+f21810a_frc3
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn3
+f21810a_typ_
+f21810a_phi4
+f21810a_frc4
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn4
+f21810a_typ_
+f21810a_phi5
+f21810a_frc5
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn5
+f21810a_typ_
+f21810a_phi1
+f21810a_frc1
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn1
+f21810a_typ_
+f21810a_phi2
+f21810a_frc2
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn2
+f21810a_typ_
+f21810a_phi3
+f21810a_frc3
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn3
+f21810a_typ_
+f21810a_phi4
+f21810a_frc4
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn4
+f21810a_typ_
+f21810a_phi5
+f21810a_frc5
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn5
+test = f21910
+f21910a_typ_
+f21910a_phi1
+f21910a_frc1
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn1
+f21910a_typ_
+f21910a_phi2
+f21910a_frc2
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn2
+f21910a_typ_
+f21910a_phi3
+f21910a_frc3
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn3
+f21910a_typ_
+f21910a_phi4
+f21910a_frc4
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn4
+f21910a_typ_
+f21910a_phi5
+f21910a_frc5
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn5
+f21910a_typ_
+f21910a_phi1
+f21910a_frc1
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn1
+f21910a_typ_
+f21910a_phi2
+f21910a_frc2
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn2
+f21910a_typ_
+f21910a_phi3
+f21910a_frc3
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn3
+f21910a_typ_
+f21910a_phi4
+f21910a_frc4
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn4
+f21910a_typ_
+f21910a_phi5
+f21910a_frc5
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn5
+test = f22150
+f22150a_typ_
+f22150a_phi1
+f22150a_frc1
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn1
+f22150a_typ_
+f22150a_phi2
+f22150a_frc2
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn2
+f22150a_typ_
+f22150a_phi3
+f22150a_frc3
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn3
+f22150a_typ_
+f22150a_phi4
+f22150a_frc4
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn4
+f22150a_typ_
+f22150a_phi5
+f22150a_frc5
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn5
+f22150a_typ_
+f22150a_phi1
+f22150a_frc1
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn1
+f22150a_typ_
+f22150a_phi2
+f22150a_frc2
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn2
+f22150a_typ_
+f22150a_phi3
+f22150a_frc3
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn3
+f22150a_typ_
+f22150a_phi4
+f22150a_frc4
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn4
+f22150a_typ_
+f22150a_phi5
+f22150a_frc5
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn5
+test = f22300
+f22300a_typ_
+f22300a_phi1
+f22300a_frc1
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn1
+f22300a_typ_
+f22300a_phi2
+f22300a_frc2
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn2
+f22300a_typ_
+f22300a_phi3
+f22300a_frc3
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn3
+f22300a_typ_
+f22300a_phi4
+f22300a_frc4
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn4
+f22300a_typ_
+f22300a_phi5
+f22300a_frc5
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn5
+f22300a_typ_
+f22300a_phi1
+f22300a_frc1
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn1
+f22300a_typ_
+f22300a_phi2
+f22300a_frc2
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn2
+f22300a_typ_
+f22300a_phi3
+f22300a_frc3
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn3
+f22300a_typ_
+f22300a_phi4
+f22300a_frc4
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn4
+f22300a_typ_
+f22300a_phi5
+f22300a_frc5
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn5
+Active Res PP
+Active Res KK 
+finished reload_paras!!!!
+*f01000a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01000a_mss_ =     1.35 In(     1.2,      1.5) L   0.5 R   0.5
+*f01000a_wdt_ =    10000 In(       0,    20000) L   0.5 R   0.5
+ f01000p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f01000k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f01000a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01000a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01000a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01000a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01000a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f01000a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21000a_mss_ =     1.35 In(     1.2,      1.5) L   0.5 R   0.5
+*f21000a_wdt_ =    10000 In(       0,    20000) L   0.5 R   0.5
+ f21000p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21000k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21000a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21000a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21000a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21000a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21000a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21000a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21000a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21000a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f00980a_typ_ =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f00980a_mss_ =     0.99 In(    0.93,     1.05) L   0.5 R   0.5
+ f00980a_g10_ =    0.165 In(     0.1,        1) L0.0722222 R0.927778
+ f00980a_g20_ =    0.695 In(     0.1,      1.5) L 0.425 R 0.575
+ f00980p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f00980k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f00980a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f00980a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f00980a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f00980a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f00980a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f00980a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01370a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01370a_mss_ =     1.35 In(     1.2,      1.5) L   0.5 R   0.5
+ f01370a_wdt_ =     0.35 In(     0.2,      0.5) L   0.5 R   0.5
+ f01370p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f01370k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f01370a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01370a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01370a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01370a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01370a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f01370a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01500a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01500a_mss_ =    1.504 In(   1.486,    1.522) L   0.5 R   0.5
+ f01500a_wdt_ =    0.109 In(   0.088,     0.13) L   0.5 R   0.5
+ f01500p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f01500k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f01500a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01500a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01500a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01500a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01500a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f01500a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01710a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01710a_mss_ =    1.723 In(   1.705,    1.741) L   0.5 R   0.5
+ f01710a_wdt_ =    0.139 In(   0.115,    0.163) L   0.5 R   0.5
+ f01710p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f01710k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f01710a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f01710a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01710a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f01710a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f01710a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f01710a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02020a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02020a_mss_ =    1.992 In(   1.944,     2.04) L   0.5 R   0.5
+ f02020a_wdt_ =    0.442 In(   0.262,    0.622) L   0.5 R   0.5
+ f02020p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02020k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02020a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02020a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02020a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02020a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02020a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02020a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02100a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02100a_mss_ =   2.1295 In(   2.079,     2.18) L   0.5 R   0.5
+ f02100a_wdt_ =   0.3925 In(   0.155,     0.63) L   0.5 R   0.5
+ f02100p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02100k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02100a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02100a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02100a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02100a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02100a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02100a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02200a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02200a_mss_ =    2.189 In(    2.15,    2.228) L   0.5 R   0.5
+ f02200a_wdt_ =    0.238 In(   0.088,    0.388) L   0.5 R   0.5
+ f02200p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02200k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02200a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02200a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02200a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02200a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02200a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02200a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02330a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02330a_mss_ =    2.314 In(   2.239,    2.389) L   0.5 R   0.5
+ f02330a_wdt_ =      0.2 In(   0.084,    0.316) L   0.5 R   0.5
+ f02330p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02330k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02330a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02330a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02330a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02330a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02330a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02330a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02201a_typ_ =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02201a_mss_ =    2.972 In(   1.944,        4) L   0.5 R   0.5
+ f02201a_wdt_ =    0.357 In(   0.084,     0.63) L   0.5 R   0.5
+ f02201p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f02201k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f02201a_spn1 =        1 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f02201a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02201a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f02201a_spn2 =        2 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f02201a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f02201a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_mss_ =   1.2255 In(  1.1731,   1.2779) L   0.5 R   0.5
+ f21270a_wdt_ =   0.1856 In(  0.1779,   0.1933) L   0.5 R   0.5
+ f21270p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21270k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21270a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21270a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21270a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21270a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21270a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21270a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21270a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21270a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_mss_ =    1.525 In(    1.51,     1.54) L   0.5 R   0.5
+ f21525a_wdt_ =   0.0745 In(   0.058,    0.091) L   0.5 R   0.5
+ f21525p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21525k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21525a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21525a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21525a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21525a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21525a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21525a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21525a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21525a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_mss_ =    1.499 In(    1.33,    1.668) L   0.5 R   0.5
+ f21501a_wdt_ =     0.16 In(       0,     0.32) L   0.5 R   0.5
+ f21501p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21501k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21501a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21501a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21501a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21501a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21501a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21501a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21501a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21501a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_mss_ =    1.836 In(    1.71,    1.962) L   0.5 R   0.5
+ f21810a_wdt_ =   0.2355 In(   0.131,     0.34) L   0.5 R   0.5
+ f21810p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21810k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21810a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21810a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21810a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21810a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21810a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21810a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21810a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21810a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_mss_ =    1.921 In(    1.86,    1.982) L   0.5 R   0.5
+ f21910a_wdt_ =   0.1835 In(   0.021,    0.346) L   0.5 R   0.5
+ f21910p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f21910k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f21910a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f21910a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21910a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21910a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21910a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f21910a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f21910a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f21910a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_mss_ =     2.18 In(   2.121,    2.239) L   0.5 R   0.5
+ f22150a_wdt_ =    0.241 In(   0.062,     0.42) L   0.5 R   0.5
+ f22150p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f22150k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f22150a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f22150a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22150a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22150a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22150a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22150a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22150a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22150a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_typ_ =        6 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_mss_ =    2.297 In(   2.213,    2.381) L   0.5 R   0.5
+ f22300a_wdt_ =    0.159 In(   0.029,    0.289) L   0.5 R   0.5
+ f22300p_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+ f22300k_rho_ =     23.6 In(    -100,      100) L 0.618 R 0.382
+*f22300a_spn1 =       21 In(  -1e+30,    1e+30) L   0.5 R   0.5
+*f22300a_frc1 =        0 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_phi1 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_spn2 =       22 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_frc2 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22300a_phi2 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_spn3 =       23 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_frc3 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22300a_phi3 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_spn4 =       24 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_frc4 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22300a_phi4 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+*f22300a_spn5 =       25 In(  -1e+30,    1e+30) L   0.5 R   0.5
+ f22300a_frc5 =        0 In(    -4.6,      4.6) L   0.5 R   0.5
+ f22300a_phi5 =        0 In(-6.28319,  6.28319) L   0.5 R   0.5
+print fit_paras!!!
+Begin fitTo
+[#1] INFO:Minization -- RooMinimizer::optimizeConst: activating const optimization
+RooAbsTestStatistic::initSimMode: creating slave calculator #0 for state phipp (11016 dataset entries)
+TObject clone
+idp=idpidp=idp
+pwa_paras workd!!!!!211016
+[New Thread 0x2aaac7502700 (LWP 7670)]
+[New Thread 0x2aaac7703700 (LWP 7671)]
+[New Thread 0x2aaac7e00700 (LWP 7674)]
+[New Thread 0x2aab25c00700 (LWP 7676)]
+[New Thread 0x2aab27200700 (LWP 7678)]
+CUDA kernel launch with 825 blocks of 64 threads
+CUDA kernel launch with 825 blocks of 64 threads
+CUDA kernel launch with 825 blocks of 64 threads
+CUDA kernel launch with 825 blocks of 64 threads
+gpu part  time :10.96S
+Total time : 10.96S
+Whole time : 1.06771e+06S
+[#1] INFO:Fitting -- RooAbsTestStatistic::initSimMode: created 1 slave calculators.
+CUDA kernel launch with 825 blocks of 64 threads
+CUDA kernel launch with 825 blocks of 64 threads
+CUDA kernel launch with 825 blocks of 64 threads
+CUDA kernel launch with 825 blocks of 64 threads
+gpu part  time :10.85S
+Total time : 21.81S
+Whole time : 1.06773e+06S
+ **********
+ **    1 **SET PRINT           1
+ **********
+ **********
+ **    2 **SET NOGRAD
+ **********
+ PARAMETER DEFINITIONS:
+    NO.   NAME         VALUE      STEP SIZE      LIMITS
+     1 f00980a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+     2 f00980a_g10_   1.65000e-01  3.25000e-02    1.00000e-01  1.00000e+00
+     3 f00980a_g20_   6.95000e-01  1.40000e-01    1.00000e-01  1.50000e+00
+     4 f00980a_mss_   9.90000e-01  1.20000e-02    9.30000e-01  1.05000e+00
+     5 f00980a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+     6 f00980a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+     7 f00980k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+     8 f00980p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+     9 f01000a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    10 f01000a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    11 f01000a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    12 f01000k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    13 f01000p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    14 f01370a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    15 f01370a_mss_   1.35000e+00  3.00000e-02    1.20000e+00  1.50000e+00
+    16 f01370a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    17 f01370a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    18 f01370a_wdt_   3.50000e-01  3.00000e-02    2.00000e-01  5.00000e-01
+    19 f01370k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    20 f01370p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    21 f01500a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    22 f01500a_mss_   1.50400e+00  3.60000e-03    1.48600e+00  1.52200e+00
+    23 f01500a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    24 f01500a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    25 f01500a_wdt_   1.09000e-01  4.20000e-03    8.80000e-02  1.30000e-01
+    26 f01500k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    27 f01500p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    28 f01710a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    29 f01710a_mss_   1.72300e+00  3.60000e-03    1.70500e+00  1.74100e+00
+    30 f01710a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    31 f01710a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    32 f01710a_wdt_   1.39000e-01  4.80000e-03    1.15000e-01  1.63000e-01
+    33 f01710k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    34 f01710p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    35 f02020a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    36 f02020a_mss_   1.99200e+00  9.60000e-03    1.94400e+00  2.04000e+00
+    37 f02020a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    38 f02020a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    39 f02020a_wdt_   4.42000e-01  3.60000e-02    2.62000e-01  6.22000e-01
+    40 f02020k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    41 f02020p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    42 f02100a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    43 f02100a_mss_   2.12950e+00  1.01000e-02    2.07900e+00  2.18000e+00
+    44 f02100a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    45 f02100a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    46 f02100a_wdt_   3.92500e-01  4.75000e-02    1.55000e-01  6.30000e-01
+    47 f02100k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    48 f02100p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    49 f02200a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    50 f02200a_mss_   2.18900e+00  7.80000e-03    2.15000e+00  2.22800e+00
+    51 f02200a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    52 f02200a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    53 f02200a_wdt_   2.38000e-01  3.00000e-02    8.80000e-02  3.88000e-01
+    54 f02200k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    55 f02200p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    56 f02201a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    57 f02201a_mss_   2.97200e+00  2.05600e-01    1.94400e+00  4.00000e+00
+    58 f02201a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    59 f02201a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    60 f02201a_wdt_   3.57000e-01  5.46000e-02    8.40000e-02  6.30000e-01
+    61 f02201k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    62 f02201p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    63 f02330a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    64 f02330a_mss_   2.31400e+00  1.50000e-02    2.23900e+00  2.38900e+00
+    65 f02330a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    66 f02330a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    67 f02330a_wdt_   2.00000e-01  2.32000e-02    8.40000e-02  3.16000e-01
+    68 f02330k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    69 f02330p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    70 f21000a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    71 f21000a_frc3   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    72 f21000a_frc4   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    73 f21000a_frc5   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    74 f21000a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    75 f21000a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    76 f21000a_phi3   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    77 f21000a_phi4   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    78 f21000a_phi5   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    79 f21000k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    80 f21000p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    81 f21270a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    82 f21270a_frc3   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    83 f21270a_frc4   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    84 f21270a_frc5   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    85 f21270a_mss_   1.22550e+00  1.04800e-02    1.17310e+00  1.27790e+00
+    86 f21270a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    87 f21270a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    88 f21270a_phi3   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    89 f21270a_phi4   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    90 f21270a_phi5   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+    91 f21270a_wdt_   1.85600e-01  1.54000e-03    1.77900e-01  1.93300e-01
+    92 f21270k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    93 f21270p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+    94 f21501a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    95 f21501a_frc3   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    96 f21501a_frc4   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    97 f21501a_frc5   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+    98 f21501a_mss_   1.49900e+00  3.38000e-02    1.33000e+00  1.66800e+00
+    99 f21501a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   100 f21501a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   101 f21501a_phi3   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   102 f21501a_phi4   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   103 f21501a_phi5   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   104 f21501a_wdt_   1.60000e-01  3.20000e-02    0.00000e+00  3.20000e-01
+   105 f21501k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   106 f21501p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   107 f21525a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   108 f21525a_frc3   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   109 f21525a_frc4   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   110 f21525a_frc5   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   111 f21525a_mss_   1.52500e+00  3.00000e-03    1.51000e+00  1.54000e+00
+   112 f21525a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   113 f21525a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   114 f21525a_phi3   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   115 f21525a_phi4   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   116 f21525a_phi5   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   117 f21525a_wdt_   7.45000e-02  3.30000e-03    5.80000e-02  9.10000e-02
+   118 f21525k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   119 f21525p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   120 f21810a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   121 f21810a_frc3   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   122 f21810a_frc4   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   123 f21810a_frc5   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   124 f21810a_mss_   1.83600e+00  2.52000e-02    1.71000e+00  1.96200e+00
+   125 f21810a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   126 f21810a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   127 f21810a_phi3   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   128 f21810a_phi4   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   129 f21810a_phi5   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   130 f21810a_wdt_   2.35500e-01  2.09000e-02    1.31000e-01  3.40000e-01
+   131 f21810k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   132 f21810p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   133 f21910a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   134 f21910a_frc3   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   135 f21910a_frc4   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   136 f21910a_frc5   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   137 f21910a_mss_   1.92100e+00  1.22000e-02    1.86000e+00  1.98200e+00
+   138 f21910a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   139 f21910a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   140 f21910a_phi3   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   141 f21910a_phi4   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   142 f21910a_phi5   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   143 f21910a_wdt_   1.83500e-01  3.25000e-02    2.10000e-02  3.46000e-01
+   144 f21910k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   145 f21910p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   146 f22150a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   147 f22150a_frc3   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   148 f22150a_frc4   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   149 f22150a_frc5   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   150 f22150a_mss_   2.18000e+00  1.18000e-02    2.12100e+00  2.23900e+00
+   151 f22150a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   152 f22150a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   153 f22150a_phi3   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   154 f22150a_phi4   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   155 f22150a_phi5   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   156 f22150a_wdt_   2.41000e-01  3.58000e-02    6.20000e-02  4.20000e-01
+   157 f22150k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   158 f22150p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   159 f22300a_frc2   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   160 f22300a_frc3   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   161 f22300a_frc4   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   162 f22300a_frc5   0.00000e+00  9.20000e-01   -4.60000e+00  4.60000e+00
+   163 f22300a_mss_   2.29700e+00  1.68000e-02    2.21300e+00  2.38100e+00
+   164 f22300a_phi1   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   165 f22300a_phi2   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   166 f22300a_phi3   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   167 f22300a_phi4   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   168 f22300a_phi5   0.00000e+00  1.25664e+00   -6.28319e+00  6.28319e+00
+   169 f22300a_wdt_   1.59000e-01  2.60000e-02    2.90000e-02  2.89000e-01
+   170 f22300k_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+   171 f22300p_rho_   2.36000e+01  2.00000e+01   -1.00000e+02  1.00000e+02
+ **********
+ **    3 **SET ERR         0.5
+ **********
+ **********
+ **    4 **SET PRINT           1
+ **********
+ **********
+ **    5 **SET STR           1
+ **********
+ NOW USING STRATEGY  1: TRY TO BALANCE SPEED AGAINST RELIABILITY
+ **********
+ **    6 **MIGRAD    8.55e+04           1
+ **********
+ FIRST CALL TO USER FUNCTION AT NEW START POINT, WITH IFLAG=4.
+
+Thread 1 "pwa" received signal SIGINT, Interrupt.
+0x00002aab0729f1f3 in nvPTXCompilerGetInfoLog () from /usr/lib64/libnvidia-ptxjitcompiler.so.1
+(cuda-gdb) l
+394	    cout << "pwa_config file is " << config_file << endl;
+395	    refresh_pwa_ctrl(config_file, pwa_ctrl);
+396	
+397	    cout << pwa_ctrl.reloadFitParaFile << endl;
+398	    if (argc == 2) {
+399	        pwa_ana(pwa_ctrl);
+400	    } else {
+401	        stringstream tt;
+402	        tt << argv[2];
+403	        string fitResult = tt.str();
+(cuda-gdb) info cuda state
+(cuda-gdb) info cuda state[K[K[K[K[K
+(cuda-gdb) info cuda help
+(cuda-gdb) info cuda help[K[K[K[K[K[K[K[Kuda tgreads
+(cuda-gdb) info cuda tgreads[1Preadshreads
+(cuda-gdb) info cuda threads[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kthread
+[Current thread is 1 (Thread 0x2aaaaab02b00 (LWP 7543))]
+(cuda-gdb) threadinfo cuda threads all
+(cuda-gdb) info cuda threads all[K[K[K
+(cuda-gdb) info cuda threads all[C[C[C[C[C[C[C[C[C[C[Cthread[K
+[Current thread is 1 (Thread 0x2aaaaab02b00 (LWP 7543))]
+(cuda-gdb) thread 1
+[Switching to thread 1 (Thread 0x2aaaaab02b00 (LWP 7543))]
+#0  0x00002aab0729f1f3 in nvPTXCompilerGetInfoLog () from /usr/lib64/libnvidia-ptxjitcompiler.so.1
+(cuda-gdb) cuda theread 1
+(cuda-gdb) cuda[K[K[K[Kinfo devices
+(cuda-gdb) info devices[K
+(cuda-gdb) cuda thread(1,1,0)
+(cuda-gdb) thread
+[Current thread is 1 (Thread 0x2aaaaab02b00 (LWP 7543))]
+(cuda-gdb) cuda thread 1
+(cuda-gdb) cuda thread 1[K[K[K[K[K[K[K[K
+(cuda-gdb) info threads
+  Id   Target Id         Frame 
+* 1    Thread 0x2aaaaab02b00 (LWP 7543) "pwa" 0x00002aab0729f1f3 in nvPTXCompilerGetInfoLog ()
+   from /usr/lib64/libnvidia-ptxjitcompiler.so.1
+  2    Thread 0x2aaac7502700 (LWP 7670) "pwa" 0x00002aaaafb7a7df in accept4 () from /usr/lib64/libc.so.6
+  3    Thread 0x2aaac7703700 (LWP 7671) "pwa" 0x00002aaaafb6ea3d in poll () from /usr/lib64/libc.so.6
+  4    Thread 0x2aaac7e00700 (LWP 7674) "pwa" 0x00002aaaafb6ea3d in poll () from /usr/lib64/libc.so.6
+  5    Thread 0x2aab25c00700 (LWP 7676) "pwa" 0x00002aaaafb6ea3d in poll () from /usr/lib64/libc.so.6
+  6    Thread 0x2aab27200700 (LWP 7678) "pwa" 0x00002aaaafb6ea3d in poll () from /usr/lib64/libc.so.6
+(cuda-gdb) l
+404	        pwa_ctrl.reloadFitParaFile = fitResult;
+405	
+406	        cout << "pwa_ctrl.reloadFitParaFile = " << pwa_ctrl.reloadFitParaFile << endl;
+407	        cout << "TESTTEST" << endl;
+408	        pwa_fraction(pwa_ctrl);
+409	    //    PWA_CTRL fr_pwa_ctrl;
+410	    //    for(vector<string>::iterator it = pwa_ctrl.actResList.begin(); it != pwa_ctrl.actResList.end(); it++) {
+411	    //        fr_pwa_ctrl = pwa_ctrl;
+412	    //        fr_pwa_ctrl.actResList.resize(0);
+413	    //        fr_pwa_ctrl.actResList.push_back(*it);
+(cuda-gdb) n
+Single stepping until exit from function nvPTXCompilerGetInfoLog,
+which has no line number information.
+cuda-gdb/7.12/gdb/infrun.c:2794: internal-error: resume: Assertion `pc_in_thread_step_range (pc, tp)' failed.
+A problem internal to GDB has been detected,
+further debugging may prove unreliable.
+Quit this debugging session? (y or n) y
+cuda-gdb/7.12/gdb/infrun.c:2794: internal-error: resume: Assertion `pc_in_thread_step_range (pc, tp)' failed.
+A problem internal to GDB has been detected,
+further debugging may prove unreliable.
+Create a core file of GDB? (y or n) y
