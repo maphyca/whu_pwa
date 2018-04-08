@@ -446,7 +446,8 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
         //d_fx[i]=calEva(sh_pp,parameter,complex_para,d_paraList,d_mlk,i);
         d_fx[i]=calEva(sh_pp,sh_parameter,complex_para,sh_paraList,d_mlk,i);
         if(i+begin>=sh_parameter[16])   offset=1;
-        atomicAdd(d_test+offset*sh_parameter[15],d_mlk[i*sh_parameter[15]]);
+        for(int j=0;j<sh_parameter[15];j++)
+            atomicAdd(d_test+offset*sh_parameter[15]+j,d_mlk[i*sh_parameter[15]+j]);
         __syncthreads();
         //printf("%dgpu :: %.7f\n",i,pp->wu[0]);
         //printf("\nfx[%d]:%f\n",i,d_fx[i]);
@@ -543,7 +544,7 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         int N_thread=Ns[i+1]-Ns[i];
         int blocksPerGrid =(N_thread + threadsPerBlock - 1) / threadsPerBlock;
         printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
-        reset_test<<<(h_parameter[15]+63)/64,64>>>(d_test[i],h_parameter[15]);
+        reset_test<<<(h_parameter[15]+63)/64,64>>>(d_test[i],2*h_parameter[15]);
         kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_complex_para[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],d_test[i],Ns[i+1],Ns[i]);
     }
     for(int i=0;i<DEVICE_NUM;i++)
@@ -559,7 +560,7 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         int N_thread=Ns[i+1]-Ns[i];
         //CUDA_CALL(cudaMemcpyAsync(&h_fx[Ns[i]] , d_fx[i], N_thread * sizeof(double), cudaMemcpyDeviceToHost));
         CUDA_CALL(cudaMemcpyAsync(&h_mlk[ Ns[i]*h_parameter[15] ] , d_mlk[i], N_thread * h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
-        CUDA_CALL(cudaMemcpyAsync(h_test[i],d_test[i],sizeof(double), cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaMemcpyAsync(h_test[i],d_test[i],2*h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
     }
     //free memory
     //CUDA_CALL(cudaFree(d_float_pp));
@@ -579,7 +580,8 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         //cout << h_fx[i] << endl;
     //}
     //cout.close();
-    cout<<"GPU Nmc 结果:   "<<h_test[0][0]+h_test[1][0]+h_test[2][0]+h_test[3][0]<<endl;
+    cout<<"GPU Nmc 计算结果:   "<<h_test[0][0]+h_test[1][0]+h_test[2][0]+h_test[3][0]<<endl;
+    cout<<"GPU Nmc_data 计算结果:   "<<h_test[0][h_parameter[15]]+h_test[1][h_parameter[15]]+h_test[2][h_parameter[15]]+h_test[3][h_parameter[15]]<<endl;
     return 0;
 }
 //在gpu中为pwa_paras开辟空间
