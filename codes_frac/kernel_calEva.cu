@@ -35,7 +35,7 @@ using namespace std;
 
 
 //calEva是在gpu中运行的一个子程序
- __device__ double calEva(const cu_PWA_PARAS *pp, const int * parameter , double2 * complex_para ,const double * d_paraList,double *d_mlk,int idp) 
+ __device__ double calEva(const cu_PWA_PARAS *pp, const int * parameter , double2 * complex_para ,const double * d_paraList,double *d_mlk,double *d_test,int idp,int offset) 
     ////return square of complex amplitude
 {
     //	static int A=0;
@@ -395,6 +395,8 @@ using namespace std;
         }
         double fu=cuCreal(cw);
         d_mlk[idp*const_nAmps+i] = pa * fu;
+        atomicAdd(d_test+i+offset*const_nAmps,pa * fu);
+        __syncthreads();
         //if(idp==413 && i==3 ) printf("pa: %.10f  fu: %.10f mlk %.10f\n",pa ,fu,d_mlk[idp*const_nAmps+i]);
     }
     /*
@@ -444,11 +446,8 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
         double2 *complex_para=&d_complex_para[i*6*parameter[15]];
         //将各个参数传到gpu中的内存后，调用子函数calEva 
         //d_fx[i]=calEva(sh_pp,parameter,complex_para,d_paraList,d_mlk,i);
-        d_fx[i]=calEva(sh_pp,sh_parameter,complex_para,sh_paraList,d_mlk,i);
         if(i+begin>=sh_parameter[16])   offset=1;
-        for(int j=0;j<sh_parameter[15];j++)
-            atomicAdd(d_test+offset*sh_parameter[15]+j,d_mlk[i*sh_parameter[15]+j]);
-        __syncthreads();
+        d_fx[i]=calEva(sh_pp,sh_parameter,complex_para,sh_paraList,d_mlk,d_test,i,offset);
         //printf("%dgpu :: %.7f\n",i,pp->wu[0]);
         //printf("\nfx[%d]:%f\n",i,d_fx[i]);
         //fx[i]=calEva(pp,parameter,d_paraList,i);
