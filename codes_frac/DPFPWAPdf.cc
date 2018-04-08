@@ -700,6 +700,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     //gpu part end!//
     Double_t sum = 0;
     Double_t carry = 0;
+    double mlk_Nmc=0;
 
 //#pragma omp parallel for private(carry) reduction(+:sum)
     for(int i = 0; i < Nmc; i++)
@@ -722,6 +723,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
         {
             tt += mlk[j][i];
         }
+        if(i==0) mlk_Nmc=tt;
         sum += sqrt(tt / Nmc);
     }
     penalty = sum;
@@ -739,6 +741,8 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
         sum += sqrt(tt);
     }
     penalty_data = sum;
+    cout<<"CPU Nmc 计算结果   "<<mlk_Nmc<<endl;
+    cout<<"分界线"<<endl<<endl;
     //printf("gpu_penalty_data : %.10f  cpu_penalty_data : %.10f\n--------------------------------------------------\n",d_penalty_data,penalty_data);
 }
 
