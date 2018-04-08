@@ -35,6 +35,8 @@ class cuda_kernel {
     double *d_paraList[DEVICE_NUM];
     double2 * d_complex_para[DEVICE_NUM];
     double *d_mlk[DEVICE_NUM];
+    double *d_test[DEVICE_NUM];
+    double *h_test[DEVICE_NUM];
 
     void cu_malloc_h_pp(double *,double *&,int,int);
     int host_store_fx(std::vector<double *>,int *,double *,int , double *,double * ,int ,int );
@@ -44,6 +46,7 @@ class cuda_kernel {
     int malloc_mem(int, int, int, int*);
 };
     __device__ double calEva(const cu_PWA_PARAS *pp, const int * parameter , double2 * complex_para ,const double * d_paraList,double *d_mlk,int idp) ;
-    __global__ void kernel_store_fx(const double * float_pp,const int *parameter,double2 * d_complex_para ,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,int end,int begin);
+    __global__ void kernel_store_fx(const double * float_pp,const int *parameter,double2 * d_complex_para ,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,double *d_test,int end,int begin);
+    __global__ void reset_test (double *d_test);
 #endif
 

@@ -415,7 +415,7 @@ using namespace std;
     return (value <= 0) ? 1e-20 : value;
 }
 
-__global__ void kernel_store_fx(const double * float_pp,const int *parameter,double2 * d_complex_para ,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,int end,int begin)
+__global__ void kernel_store_fx(const double * float_pp,const int *parameter,double2 * d_complex_para ,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,double *d_test,int end,int begin)
 {
     int i = blockDim.x * blockIdx.x + threadIdx.x;
     
@@ -473,6 +473,7 @@ int cuda_kernel::malloc_mem(int end, int begin, int para_size, int *h_parameter)
         CUDA_CALL(cudaMalloc((void **)&(d_paraList[i]),para_size * sizeof(double)));
         CUDA_CALL(cudaMalloc( (void**)&d_complex_para[i],6*h_parameter[15]*N_thread *sizeof(double2) ));
         CUDA_CALL(cudaMalloc( (void **)&(d_mlk[i]),(N_thread*h_parameter[15]*sizeof(double) )));
+        CUDA_CALL(cudaMalloc( (void **)&(d_test[i]),(sizeof(double) )));
     }
 
     return 0;
@@ -532,7 +533,7 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         int N_thread=Ns[i+1]-Ns[i];
         int blocksPerGrid =(N_thread + threadsPerBlock - 1) / threadsPerBlock;
         printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
-        kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_complex_para[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],Ns[i+1],Ns[i]);
+        kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_complex_para[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],d_test[i],Ns[i+1],Ns[i]);
     }
     for(int i=0;i<DEVICE_NUM;i++)
     {
