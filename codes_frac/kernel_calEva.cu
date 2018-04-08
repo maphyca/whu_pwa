@@ -418,7 +418,7 @@ using namespace std;
 __global__ void kernel_store_fx(const double * float_pp,const int *parameter,double2 * d_complex_para ,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,double *d_test,int end,int begin)
 {
     int i = blockDim.x * blockIdx.x + threadIdx.x;
-    
+    int offset=0;
     //使用shared memory 开辟静态内存
     //int sh_parameter[18];
     __shared__ int sh_parameter[18];
@@ -445,7 +445,8 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
         //将各个参数传到gpu中的内存后，调用子函数calEva 
         //d_fx[i]=calEva(sh_pp,parameter,complex_para,d_paraList,d_mlk,i);
         d_fx[i]=calEva(sh_pp,sh_parameter,complex_para,sh_paraList,d_mlk,i);
-        if(i+begin<sh_parameter[16])    atomicAdd(d_test,d_mlk[i*sh_parameter[15]]);
+        if(i+begin>=sh_parameter[16])   offset=1;
+        atomicAdd(d_test+offset*sh_parameter[15],d_mlk[i*sh_parameter[15]]);
         __syncthreads();
         //printf("%dgpu :: %.7f\n",i,pp->wu[0]);
         //printf("\nfx[%d]:%f\n",i,d_fx[i]);
@@ -456,10 +457,10 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
         //printf("pp[0]:%f pp[end]:%f parameter[0]:%d parameter[16]:%d paraList[0]:%f \n",float_pp[0],float_pp[end*sizeof(cu_PWA_PARAS)/sizeof(double)-1],parameter[0],parameter[16],d_paraList[0]);
     //}
 }
-__global__ void reset_test(double *d_test)
+__global__ void reset_test(double *d_test,int num)
 {
     int i = blockDim.x*blockIdx.x+threadIdx.x;
-    if(i==0)    d_test[i]=0;
+    if(i<num)    d_test[i]=0;
 }
 
 
@@ -481,8 +482,8 @@ int cuda_kernel::malloc_mem(int end, int begin, int para_size, int *h_parameter)
         CUDA_CALL(cudaMalloc((void **)&(d_paraList[i]),para_size * sizeof(double)));
         CUDA_CALL(cudaMalloc( (void**)&d_complex_para[i],6*h_parameter[15]*N_thread *sizeof(double2) ));
         CUDA_CALL(cudaMalloc( (void **)&(d_mlk[i]),(N_thread*h_parameter[15]*sizeof(double) )));
-        CUDA_CALL(cudaMalloc( (void **)&(d_test[i]),(sizeof(double) )));
-        h_test[i]=(double *)malloc(sizeof(double));
+        CUDA_CALL(cudaMalloc( (void **)&(d_test[i]),(2*h_parameter[15]*sizeof(double) )));
+        h_test[i]=(double *)malloc(2*h_parameter[15]*sizeof(double));
     }
 
     return 0;
@@ -542,7 +543,7 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         int N_thread=Ns[i+1]-Ns[i];
         int blocksPerGrid =(N_thread + threadsPerBlock - 1) / threadsPerBlock;
         printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
-        reset_test<<<1,32>>>(d_test[i]);
+        reset_test<<<(h_parameter[15]+63)/64,64>>>(d_test[i],h_parameter[15]);
         kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_complex_para[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],d_test[i],Ns[i+1],Ns[i]);
     }
     for(int i=0;i<DEVICE_NUM;i++)
