@@ -35,7 +35,7 @@ using namespace std;
 
 
 //calEva是在gpu中运行的一个子程序
- __device__ double calEva(const cu_PWA_PARAS *pp, const int * parameter , double2 * complex_para ,const double * d_paraList,double *d_mlk,double *d_test,int idp,int offset) 
+ __device__ double calEva(const cu_PWA_PARAS *pp, const int * parameter , double2 * complex_para ,const double * d_paraList,double *d_mlk,int idp,int offset) 
     ////return square of complex amplitude
 {
     //	static int A=0;
@@ -394,8 +394,7 @@ using namespace std;
             cw=cuCadd(cw,cuCdivcd( cuCmul( fCF[i*4+k],cuConj(fCF[i*4+k]) ),2.0) );
         }
         double fu=cuCreal(cw);
-        d_mlk[idp*const_nAmps+i] = pa * fu;
-        atomicAdd(d_test+i+offset*const_nAmps,pa * fu);
+        atomicAdd(d_mlk+i+offset*const_nAmps,pa * fu);
         __syncthreads();
         //if(idp==413 && i==3 ) printf("pa: %.10f  fu: %.10f mlk %.10f\n",pa ,fu,d_mlk[idp*const_nAmps+i]);
     }
@@ -417,7 +416,7 @@ using namespace std;
     return (value <= 0) ? 1e-20 : value;
 }
 
-__global__ void kernel_store_fx(const double * float_pp,const int *parameter,double2 * d_complex_para ,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,double *d_test,int end,int begin)
+__global__ void kernel_store_fx(const double * float_pp,const int *parameter,double2 * d_complex_para ,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,int end,int begin)
 {
     int i = blockDim.x * blockIdx.x + threadIdx.x;
     int offset=0;
@@ -447,7 +446,7 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
         //将各个参数传到gpu中的内存后，调用子函数calEva 
         //d_fx[i]=calEva(sh_pp,parameter,complex_para,d_paraList,d_mlk,i);
         if(i+begin>=sh_parameter[16])   offset=1;
-        d_fx[i]=calEva(sh_pp,sh_parameter,complex_para,sh_paraList,d_mlk,d_test,i,offset);
+        d_fx[i]=calEva(sh_pp,sh_parameter,complex_para,sh_paraList,d_mlk,i,offset);
         //printf("%dgpu :: %.7f\n",i,pp->wu[0]);
         //printf("\nfx[%d]:%f\n",i,d_fx[i]);
         //fx[i]=calEva(pp,parameter,d_paraList,i);
@@ -457,15 +456,17 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
         //printf("pp[0]:%f pp[end]:%f parameter[0]:%d parameter[16]:%d paraList[0]:%f \n",float_pp[0],float_pp[end*sizeof(cu_PWA_PARAS)/sizeof(double)-1],parameter[0],parameter[16],d_paraList[0]);
     //}
 }
-__global__ void reset_test(double *d_test,int num)
+__global__ void reset_mlk(double *d_mlk,int num)
 {
     int i = blockDim.x*blockIdx.x+threadIdx.x;
-    if(i<num)    d_test[i]=0;
+    if(i<num)    d_mlk[i]=0;
 }
 
 
 int cuda_kernel::malloc_mem(int end, int begin, int para_size, int *h_parameter)
 {
+    cout<<fixed;
+    cout.precision(16);
     int Ns[DEVICE_NUM+1];
     Ns[0]=0;
     for(int i=1;i<DEVICE_NUM;i++)
@@ -481,12 +482,10 @@ int cuda_kernel::malloc_mem(int end, int begin, int para_size, int *h_parameter)
         CUDA_CALL(cudaMalloc((void **)&(d_parameter[i]),18 * sizeof(int)));
         CUDA_CALL(cudaMalloc((void **)&(d_paraList[i]),para_size * sizeof(double)));
         CUDA_CALL(cudaMalloc( (void**)&d_complex_para[i],6*h_parameter[15]*N_thread *sizeof(double2) ));
-        CUDA_CALL(cudaMalloc( (void **)&(d_mlk[i]),(N_thread*h_parameter[15]*sizeof(double) )));
-        CUDA_CALL(cudaMalloc( (void **)&(d_test[i]),(2*h_parameter[15]*sizeof(double) )));
-        h_test[i]=(double *)malloc(2*h_parameter[15]*sizeof(double));
+        CUDA_CALL(cudaMalloc( (void **)&(d_mlk[i]),(2*h_parameter[15]*sizeof(double) )));
+        h_mlk_pt[i]=(double *)malloc(2*h_parameter[15]*sizeof(double));
     }
 
-        h_result=(double *)malloc(2*h_parameter[15]*sizeof(double));
     return 0;
 }
 
@@ -544,8 +543,8 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         int N_thread=Ns[i+1]-Ns[i];
         int blocksPerGrid =(N_thread + threadsPerBlock - 1) / threadsPerBlock;
         printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
-        reset_test<<<(h_parameter[15]+63)/64,64>>>(d_test[i],2*h_parameter[15]);
-        kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_complex_para[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],d_test[i],Ns[i+1],Ns[i]);
+        reset_mlk<<<(h_parameter[15]+63)/64,64>>>(d_mlk[i],2*h_parameter[15]);
+        kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_complex_para[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],Ns[i+1],Ns[i]);
     }
     for(int i=0;i<DEVICE_NUM;i++)
     {
@@ -557,29 +556,16 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
     for(int i=0;i<DEVICE_NUM;i++)
     {
         CUDA_CALL(cudaSetDevice(i) );
-        int N_thread=Ns[i+1]-Ns[i];
         //CUDA_CALL(cudaMemcpyAsync(&h_fx[Ns[i]] , d_fx[i], N_thread * sizeof(double), cudaMemcpyDeviceToHost));
-        CUDA_CALL(cudaMemcpyAsync(&h_mlk[ Ns[i]*h_parameter[15] ] , d_mlk[i], N_thread * h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
-        CUDA_CALL(cudaMemcpyAsync(h_test[i],d_test[i],2*h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaMemcpyAsync(h_mlk_pt[i],d_mlk[i],2*h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
     }
-    cout<<"各列数值 : "<<endl;
     for(int j=0;j<2*h_parameter[15];j++)
-        h_result[j]=h_test[0][j]+h_test[1][j]+h_test[2][j]+h_test[3][j];
-    double sum=0;
-    for(int j=0;j<h_parameter[15];j++)
     {
-        cout<<h_result[j]<<"   ";
-        sum+=sqrt(h_result[j] / h_parameter[16]);
+        h_mlk[j]=h_mlk_pt[0][j]+h_mlk_pt[1][j]+h_mlk_pt[2][j]+h_mlk_pt[3][j];
+        cout<<h_mlk[j]<<"   ";
     }
-    cout<<endl<<"GPU 惩罚项 "<<sum<<endl;
-    cout<<"各列数值: "<<endl;
-    for(int j=0;j<h_parameter[15];j++)
-    {
-        cout<<h_result[h_parameter[15]+j]<<"   ";
-        sum+=sqrt(h_result[j+h_parameter[15]] );
-    }
-    cout<<endl<<"GPU_data 惩罚项 "<<sum<<endl;
-    //free memory
+    cout<<endl;
+     //free memory
     //CUDA_CALL(cudaFree(d_float_pp));
     //for(int i=0;i<DEVICE_NUM;i++)
     //{

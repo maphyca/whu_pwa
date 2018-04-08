@@ -551,7 +551,7 @@ void DPFPWAPdf::cu_init_data(int * &h_parameter,double * &h_paraList,double *&h_
     //h_fx=(double *)malloc(i_End*sizeof(double));
     h_fx=new double[i_End];
     //init h_mlk
-    h_mlk = new double[(Nmc + Nmc_data)*nAmps];
+    h_mlk = new double[2*nAmps];
     //init h_paraList
 //    h_paraList=(double *)malloc(paraList.size()*sizeof(double));
 //    for(int i=0;i<paraList.size();i++)
@@ -606,20 +606,6 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     //int error_num=0;
     //double abs_error;
     //double total_error=0.0;
-    for(int i = 0; i < Nmc + Nmc_data; i++) {
-        for(int j=0;j<nAmps;j++)
-        {
-            //if(abs(mlk[i][j]-h_mlk[i*nAmps+j])>0.0001) assert(0);
-            mlk[i][j]=h_mlk[i*nAmps+j];
-            //abs_error=abs(mlk[i][j]-h_mlk[i*nAmps+j]);
-            //if(abs_error>0.0000001)
-            //{
-            //    error_num++;
-            //    //if(i==413) printf("i : %d\n index : %d\n",i,j);
-            //}
-            //total_error+=abs_error;
-        }
-    }
     //cout << "mlk error more than 0.000001 : " << error_num*100.0/(nAmps*(Nmc+Nmc_data)) << "\%  ave_error : "<< total_error/(nAmps*(Nmc+Nmc_data)) << endl;
     //error_num=0;
     //total_error=0.0;
@@ -712,38 +698,19 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     }
     anaIntegral = sum;
     //printf("gpu_anaIntegral : %.10f  cpu_anaIntegral : %.10f\n",d_anaIntegral,anaIntegral);
-    cout<<"CPU 各列数值 "<<endl;
     sum = 0;
     for(int i = 0; i < nAmps; i++)
     {
-        double tt = 0;
-//#pragma omp parallel for reduction(+:tt)
-        for(int j = 0; j < Nmc; j++)
-        {
-            tt += mlk[j][i];
-        }
-        cout<<tt<<"   ";
-        sum += sqrt(tt / Nmc);
+            sum += sqrt(h_mlk[i] / Nmc);
     }
     penalty = sum;
-    cout<<endl<<"CPU 惩罚项 "<<penalty<<endl;
-    cout<<"CPU 各列数值 :"<<endl;
     //printf("gpu_penalty : %.10f  cpu_penalty : %.10f\n",d_penalty,penalty);
     sum = 0;
     for(int i = 0; i < nAmps; i++)
     {
-        double tt = 0;
-//#pragma omp parallel for reduction(+:tt)
-        for(int j = Nmc; j < Nmc + Nmc_data; j++)
-        {
-            tt += mlk[j][i];
-        }
-        cout<<tt<<"   ";
-        sum += sqrt(tt);
+            sum += sqrt(h_mlk[i+nAmps]);
     }
     penalty_data = sum;
-    cout<<endl<<"CPU_data 惩罚项 "<<penalty_data<<endl;
-    cout<<"分界线"<<endl<<endl;
     //printf("gpu_penalty_data : %.10f  cpu_penalty_data : %.10f\n--------------------------------------------------\n",d_penalty_data,penalty_data);
 }
 
