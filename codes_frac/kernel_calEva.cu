@@ -486,6 +486,7 @@ int cuda_kernel::malloc_mem(int end, int begin, int para_size, int *h_parameter)
         h_test[i]=(double *)malloc(2*h_parameter[15]*sizeof(double));
     }
 
+        h_result=(double *)malloc(2*h_parameter[15]*sizeof(double));
     return 0;
 }
 
@@ -561,6 +562,23 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         CUDA_CALL(cudaMemcpyAsync(&h_mlk[ Ns[i]*h_parameter[15] ] , d_mlk[i], N_thread * h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
         CUDA_CALL(cudaMemcpyAsync(h_test[i],d_test[i],2*h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
     }
+    cout<<"各列数值 : "<<endl;
+    for(int j=0;j<2*h_parameter[15];j++)
+        h_result[j]=h_test[0][j]+h_test[1][j]+h_test[2][j]+h_test[3][j];
+    double sum=0;
+    for(int j=0;j<h_parameter[15];j++)
+    {
+        cout<<h_result[j]<<"   ";
+        sum+=sqrt(h_result[j] / h_parameter[16]);
+    }
+    cout<<endl<<"GPU 惩罚项 "<<sum<<endl;
+    cout<<"各列数值: "<<endl;
+    for(int j=0;j<h_parameter[15];j++)
+    {
+        cout<<h_result[h_parameter[15]+j]<<"   ";
+        sum+=sqrt(h_result[j+h_parameter[15]] );
+    }
+    cout<<endl<<"GPU_data 惩罚项 "<<sum<<endl;
     //free memory
     //CUDA_CALL(cudaFree(d_float_pp));
     //for(int i=0;i<DEVICE_NUM;i++)
@@ -579,8 +597,6 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         //cout << h_fx[i] << endl;
     //}
     //cout.close();
-    cout<<"GPU Nmc 计算结果:   "<<h_test[0][0]+h_test[1][0]+h_test[2][0]+h_test[3][0]<<endl;
-    cout<<"GPU Nmc_data 计算结果:   "<<h_test[0][h_parameter[15]]+h_test[1][h_parameter[15]]+h_test[2][h_parameter[15]]+h_test[3][h_parameter[15]]<<endl;
     return 0;
 }
 //在gpu中为pwa_paras开辟空间

@@ -37,6 +37,7 @@ class cuda_kernel {
     double *d_mlk[DEVICE_NUM];
     double *d_test[DEVICE_NUM];
     double *h_test[DEVICE_NUM];
+    double *h_result;
 
     void cu_malloc_h_pp(double *,double *&,int,int);
     int host_store_fx(std::vector<double *>,int *,double *,int , double *,double * ,int ,int );

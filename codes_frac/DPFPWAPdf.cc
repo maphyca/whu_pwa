@@ -700,8 +700,6 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     //gpu part end!//
     Double_t sum = 0;
     Double_t carry = 0;
-    double mlk_Nmc=0;
-    double mlk_data=0;
 
 //#pragma omp parallel for private(carry) reduction(+:sum)
     for(int i = 0; i < Nmc; i++)
@@ -714,7 +712,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     }
     anaIntegral = sum;
     //printf("gpu_anaIntegral : %.10f  cpu_anaIntegral : %.10f\n",d_anaIntegral,anaIntegral);
-
+    cout<<"CPU 各列数值 "<<endl;
     sum = 0;
     for(int i = 0; i < nAmps; i++)
     {
@@ -724,11 +722,12 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
         {
             tt += mlk[j][i];
         }
-        if(i==0) mlk_Nmc=tt;
+        cout<<tt<<"   ";
         sum += sqrt(tt / Nmc);
     }
     penalty = sum;
-
+    cout<<endl<<"CPU 惩罚项 "<<penalty<<endl;
+    cout<<"CPU 各列数值 :"<<endl;
     //printf("gpu_penalty : %.10f  cpu_penalty : %.10f\n",d_penalty,penalty);
     sum = 0;
     for(int i = 0; i < nAmps; i++)
@@ -739,12 +738,11 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
         {
             tt += mlk[j][i];
         }
-        if(i==0) mlk_data=tt;
+        cout<<tt<<"   ";
         sum += sqrt(tt);
     }
     penalty_data = sum;
-    cout<<"CPU Nmc 计算结果   "<<mlk_Nmc<<endl;
-    cout<<"CPU Nmc_data 计算结果   "<<mlk_data<<endl;
+    cout<<endl<<"CPU_data 惩罚项 "<<penalty_data<<endl;
     cout<<"分界线"<<endl<<endl;
     //printf("gpu_penalty_data : %.10f  cpu_penalty_data : %.10f\n--------------------------------------------------\n",d_penalty_data,penalty_data);
 }
