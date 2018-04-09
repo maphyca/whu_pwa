@@ -16,7 +16,7 @@
 
 #include <TTree.h>
 #include <stdio.h>
-#include <time.h>
+#include <sys/time.h>
 #include <stdlib.h>
 #include <omp.h>
 #include <fstream>
@@ -39,6 +39,7 @@
 */
 //#define DEVICE_NUM 2
 Double_t rk=0.493677,rp=0.13957018 ;
+struct timeval point;
 
 //#ifndef MALLOC_CPU
 //#define MALLOC_CPU 
@@ -591,8 +592,8 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     //    fx[i] = (sum <= 0) ? 1e-20 : sum;
     //    fx[i] = sum;
     //}
-    clock_t start,end;
-    start= clock();
+    gettimeofday(&point,NULL);
+    double start = point.tv_sec+point.tv_usec/1000000.0;
 
 //    int *h_parameter;
 //    double *h_paraList;
@@ -631,11 +632,8 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
         }
     }*/
     //cout << "fx error more than 0.000001 : " << error_num*100.0/iEnd << "\%  ave_error : "<< total_error << endl;
-    end=clock();
-    cout << "gpu part  time :" <<(double)(end-start)/CLOCKS_PER_SEC << "S" << endl;
-    total_time += (double)(end-start)/CLOCKS_PER_SEC;
-    cout << "Total time : " << total_time << "S" << endl;
-    cout << "Whole time : " << omp_get_wtime() << "S" << endl;
+    gettimeofday(&point,NULL);
+    double gpu = point.tv_sec+point.tv_usec/1000000.0;
 /*
     double d_sum=0,d_carry=0;
     for(int i = 0; i < Nmc; i++)
@@ -711,7 +709,14 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
             sum += sqrt(h_mlk[i+nAmps]);
     }
     penalty_data = sum;
-    //printf("gpu_penalty_data : %.10f  cpu_penalty_data : %.10f\n--------------------------------------------------\n",d_penalty_data,penalty_data);
+    gettimeofday(&point,NULL);
+    double end = point.tv_sec+point.tv_usec/1000000.0;
+    cout << "gpu part  time :" <<gpu-start << "S" << endl;
+    cout << "store_fx part  time :" <<end-start << "S" << endl;
+    total_time += end-start;
+    cout << "Total time : " << total_time << "S" << endl;
+    cout << "Whole time : " << omp_get_wtime() << "S" << endl;
+   //printf("gpu_penalty_data : %.10f  cpu_penalty_data : %.10f\n--------------------------------------------------\n",d_penalty_data,penalty_data);
 }
 
 Double_t DPFPWAPdf::evaluate(int _idp) const

@@ -465,8 +465,6 @@ __global__ void reset_mlk(double *d_mlk,int num)
 
 int cuda_kernel::malloc_mem(int end, int begin, int para_size, int *h_parameter)
 {
-    cout<<fixed;
-    cout.precision(16);
     int Ns[DEVICE_NUM+1];
     Ns[0]=0;
     for(int i=1;i<DEVICE_NUM;i++)
@@ -562,9 +560,7 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
     for(int j=0;j<2*h_parameter[15];j++)
     {
         h_mlk[j]=h_mlk_pt[0][j]+h_mlk_pt[1][j]+h_mlk_pt[2][j]+h_mlk_pt[3][j];
-        cout<<h_mlk[j]<<"   ";
     }
-    cout<<endl;
      //free memory
     //CUDA_CALL(cudaFree(d_float_pp));
     //for(int i=0;i<DEVICE_NUM;i++)
