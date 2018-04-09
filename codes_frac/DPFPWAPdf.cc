@@ -207,25 +207,32 @@ DPFPWAPdf::DPFPWAPdf(const DPFPWAPdf& other, const char* name) :
     #ifdef GPU
     mykernel = new cuda_kernel();
     //init d_float_pp
+    gettimeofday(&point,NULL);
+    double gpu_start = point.tv_sec+point.tv_usec/1000000.0;
     d_float_pp.resize(DEVICE_NUM);
     int i_End= other.pwa_paras.size();
     int array_num = sizeof(cu_PWA_PARAS) / sizeof(double);
     int array_size = array_num * i_End;
     h_float_pp = new double[array_size];
-    gettimeofday(&point,NULL);
-    double gpu_istart = point.tv_sec+point.tv_usec/1000000.0;
     for(int i=0;i<i_End;i++)
     {
         Double_t * k=(Double_t*)&pwa_paras[i];
         for(int j=0;j<array_num;j++)
             h_float_pp[i*array_num+j]=(double)k[j];
     }
+    double gpu_istart,gpu_istop;
     for(int i=0;i<DEVICE_NUM;i++)
     {
         double * temp_pp;
-        mykernel->cu_malloc_h_pp(h_float_pp,temp_pp,pwa_paras.size(),i); d_float_pp[i]=temp_pp;
+    gettimeofday(&point,NULL);
+    gpu_istart = point.tv_sec+point.tv_usec/1000000.0;
+        mykernel->cu_malloc_h_pp(h_float_pp,temp_pp,pwa_paras.size(),i); 
+    gettimeofday(&point,NULL);
+    gpu_istop = point.tv_sec+point.tv_usec/1000000.0;
+        d_float_pp[i]=temp_pp;
     }
     free(h_float_pp);
+    cout<<" pp初始化用时: "<<gpu_istop-gpu_istart<<" S "<<endl;
     #endif
 
     //cout.close();
@@ -237,10 +244,10 @@ DPFPWAPdf::DPFPWAPdf(const DPFPWAPdf& other, const char* name) :
     // 提前把空间分配好
     cu_init_data(h_parameter,h_paraList,h_fx,h_mlk, Nmc + Nmc_data);
     mykernel->warp_malloc_mem (Nmc + Nmc_data, 0,paraList.size(), h_parameter); 
-    #endif
     gettimeofday(&point,NULL);
-    double gpu_istop = point.tv_sec+point.tv_usec/1000000.0;
-    cout<<" GPU初始化用时: "<<gpu_istop-gpu_istart<<" S "<<endl;
+    double gpu_stop = point.tv_sec+point.tv_usec/1000000.0;
+    cout<<"GPU初始化用时: "<<gpu_stop-gpu_start<<endl;
+    #endif
     //cout << "DPFPWAPdf other haha : = " << __LINE__ << endl;
 }
 void DPFPWAPdf::setup_iter_vec() {

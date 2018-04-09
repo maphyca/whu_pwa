@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <vector>
 #include "MultDevice.h"
+#include <sys/time.h>
 using namespace std;
 
 //#ifndef MALLOC_CUDA
@@ -23,7 +24,7 @@ using namespace std;
 //
 //    int tag_cuda;
 //#endif
-
+struct timeval tp;
 
 //将任何cuda函数作为CUDA_CALL的参数，能够显示返回的错误，并定位错误。 
 #define CUDA_CALL(x) {const cudaError_t a=(x); if(a != cudaSuccess) {printf("\nerror in line:%d CUDAError:%s(err_num=%d)\n",__LINE__,cudaGetErrorString(a),a); cudaDeviceReset(); assert(0); }}
@@ -395,7 +396,6 @@ using namespace std;
         }
         double fu=cuCreal(cw);
         atomicAdd(d_mlk+i+offset*const_nAmps,pa * fu);
-        __syncthreads();
         //if(idp==413 && i==3 ) printf("pa: %.10f  fu: %.10f mlk %.10f\n",pa ,fu,d_mlk[idp*const_nAmps+i]);
     }
     /*
@@ -429,7 +429,12 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
     extern __shared__ double sh_paraList[];
     for(int i=0;i<para_size;i++)
         sh_paraList[i]=d_paraList[i];
-
+        
+    double *sh_mlk=&sh_paraList[para_size];
+    for(int j=0;j<2*sh_parameter[15];j++)
+        sh_mlk[j]=0;
+    
+    __syncthreads();
     if(i<end-begin && i>= 0)
     {
         int pwa_paras_size = sizeof(cu_PWA_PARAS) / sizeof(double);
@@ -445,11 +450,18 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
         //将各个参数传到gpu中的内存后，调用子函数calEva 
         //d_fx[i]=calEva(sh_pp,parameter,complex_para,d_paraList,d_mlk,i);
         if(i+begin>=sh_parameter[16])   offset=1;
-        d_fx[i]=calEva(pp,sh_parameter,complex_para,sh_paraList,d_mlk,i,offset);
+        d_fx[i]=calEva(pp,sh_parameter,complex_para,sh_paraList,sh_mlk,i,offset);
         //printf("%dgpu :: %.7f\n",i,pp->wu[0]);
         //printf("\nfx[%d]:%f\n",i,d_fx[i]);
         //fx[i]=calEva(pp,parameter,d_paraList,i);
+
     }
+        __syncthreads();
+
+        for(int j=0;j<(2*sh_parameter[15]+blockDim.x-1)/blockDim.x;j++)
+        {
+            if(blockIdx.x+j*blockDim.x<sh_parameter[15])    atomicAdd(&d_mlk[blockIdx.x+j*blockDim.x],sh_mlk[blockIdx.x+j*blockDim.x]);
+        }
     //if(i==1)
     //{
         //printf("pp[0]:%f pp[end]:%f parameter[0]:%d parameter[16]:%d paraList[0]:%f \n",float_pp[0],float_pp[end*sizeof(cu_PWA_PARAS)/sizeof(double)-1],parameter[0],parameter[16],d_paraList[0]);
@@ -518,7 +530,7 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
 
 
     //动态分配shared memory 的大小：
-    int size_paraList=para_size*sizeof(double);
+    int size_paraList=(para_size+2*h_parameter[15])*sizeof(double);
     //memcpy d_parameter
     for(int i=0;i<DEVICE_NUM;i++)
     {
@@ -556,9 +568,17 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         //CUDA_CALL(cudaMemcpyAsync(&h_fx[Ns[i]] , d_fx[i], N_thread * sizeof(double), cudaMemcpyDeviceToHost));
         CUDA_CALL(cudaMemcpyAsync(h_mlk_pt[i],d_mlk[i],2*h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
     }
-    for(int j=0;j<2*h_parameter[15];j++)
+    cudaDeviceSynchronize(); 
+        for(int j=0;j<2*h_parameter[15];j++)
+        {
+            h_mlk[j]=0;
+        }
+    for(int i=0;i<DEVICE_NUM;i++)
     {
-        h_mlk[j]=h_mlk_pt[0][j]+h_mlk_pt[1][j]+h_mlk_pt[2][j]+h_mlk_pt[3][j];
+        for(int j=0;j<2*h_parameter[15];j++)
+        {
+            h_mlk[j]+=h_mlk_pt[i][j];
+        }
     }
      //free memory
     //CUDA_CALL(cudaFree(d_float_pp));
@@ -583,11 +603,20 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
 //在gpu中为pwa_paras开辟空间
 void cuda_kernel::cu_malloc_h_pp(double *h_float_pp,double *&d_float_pp,int length,int device)
 {
+    gettimeofday(&tp,NULL);
+    double start=tp.tv_sec+tp.tv_usec/1000000.0;
     CUDA_CALL( cudaSetDevice(device) );
     int array_size = sizeof(cu_PWA_PARAS) / sizeof(double) * length;
     int mem_size = array_size * sizeof(double);
     CUDA_CALL(cudaMalloc((void **)&d_float_pp, mem_size));
+    cudaDeviceSynchronize();
+    gettimeofday(&tp,NULL);
+    double malloc=tp.tv_sec+tp.tv_usec/1000000.0;
     CUDA_CALL(cudaMemcpy(d_float_pp , h_float_pp, mem_size, cudaMemcpyHostToDevice));
+    cudaDeviceSynchronize();
+    gettimeofday(&tp,NULL);
+    double stop=tp.tv_sec+tp.tv_usec/1000000.0;
+    cout<<"full time:  "<<stop-start<<"  malloc time: "<<malloc-start<<"  memcpy time: "<<stop-malloc<<endl;
 }
 
 int cuda_kernel::warp_malloc_mem(int end, int begin, int para_size, int *h_parameter) {
