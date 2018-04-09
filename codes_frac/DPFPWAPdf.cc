@@ -212,6 +212,8 @@ DPFPWAPdf::DPFPWAPdf(const DPFPWAPdf& other, const char* name) :
     int array_num = sizeof(cu_PWA_PARAS) / sizeof(double);
     int array_size = array_num * i_End;
     h_float_pp = new double[array_size];
+    gettimeofday(&point,NULL);
+    double gpu_istart = point.tv_sec+point.tv_usec/1000000.0;
     for(int i=0;i<i_End;i++)
     {
         Double_t * k=(Double_t*)&pwa_paras[i];
@@ -236,6 +238,9 @@ DPFPWAPdf::DPFPWAPdf(const DPFPWAPdf& other, const char* name) :
     cu_init_data(h_parameter,h_paraList,h_fx,h_mlk, Nmc + Nmc_data);
     mykernel->warp_malloc_mem (Nmc + Nmc_data, 0,paraList.size(), h_parameter); 
     #endif
+    gettimeofday(&point,NULL);
+    double gpu_istop = point.tv_sec+point.tv_usec/1000000.0;
+    cout<<" GPU初始化用时: "<<gpu_istop-gpu_istart<<" S "<<endl;
     //cout << "DPFPWAPdf other haha : = " << __LINE__ << endl;
 }
 void DPFPWAPdf::setup_iter_vec() {

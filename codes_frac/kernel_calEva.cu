@@ -435,18 +435,17 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
         int pwa_paras_size = sizeof(cu_PWA_PARAS) / sizeof(double);
         //cu_PWA_PARAS * pp= (cu_PWA_PARAS *)&float_pp[i*pwa_paras_size];
         //double sh_float_pp[BLOCK_SIZE*72];
-        __shared__ double sh_float_pp[BLOCK_SIZE*72];
-        const double *pp = &float_pp[(i+begin)*pwa_paras_size];
-        for(int j=0;j<72;j++)
+        const cu_PWA_PARAS *pp = (cu_PWA_PARAS*)&float_pp[(i+begin)*pwa_paras_size];
+        /*for(int j=0;j<72;j++)
         {
             sh_float_pp[threadIdx.x*72+j]=pp[j];
         }
-        cu_PWA_PARAS *sh_pp=(cu_PWA_PARAS*)&sh_float_pp[threadIdx.x*72];
+        cu_PWA_PARAS *sh_pp=(cu_PWA_PARAS*)&sh_float_pp[threadIdx.x*72];*/
         double2 *complex_para=&d_complex_para[i*6*parameter[15]];
         //将各个参数传到gpu中的内存后，调用子函数calEva 
         //d_fx[i]=calEva(sh_pp,parameter,complex_para,d_paraList,d_mlk,i);
         if(i+begin>=sh_parameter[16])   offset=1;
-        d_fx[i]=calEva(sh_pp,sh_parameter,complex_para,sh_paraList,d_mlk,i,offset);
+        d_fx[i]=calEva(pp,sh_parameter,complex_para,sh_paraList,d_mlk,i,offset);
         //printf("%dgpu :: %.7f\n",i,pp->wu[0]);
         //printf("\nfx[%d]:%f\n",i,d_fx[i]);
         //fx[i]=calEva(pp,parameter,d_paraList,i);
