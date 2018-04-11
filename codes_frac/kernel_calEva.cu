@@ -1,6 +1,7 @@
 #include <cuda_runtime.h>
 #include "cuComplex.h"
 #include <iostream>
+//#include<stdio.h>
 #include "cu_PWA_PARAS.h"
 #include <vector>
 #include <fstream>
@@ -93,7 +94,7 @@ struct timeval tp;
     double2 cw2p11;
     double2 cw2p12;
     double2 cw2p15;
-    double2 cw;
+    double2 cw1,cw2,cw3,cw4;
     double2 c1p12_12,c1p13_12,c1p12_13,c1p13_13,c1p12_14,c1p13_14;
     double2 cr1m12_1,cr1m13_1;
     double2 crpf1,crpf2;
@@ -353,37 +354,21 @@ struct timeval tp;
         }
 
     }
-    double carry(0);
+    cw1=make_cuDoubleComplex(0.0,0.0);
+    cw2=make_cuDoubleComplex(0.0,0.0);
+    cw3=make_cuDoubleComplex(0.0,0.0);
+    cw4=make_cuDoubleComplex(0.0,0.0);
     //#pragmaint  omp parallel for reduction(+:value)
     for(int i=0;i<const_nAmps;i++){
         //  //cout<<"haha: "<< __LINE__ << endl;    int mlk_cro_size=sizeof(double)*end
-        for(int j=0;j<const_nAmps;j++){
-	        double pa,fu;
-            cw=cuCmul(fCP[i],cuConj(fCP[j]));
-            //    //cout<<"cw="<<cw<<endl;
-            if(i==j) pa=cuCreal(cw);
-            else if(i<j) pa=2*cuCreal(cw);
-            else pa=2*cuCimag(cw);
-            //else pa=make_cuDoubleComplex(0.0,2*cuCimag(cw));
-            cw=make_cuDoubleComplex(0.0,0.0);
-            for(int k=0;k<2;k++){
-                cw=cuCadd(cw,cuCdivcd( cuCmul( fCF[i*4+k],cuConj(fCF[j*4+k]) ),2.0) );
-                //   //cout<<"cwfu="<<cw<<endl;
-
-            }
-            if(i<=j) fu=cuCreal(cw);
-            if(i>j) fu=-cuCimag(cw);
-            //if(i>j) fu=make_cuDoubleComplex(0.0,-cuCimag(cw));
-            //      //cout<<"pa[i][j]="<<pa[i][j]<<endl;
-            //      //cout<<"fu[i][j]="<<fu[i][j]<<endl;
-            double temp = pa*fu;//i have a big change here 
-            double y = temp - carry;
-            double t = value + y;
-            carry = (t - value) - y;
-
-            value = t; // Kahan Summation
-        }
+            cw1=cuCadd(cw1,cuCmul(fCP[i],(fCF[i*4+0])));
+            cw2=cuCadd(cw2,cuCmul(fCP[i],(fCF[i*4+1])));
+            cw3=cuCadd(cw3,cuCmul(cuConj(fCP[i]),cuConj(fCF[i*4])));
+            cw4=cuCadd(cw4,cuCmul(cuConj(fCP[i]),cuConj(fCF[i*4+1])));
+            //if(idp==0) printf("cw1 value:%f  ,cw2 value:%f  ,cw3 value:%f  ,cw4 value:%f   \n",cw1,cw2,cw3,cw4); 
     }
+
+            value = (cuCreal(cuCmul(cw1,cw3))+cuCreal(cuCmul(cw2,cw4)))/2; // Kahan Summation
 
     for(int i=0;i<const_nAmps;i++){
         double2 cw=cuCmul(fCP[i],cuConj(fCP[i]));
@@ -439,18 +424,18 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
     {
         int pwa_paras_size = sizeof(cu_PWA_PARAS) / sizeof(double);
         //cu_PWA_PARAS * pp= (cu_PWA_PARAS *)&float_pp[i*pwa_paras_size];
-        //double sh_float_pp[BLOCK_SIZE*72];
-        const cu_PWA_PARAS *pp = (cu_PWA_PARAS*)&float_pp[(i+begin)*pwa_paras_size];
-        /*for(int j=0;j<72;j++)
+        __shared__ double sh_float_pp[BLOCK_SIZE*72];
+        const double *pp = &float_pp[(i+begin)*pwa_paras_size];
+        for(int j=0;j<72;j++)
         {
             sh_float_pp[threadIdx.x*72+j]=pp[j];
         }
-        cu_PWA_PARAS *sh_pp=(cu_PWA_PARAS*)&sh_float_pp[threadIdx.x*72];*/
+        cu_PWA_PARAS *sh_pp=(cu_PWA_PARAS*)&sh_float_pp[threadIdx.x*72];
         double2 *complex_para=&d_complex_para[i*6*parameter[15]];
         //将各个参数传到gpu中的内存后，调用子函数calEva 
         //d_fx[i]=calEva(sh_pp,parameter,complex_para,d_paraList,d_mlk,i);
         if(i+begin>=sh_parameter[16])   offset=1;
-        d_fx[i]=calEva(pp,sh_parameter,complex_para,sh_paraList,sh_mlk,i,offset);
+        d_fx[i]=calEva(sh_pp,sh_parameter,complex_para,sh_paraList,sh_mlk,i,offset);
         //printf("%dgpu :: %.7f\n",i,pp->wu[0]);
         //printf("\nfx[%d]:%f\n",i,d_fx[i]);
         //fx[i]=calEva(pp,parameter,d_paraList,i);
@@ -580,6 +565,9 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
             h_mlk[j]+=h_mlk_pt[i][j];
         }
     }
+    /*cout<<"fx 结果:"<<endl;
+    for(int i=0;i<end;i++)
+        cout<<h_fx[i]<<"   ";*/
      //free memory
     //CUDA_CALL(cudaFree(d_float_pp));
     //for(int i=0;i<DEVICE_NUM;i++)
