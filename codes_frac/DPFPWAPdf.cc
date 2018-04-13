@@ -40,6 +40,7 @@
 //#define DEVICE_NUM 2
 Double_t rk=0.493677,rp=0.13957018 ;
 struct timeval point;
+int steps=0;
 
 //#ifndef MALLOC_CPU
 //#define MALLOC_CPU 
@@ -729,6 +730,8 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     cout << "store_fx part  time :" <<end-start << "S" << endl;
     total_time += end-start;
     cout << "Total time : " << total_time << "S" << endl;
+    steps++;
+    cout<<"steps:"<<steps<<endl;
    //printf("gpu_penalty_data : %.10f  cpu_penalty_data : %.10f\n--------------------------------------------------\n",d_penalty_data,penalty_data);
 }
 

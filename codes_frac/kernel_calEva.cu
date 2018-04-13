@@ -37,7 +37,7 @@ struct timeval tp;
 
 
 //calEva是在gpu中运行的一个子程序
- __device__ double calEva(const cu_PWA_PARAS *pp, const int * parameter , double2 * complex_para ,const double * d_paraList,double *d_mlk,int idp,int offset) 
+ __device__ double calEva(const cu_PWA_PARAS *pp, const int * parameter , const double * d_paraList,double *d_mlk,int idp,int offset) 
     ////return square of complex amplitude
 {
     //	static int A=0;
@@ -61,11 +61,11 @@ struct timeval tp;
     const int const_nAmps=parameter[15];
     double value = 0.;
     //double2 fCF[const_nAmps][4];
-    double2 *fCF=complex_para; 
+    double2 fCF[2]; 
     //double2 (*fCF)[4]=(double2 (*)[4])malloc(sizeof(double2)*const_nAmps*4);
     //double2 fCP[const_nAmps];
     //double2 * fCP=(double2 *)malloc(sizeof(double2)*const_nAmps);
-    double2 * fCP=&complex_para[4*const_nAmps];
+    double2  fCP;
     //double2 * crp1=&complex_para[5*const_nAmps];
     //double2 * crp11=&complex_para[6*const_nAmps];
 
@@ -99,6 +99,10 @@ struct timeval tp;
     double2 cr1m12_1,cr1m13_1;
     double2 crpf1,crpf2;
 
+    cw1=make_cuDoubleComplex(0.0,0.0);
+    cw2=make_cuDoubleComplex(0.0,0.0);
+    cw3=make_cuDoubleComplex(0.0,0.0);
+    cw4=make_cuDoubleComplex(0.0,0.0);
     for(int index=0; index<const_nAmps; index++) {
         double rho0 = d_paraList[_N_rhoList++];
         double frac0 = d_paraList[_N_fracList++];
@@ -108,7 +112,7 @@ struct timeval tp;
     //cout<<"haha: "<< __LINE__ << endl;
         double2 crp1,crp11;
         rho0 *= std::exp(frac0);
-        fCP[index]=make_cuDoubleComplex(rho0*std::cos(phi0),rho0*std::sin(phi0));
+        fCP=make_cuDoubleComplex(rho0*std::cos(phi0),rho0*std::sin(phi0));
         //        //cout<<"fCP[index]="<<fCP[index]<<endl;
         //std::cout << __FILE__ << __LINE__ << " : " << propType_now << std::endl;
         switch(propType_now)
@@ -234,7 +238,7 @@ struct timeval tp;
                 case 11:
                     //1+_1 contribution
                     //fCF[index][i]=pp.w1p12_1[i]*crp1+pp.w1p13_1[i]*crp11[i];
-                    fCF[index*4+i]=cuCadd( cuCmuldc(pp->w1p12_1[i],crp1),cuCmuldc(pp->w1p13_1[i],crp11) );
+                    fCF[i]=cuCadd( cuCmuldc(pp->w1p12_1[i],crp1),cuCmuldc(pp->w1p13_1[i],crp11) );
 
                     break;
                 case 12:
@@ -244,7 +248,7 @@ struct timeval tp;
                     //c1p13_12=crp11/pp.b2qbv3;
                     c1p13_12=cuCdivcd(crp11,pp->b2qbv3);
                     //fCF[index][i]=pp.w1p12_2[i]*c1p12_12+pp.w1p13_2[i]*c1p13_12;
-                    fCF[index*4+i]=cuCadd( cuCmuldc(pp->w1p12_2[i],c1p12_12) , cuCmuldc(pp->w1p13_2[i],c1p13_12) );
+                    fCF[i]=cuCadd( cuCmuldc(pp->w1p12_2[i],c1p12_12) , cuCmuldc(pp->w1p13_2[i],c1p13_12) );
                 
                     break;
                 case 13:
@@ -254,7 +258,7 @@ struct timeval tp;
                     //c1p13_13=crp11/pp.b2qjv3;
                     c1p13_13=cuCdivcd(crp11,pp->b2qjv3);
                     //fCF[index][i]=pp.w1p12_3[i]*c1p12_13+pp.w1p13_3[i]*c1p13_13;
-                    fCF[index*4+i]=cuCadd( cuCmuldc(pp->w1p12_3[i],c1p12_13) , cuCmuldc(pp->w1p13_3[i],c1p13_13) );
+                    fCF[i]=cuCadd( cuCmuldc(pp->w1p12_3[i],c1p12_13) , cuCmuldc(pp->w1p13_3[i],c1p13_13) );
 
                     break;
                 case 14:
@@ -265,14 +269,14 @@ struct timeval tp;
                     c1p13_12=cuCdivcd(crp11,pp->b2qbv3);
                     c1p12_14=cuCdivcd(c1p12_12,pp->b2qjv2);
                     c1p13_14=cuCdivcd(c1p13_12,pp->b2qjv3);
-                    fCF[index*4+i]=cuCadd( cuCmuldc(pp->w1p12_4[i],c1p12_14), cuCmuldc(pp->w1p13_4[i],c1p13_14));
+                    fCF[i]=cuCadd( cuCmuldc(pp->w1p12_4[i],c1p12_14), cuCmuldc(pp->w1p13_4[i],c1p13_14));
 
                     break;
                 case 111:
                     //1-__1 contribution
                     cr1m12_1=cuCdivcd( cuCdivcd(crp1,pp->b1qjv2) , pp->b1qbv2);
                     cr1m13_1=cuCdivcd( cuCdivcd(crp11,pp->b1qjv3) , pp->b1qbv3);
-                    fCF[index*4+i]=cuCadd( cuCmuldc(pp->w1m12[i],cr1m12_1), cuCmuldc(pp->w1m13[i],cr1m13_1));
+                    fCF[i]=cuCadd( cuCmuldc(pp->w1m12[i],cr1m12_1), cuCmuldc(pp->w1m13[i],cr1m13_1));
 
                     break;
                 case 191:
@@ -280,7 +284,7 @@ struct timeval tp;
                     //		//cout<<"b1q2r23="<<b1q2r23<<endl;
                     crpf1=cuCdivcd( cuCmul(crp1,crp11),pp->b1q2r23 );
                     //		//cout<<"crpf1="<<crpf1<<endl;
-                    fCF[index*4+i]=cuCmuldc(pp->ak23w[i],crpf1);
+                    fCF[i]=cuCmuldc(pp->ak23w[i],crpf1);
                     //	//cout<<"fCF[index][i]="<<fCF[index][i]<<endl;
 
                     break;
@@ -288,7 +292,7 @@ struct timeval tp;
                     //phi(1650)f0(980)_2 contribution
                     crpf1=cuCdivcd( cuCmul(crp1,crp11) , pp->b1q2r23);
                     crpf2=cuCdivcd(crpf1,pp->b2qjvf2);
-                    fCF[index*4+i]=cuCmuldc(pp->wpf22[i],crpf2);
+                    fCF[i]=cuCmuldc(pp->wpf22[i],crpf2);
 
                     break;
                 case 1:
@@ -297,7 +301,7 @@ struct timeval tp;
                     //	//cout<<"wu[i]="<<wu[i]<<endl;
                     //	//cout<<"crp1="<<crp1<<endl;
                     //	//cout<<"index="<<index<<endl;
-                    fCF[index*4+i]=cuCmuldc(pp->wu[i],crp1);
+                    fCF[i]=cuCmuldc(pp->wu[i],crp1);
                     //	//cout<<"fCF[index][i]="<<fCF[index][i]<<endl;
                     //	//cout<<"i="<<i<<endl;
 
@@ -305,7 +309,7 @@ struct timeval tp;
                 case 2:
                     //02 contribution
                     cr0p11=cuCdivcd(crp1,pp->b2qjvf2);
-                    fCF[index*4+i]=cuCmuldc(pp->w0p22[i],cr0p11);
+                    fCF[i]=cuCmuldc(pp->w0p22[i],cr0p11);
                     //	//cout<<"fCF[index][i]02="<<fCF[index][i]<<endl;
 
                     break;
@@ -317,8 +321,8 @@ struct timeval tp;
                     //	//cout<<"cw2p11="<<cw2p11<<endl;
                     //	//cout<<"w2p1[0]="<<w2p1[0]<<endl;
                     //	//cout<<"w2p1[1]="<<w2p1[1]<<endl;
-                    fCF[index*4+i]=cuCmuldc(pp->w2p1[i],cw2p11);
-                    //if(idp == 413) printf("cw2p11 = %.10f fcf = %.10f\n",cuCimag(cw2p11),cuCimag(fCF[index*4+i]));
+                    fCF[i]=cuCmuldc(pp->w2p1[i],cw2p11);
+                    //if(idp == 413) printf("cw2p11 = %.10f fcf = %.10f\n",cuCimag(cw2p11),cuCimag(fCF[i]));
                     //	//cout<<"fCF[index][i]21="<<fCF[index][i]<<endl;
 
                     break;
@@ -326,63 +330,52 @@ struct timeval tp;
                     //22 contribution
                     cw2p11=cuCdivcd(crp1,pp->b2qf2xx);
                     cw2p12=cuCdivcd(cw2p11,pp->b2qjvf2);
-                    fCF[index*4+i]=cuCmuldc(pp->w2p2[i],cw2p12);
+                    fCF[i]=cuCmuldc(pp->w2p2[i],cw2p12);
 
                     break;
                 case 23:
                     //23 contribution
                     cw2p11=cuCdivcd(crp1,pp->b2qf2xx);
                     cw2p12=cuCdivcd(cw2p11,pp->b2qjvf2);
-                    fCF[index*4+i]=cuCmuldc(pp->w2p3[i],cw2p12);
+                    fCF[i]=cuCmuldc(pp->w2p3[i],cw2p12);
 
                     break;
                 case 24:
                     //24 contribution
                     cw2p11=cuCdivcd(crp1,pp->b2qf2xx);
                     cw2p12=cuCdivcd(cw2p11,pp->b2qjvf2);
-                    fCF[index*4+i]=cuCmuldc(pp->w2p4[i],cw2p12);
+                    fCF[i]=cuCmuldc(pp->w2p4[i],cw2p12);
 
                     break;
                 case 25:
                     //25 contribution
                     cw2p11=cuCdivcd(crp1,pp->b2qf2xx);
                     cw2p15=cuCdivcd(cw2p11,pp->b4qjvf2);
-                    fCF[index*4+i]=cuCmuldc(pp->w2p5[i],cw2p15);
+                    fCF[i]=cuCmuldc(pp->w2p5[i],cw2p15);
 
                 default:		;
             }
         }
+            cw1=cuCadd(cw1,cuCmul(fCP,(fCF[0])));
+            cw2=cuCadd(cw2,cuCmul(fCP,(fCF[1])));
+            cw3=cuCadd(cw3,cuCmul(cuConj(fCP),cuConj(fCF[0])));
+            cw4=cuCadd(cw4,cuCmul(cuConj(fCP),cuConj(fCF[1])));
 
-    }
-    cw1=make_cuDoubleComplex(0.0,0.0);
-    cw2=make_cuDoubleComplex(0.0,0.0);
-    cw3=make_cuDoubleComplex(0.0,0.0);
-    cw4=make_cuDoubleComplex(0.0,0.0);
-    //#pragmaint  omp parallel for reduction(+:value)
-    for(int i=0;i<const_nAmps;i++){
-        //  //cout<<"haha: "<< __LINE__ << endl;    int mlk_cro_size=sizeof(double)*end
-            cw1=cuCadd(cw1,cuCmul(fCP[i],(fCF[i*4+0])));
-            cw2=cuCadd(cw2,cuCmul(fCP[i],(fCF[i*4+1])));
-            cw3=cuCadd(cw3,cuCmul(cuConj(fCP[i]),cuConj(fCF[i*4])));
-            cw4=cuCadd(cw4,cuCmul(cuConj(fCP[i]),cuConj(fCF[i*4+1])));
-            //if(idp==0) printf("cw1 value:%f  ,cw2 value:%f  ,cw3 value:%f  ,cw4 value:%f   \n",cw1,cw2,cw3,cw4); 
-    }
-
-            value = (cuCreal(cuCmul(cw1,cw3))+cuCreal(cuCmul(cw2,cw4)))/2; // Kahan Summation
-
-    for(int i=0;i<const_nAmps;i++){
-        double2 cw=cuCmul(fCP[i],cuConj(fCP[i]));
+        double2 cw=cuCmul(fCP,cuConj(fCP));
         double pa=cuCreal(cw);
 
         cw=make_cuDoubleComplex(0.0,0.0);
         for(int k=0;k<2;k++){
             //cw+=fCF[i][k]*cuConj(fCF[i][k])/(double)2.0;
-            cw=cuCadd(cw,cuCdivcd( cuCmul( fCF[i*4+k],cuConj(fCF[i*4+k]) ),2.0) );
+            cw=cuCadd(cw,cuCdivcd( cuCmul( fCF[k],cuConj(fCF[k]) ),2.0) );
         }
         double fu=cuCreal(cw);
-        atomicAdd(d_mlk+i+offset*const_nAmps,pa * fu);
-        //if(idp==413 && i==3 ) printf("pa: %.10f  fu: %.10f mlk %.10f\n",pa ,fu,d_mlk[idp*const_nAmps+i]);
+        atomicAdd(d_mlk+index+offset*const_nAmps,pa * fu);
     }
+    //#pragmaint  omp parallel for reduction(+:value)
+
+            value = (cuCreal(cuCmul(cw1,cw3))+cuCreal(cuCmul(cw2,cw4)))/2; // Kahan Summation
+
     /*
     free(fCP);
     for(int i=0;i<const_nAmps;i++)
@@ -401,7 +394,7 @@ struct timeval tp;
     return (value <= 0) ? 1e-20 : value;
 }
 
-__global__ void kernel_store_fx(const double * float_pp,const int *parameter,double2 * d_complex_para ,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,int end,int begin)
+__global__ void kernel_store_fx(const double * float_pp,const int *parameter,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,int end,int begin)
 {
     int i = blockDim.x * blockIdx.x + threadIdx.x;
     int offset=0;
@@ -431,11 +424,11 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,dou
             sh_float_pp[threadIdx.x*72+j]=pp[j];
         }
         cu_PWA_PARAS *sh_pp=(cu_PWA_PARAS*)&sh_float_pp[threadIdx.x*72];
-        double2 *complex_para=&d_complex_para[i*6*parameter[15]];
+        //double2 *complex_para=&d_complex_para[i*6*parameter[15]];
         //将各个参数传到gpu中的内存后，调用子函数calEva 
         //d_fx[i]=calEva(sh_pp,parameter,complex_para,d_paraList,d_mlk,i);
         if(i+begin>=sh_parameter[16])   offset=1;
-        d_fx[i]=calEva(sh_pp,sh_parameter,complex_para,sh_paraList,sh_mlk,i,offset);
+        d_fx[i]=calEva(sh_pp,sh_parameter,sh_paraList,sh_mlk,i,offset);
         //printf("%dgpu :: %.7f\n",i,pp->wu[0]);
         //printf("\nfx[%d]:%f\n",i,d_fx[i]);
         //fx[i]=calEva(pp,parameter,d_paraList,i);
@@ -475,7 +468,7 @@ int cuda_kernel::malloc_mem(int end, int begin, int para_size, int *h_parameter)
         CUDA_CALL(cudaMalloc((void **)&(d_fx[i]),N_thread * sizeof(double)));
         CUDA_CALL(cudaMalloc((void **)&(d_parameter[i]),18 * sizeof(int)));
         CUDA_CALL(cudaMalloc((void **)&(d_paraList[i]),para_size * sizeof(double)));
-        CUDA_CALL(cudaMalloc( (void**)&d_complex_para[i],6*h_parameter[15]*N_thread *sizeof(double2) ));
+        //CUDA_CALL(cudaMalloc( (void**)&d_complex_para[i],6*h_parameter[15]*N_thread *sizeof(double2) ));
         CUDA_CALL(cudaMalloc( (void **)&(d_mlk[i]),(2*h_parameter[15]*sizeof(double) )));
         h_mlk_pt[i]=(double *)malloc(2*h_parameter[15]*sizeof(double));
     }
@@ -538,7 +531,7 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         int blocksPerGrid =(N_thread + threadsPerBlock - 1) / threadsPerBlock;
         printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
         reset_mlk<<<(h_parameter[15]+63)/64,64>>>(d_mlk[i],2*h_parameter[15]);
-        kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_complex_para[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],Ns[i+1],Ns[i]);
+        kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],Ns[i+1],Ns[i]);
     }
     for(int i=0;i<DEVICE_NUM;i++)
     {

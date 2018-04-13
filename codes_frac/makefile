@@ -35,7 +35,7 @@ cu_DPFPropogator.o:cu_DPFPropogator.cu cu_DPFPropogator.h
 	nvcc -arch=sm_70 -dc $< -I/usr/local/cuda/include/
 
 kernel_calEva.o:kernel_calEva.cu cu_DPFPropogator.h kernel_calEva.h
-	nvcc -Xptxas -v -arch=sm_70 -dc $< -I/usr/local/cuda/include/
+	nvcc  -Xptxas -v -arch=sm_70 -dc $< -I/usr/local/cuda/include/
 endif
 
 DPFPWAPdf.o:$(CODEDIR)/DPFPWAPdf.cc $(CODEDIR)/DPFPWAPdf.h $(CODEDIR)/cu_PWA_PARAS.h $(CODEDIR)/kernel_calEva.h
