@@ -616,14 +616,14 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     //空间分配交给前面去做
     //cu_init_data(h_parameter,h_paraList,h_fx,h_mlk,iEnd);
     cu_read_paralist();
-    mykernel->host_store_fx(d_float_pp,h_parameter,h_paraList,paraList.size(),h_fx,h_mlk,iEnd,iBegin);
+    mykernel->host_store_fx(d_float_pp,h_parameter,h_paraList,paraList.size(),h_fx,h_mlk,iEnd,iBegin,&anaIntegral);
     //int error_num=0;
     //double abs_error;
     //double total_error=0.0;
     //cout << "mlk error more than 0.000001 : " << error_num*100.0/(nAmps*(Nmc+Nmc_data)) << "\%  ave_error : "<< total_error/(nAmps*(Nmc+Nmc_data)) << endl;
     //error_num=0;
     //total_error=0.0;
-    for(int i=iBegin;i<iEnd;i++)
+/*    for(int i=iBegin;i<iEnd;i++)
     {
         //h_fx[i] = (h_fx[i] <= 0) ? 1e-20 : h_fx[i];
         //abs_error=abs(fx[i]-h_fx[i]);
@@ -635,7 +635,8 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
         //total_error+=abs_error;
         //if(abs(fx[i]-h_fx[i])>0.0001) assert(0);
         fx[i]=(h_fx[i] <= 0)? 1e-20 : h_fx[i];
-    }/*
+    }*/
+        /*
 
     if(error_num>iEnd/2)
     {
@@ -699,7 +700,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     Double_t carry = 0;
 
 //#pragma omp parallel for private(carry) reduction(+:sum)
-    for(int i = 0; i < Nmc; i++)
+/*    for(int i = 0; i < Nmc; i++)
     {
         //  //cout<<"haha: "<< __LINE__ << endl;
         Double_t y = fx[i] - carry;
@@ -709,7 +710,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     }
     gettimeofday(&point,NULL);
     double fx = point.tv_sec+point.tv_usec/1000000.0;
-    anaIntegral = sum;
+    anaIntegral = sum;*/
     //printf("gpu_anaIntegral : %.10f  cpu_anaIntegral : %.10f\n",d_anaIntegral,anaIntegral);
     sum = 0;
     for(int i = 0; i < nAmps; i++)
@@ -726,7 +727,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     penalty_data = sum;
     gettimeofday(&point,NULL);
     double end = point.tv_sec+point.tv_usec/1000000.0;
-    cout << "gpu part  time :" <<gpu-start << "S  fx to anaIntegral time: "<<fx-gpu<<" S   "<< endl;
+    cout << "gpu part  time :" <<gpu-start <<endl; //"S  fx to anaIntegral time: "<<fx-gpu<<" S   "<< endl;
     cout << "store_fx part  time :" <<end-start << "S" << endl;
     total_time += end-start;
     cout << "Total time : " << total_time << "S" << endl;
@@ -764,7 +765,7 @@ Double_t DPFPWAPdf::evaluate(int _idp) const
 //    //cout << "XXXXXX fx - calEva" << "idp = " << _idp << "--->>" << (fx[Nmc + _idp] - sum) << endl;
 
         double lambda = 1e0;
-    return fx[Nmc + _idp] * exp(- lambda * penalty / Nmc_data);
+    return h_fx[Nmc + _idp] * exp(- lambda * penalty / Nmc_data);
 }
 
 

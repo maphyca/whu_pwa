@@ -274,7 +274,7 @@ class DPFPWAPdf : public RooAbsPdf {
         DPFAngular _amp;
         DPFPropogator _prop;
 
-        mutable Double_t anaIntegral;
+        mutable double anaIntegral;
         mutable double total_time;
 
     int *h_parameter;

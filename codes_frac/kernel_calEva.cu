@@ -393,7 +393,12 @@ struct timeval tp;
     //if(idp==1) printf("%f %d %f \n", pp->wu[0] ,_N_spinList,d_paraList[0]);
     return (value <= 0) ? 1e-20 : value;
 }
-
+__global__ void fx_sum(double *d_fx,double *d_fx_store,int num)
+{
+    int i = blockDim.x * blockIdx.x + threadIdx.x;
+    if(i<=num)  atomicAdd(d_fx_store,d_fx[i]);
+}
+    
 __global__ void kernel_store_fx(const double * float_pp,const int *parameter,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,int end,int begin)
 {
     int i = blockDim.x * blockIdx.x + threadIdx.x;
@@ -445,10 +450,11 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,con
         //printf("pp[0]:%f pp[end]:%f parameter[0]:%d parameter[16]:%d paraList[0]:%f \n",float_pp[0],float_pp[end*sizeof(cu_PWA_PARAS)/sizeof(double)-1],parameter[0],parameter[16],d_paraList[0]);
     //}
 }
-__global__ void reset_mlk(double *d_mlk,int num)
+__global__ void reset_mlk(double *d_mlk,double *d_fx_store,int num)
 {
     int i = blockDim.x*blockIdx.x+threadIdx.x;
     if(i<num)    d_mlk[i]=0;
+    if(i==0)    d_fx_store[0]=0;
 }
 
 
@@ -470,13 +476,14 @@ int cuda_kernel::malloc_mem(int end, int begin, int para_size, int *h_parameter)
         CUDA_CALL(cudaMalloc((void **)&(d_paraList[i]),para_size * sizeof(double)));
         //CUDA_CALL(cudaMalloc( (void**)&d_complex_para[i],6*h_parameter[15]*N_thread *sizeof(double2) ));
         CUDA_CALL(cudaMalloc( (void **)&(d_mlk[i]),(2*h_parameter[15]*sizeof(double) )));
+        CUDA_CALL(cudaMalloc( (void **)&(d_fx_store[i]),sizeof(double)));
         h_mlk_pt[i]=(double *)malloc(2*h_parameter[15]*sizeof(double));
     }
 
     return 0;
 }
 
-int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,double *h_paraList,int para_size, double *h_fx,double * h_mlk,int end,int begin)
+int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,double *h_paraList,int para_size, double *h_fx,double * h_mlk,int end,int begini,double *anaint)
 {
     //init Ns
     //Ns为分段数组，第i个gpu所处理的线程序号范围为:[ Ns[i] , Ns[i+1] ) 
@@ -530,14 +537,16 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         int N_thread=Ns[i+1]-Ns[i];
         int blocksPerGrid =(N_thread + threadsPerBlock - 1) / threadsPerBlock;
         printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
-        reset_mlk<<<(h_parameter[15]+63)/64,64>>>(d_mlk[i],2*h_parameter[15]);
+        reset_mlk<<<(h_parameter[15]+63)/64,64>>>(d_mlk[i],d_fx_store[i],2*h_parameter[15]);
         kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],Ns[i+1],Ns[i]);
+        fx_sum<<<blocksPerGrid, threadsPerBlock>>>(d_fx[i],d_fx_store[i],h_parameter[16]-Ns[i]);
     }
     for(int i=0;i<DEVICE_NUM;i++)
     {
         CUDA_CALL(cudaSetDevice(i) );
         int N_thread=Ns[i+1]-Ns[i];
         CUDA_CALL(cudaMemcpyAsync(&h_fx[Ns[i]] , d_fx[i], N_thread * sizeof(double), cudaMemcpyDeviceToHost));
+        CUDA_CALL(cudaMemcpyAsync(&h_fx_store[i] , d_fx_store[i], sizeof(double), cudaMemcpyDeviceToHost));
         //CUDA_CALL(cudaMemcpyAsync(&h_mlk[ Ns[i]*h_parameter[15] ] , d_mlk[i], N_thread * h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
     }
     for(int i=0;i<DEVICE_NUM;i++)
@@ -551,8 +560,10 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         {
             h_mlk[j]=0;
         }
+        *anaint=0;
     for(int i=0;i<DEVICE_NUM;i++)
-    {
+    {   
+        *anaint+=h_fx_store[i];
         for(int j=0;j<2*h_parameter[15];j++)
         {
             h_mlk[j]+=h_mlk_pt[i][j];
