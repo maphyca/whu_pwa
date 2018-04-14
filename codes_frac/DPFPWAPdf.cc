@@ -607,6 +607,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     //}
     gettimeofday(&point,NULL);
     double start = point.tv_sec+point.tv_usec/1000000.0;
+    double anaint=0;
 
 //    int *h_parameter;
 //    double *h_paraList;
@@ -616,7 +617,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     //空间分配交给前面去做
     //cu_init_data(h_parameter,h_paraList,h_fx,h_mlk,iEnd);
     cu_read_paralist();
-    mykernel->host_store_fx(d_float_pp,h_parameter,h_paraList,paraList.size(),h_fx,h_mlk,iEnd,iBegin,&anaIntegral);
+    mykernel->host_store_fx(d_float_pp,h_parameter,h_paraList,paraList.size(),h_fx,h_mlk,iEnd,iBegin,&anaint);
     //int error_num=0;
     //double abs_error;
     //double total_error=0.0;
@@ -700,17 +701,17 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     Double_t carry = 0;
 
 //#pragma omp parallel for private(carry) reduction(+:sum)
-/*    for(int i = 0; i < Nmc; i++)
+    for(int i = 0; i < Nmc; i++)
     {
         //  //cout<<"haha: "<< __LINE__ << endl;
-        Double_t y = fx[i] - carry;
+        Double_t y = h_fx[i] - carry;
         Double_t t = sum + y;
         carry = (t - sum) - y;
         sum = t; // Kahan Summation
     }
     gettimeofday(&point,NULL);
     double fx = point.tv_sec+point.tv_usec/1000000.0;
-    anaIntegral = sum;*/
+    anaIntegral = sum;
     //printf("gpu_anaIntegral : %.10f  cpu_anaIntegral : %.10f\n",d_anaIntegral,anaIntegral);
     sum = 0;
     for(int i = 0; i < nAmps; i++)
@@ -727,10 +728,11 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     penalty_data = sum;
     gettimeofday(&point,NULL);
     double end = point.tv_sec+point.tv_usec/1000000.0;
-    cout << "gpu part  time :" <<gpu-start <<endl; //"S  fx to anaIntegral time: "<<fx-gpu<<" S   "<< endl;
+    cout << "gpu part  time :" <<gpu-start <<"S  fx to anaIntegral time: "<<fx-gpu<<" S   "<< endl;
     cout << "store_fx part  time :" <<end-start << "S" << endl;
     total_time += end-start;
     cout << "Total time : " << total_time << "S" << endl;
+    cout<<setprecision(25)<<"GPU anaIntegral: "<<anaint<<endl<<"CPU anaIntegral: "<<anaIntegral<<setprecision(6)<<endl;
     steps++;
     cout<<"steps:"<<steps<<endl;
    //printf("gpu_penalty_data : %.10f  cpu_penalty_data : %.10f\n--------------------------------------------------\n",d_penalty_data,penalty_data);

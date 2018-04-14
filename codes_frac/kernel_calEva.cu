@@ -396,7 +396,7 @@ struct timeval tp;
 __global__ void fx_sum(double *d_fx,double *d_fx_store,int num)
 {
     int i = blockDim.x * blockIdx.x + threadIdx.x;
-    if(i<=num)  atomicAdd(d_fx_store,d_fx[i]);
+    if(i<num)  atomicAdd(d_fx_store,d_fx[i]);
 }
     
 __global__ void kernel_store_fx(const double * float_pp,const int *parameter,const double *d_paraList,int para_size,double * d_fx,double *d_mlk,int end,int begin)
@@ -421,19 +421,21 @@ __global__ void kernel_store_fx(const double * float_pp,const int *parameter,con
     if(i<end-begin && i>= 0)
     {
         int pwa_paras_size = sizeof(cu_PWA_PARAS) / sizeof(double);
-        //cu_PWA_PARAS * pp= (cu_PWA_PARAS *)&float_pp[i*pwa_paras_size];
-        __shared__ double sh_float_pp[BLOCK_SIZE*72];
+        cu_PWA_PARAS  sh_pp;
+        for(int j=0;j<pwa_paras_size;j++) 
+            *((double*)(&sh_pp)+j)= float_pp[(i+begin)*pwa_paras_size+j];
+       /* __shared__ double sh_float_pp[BLOCK_SIZE*72];
         const double *pp = &float_pp[(i+begin)*pwa_paras_size];
         for(int j=0;j<72;j++)
         {
             sh_float_pp[threadIdx.x*72+j]=pp[j];
         }
-        cu_PWA_PARAS *sh_pp=(cu_PWA_PARAS*)&sh_float_pp[threadIdx.x*72];
+        cu_PWA_PARAS *sh_pp=(cu_PWA_PARAS*)&sh_float_pp[threadIdx.x*72];*/
         //double2 *complex_para=&d_complex_para[i*6*parameter[15]];
         //将各个参数传到gpu中的内存后，调用子函数calEva 
         //d_fx[i]=calEva(sh_pp,parameter,complex_para,d_paraList,d_mlk,i);
         if(i+begin>=sh_parameter[16])   offset=1;
-        d_fx[i]=calEva(sh_pp,sh_parameter,sh_paraList,sh_mlk,i,offset);
+        d_fx[i]=calEva(&sh_pp,sh_parameter,sh_paraList,sh_mlk,i,offset);
         //printf("%dgpu :: %.7f\n",i,pp->wu[0]);
         //printf("\nfx[%d]:%f\n",i,d_fx[i]);
         //fx[i]=calEva(pp,parameter,d_paraList,i);
@@ -531,6 +533,9 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         CUDA_CALL(cudaMemcpyAsync(d_paraList[i] , h_paraList, para_size * sizeof(double), cudaMemcpyHostToDevice));
     }
     int threadsPerBlock = BLOCK_SIZE;
+    cudaDeviceSynchronize();
+    gettimeofday(&tp,NULL);
+    double kernel_start=tp.tv_sec+tp.tv_usec/1000000.0;
     for(int i=0;i<DEVICE_NUM;i++)
     {
         CUDA_CALL(cudaSetDevice(i) );
@@ -541,6 +546,9 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],Ns[i+1],Ns[i]);
         fx_sum<<<blocksPerGrid, threadsPerBlock>>>(d_fx[i],d_fx_store[i],h_parameter[16]-Ns[i]);
     }
+    cudaDeviceSynchronize();
+    gettimeofday(&tp,NULL);
+    double kernel_stop=tp.tv_sec+tp.tv_usec/1000000.0;
     for(int i=0;i<DEVICE_NUM;i++)
     {
         CUDA_CALL(cudaSetDevice(i) );
@@ -549,6 +557,9 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         CUDA_CALL(cudaMemcpyAsync(&h_fx_store[i] , d_fx_store[i], sizeof(double), cudaMemcpyDeviceToHost));
         //CUDA_CALL(cudaMemcpyAsync(&h_mlk[ Ns[i]*h_parameter[15] ] , d_mlk[i], N_thread * h_parameter[15]*sizeof(double), cudaMemcpyDeviceToHost));
     }
+    cudaDeviceSynchronize();
+    gettimeofday(&tp,NULL);
+    double fx_stop=tp.tv_sec+tp.tv_usec/1000000.0;
     for(int i=0;i<DEVICE_NUM;i++)
     {
         CUDA_CALL(cudaSetDevice(i) );
@@ -569,6 +580,7 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
             h_mlk[j]+=h_mlk_pt[i][j];
         }
     }
+    cout<<"kernel time: "<<kernel_stop-kernel_start<<" S   fx transfer time: "<<fx_stop-kernel_stop<<endl;
     /*cout<<"fx 结果:"<<endl;
     for(int i=0;i<end;i++)
         cout<<h_fx[i]<<"   ";*/
