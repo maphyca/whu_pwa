@@ -607,6 +607,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     //}
     gettimeofday(&point,NULL);
     double start = point.tv_sec+point.tv_usec/1000000.0;
+    ///存储GPU端的anaIntegral结果
     double anaint=0;
 
 //    int *h_parameter;
@@ -732,6 +733,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     cout << "store_fx part  time :" <<end-start << "S" << endl;
     total_time += end-start;
     cout << "Total time : " << total_time << "S" << endl;
+    ///比较GPU与CPU端的anaIntegral计算结果
     cout<<setprecision(25)<<"GPU anaIntegral: "<<anaint<<endl<<"CPU anaIntegral: "<<anaIntegral<<setprecision(6)<<endl;
     steps++;
     cout<<"steps:"<<steps<<endl;
