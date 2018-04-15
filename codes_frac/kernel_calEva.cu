@@ -544,6 +544,15 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid, threadsPerBlock);
         reset_mlk<<<(h_parameter[15]+63)/64,64>>>(d_mlk[i],d_fx_store[i],2*h_parameter[15]);
         kernel_store_fx<<<blocksPerGrid, threadsPerBlock,size_paraList>>>(d_float_pp[i], d_parameter[i],d_paraList[i],para_size,d_fx[i],d_mlk[i],Ns[i+1],Ns[i]);
+    }
+    cudaDeviceSynchronize();
+    gettimeofday(&tp,NULL);
+    double fx_kstop=tp.tv_sec+tp.tv_usec/1000000.0;
+    for(int i=0;i<DEVICE_NUM;i++)
+    {
+        CUDA_CALL(cudaSetDevice(i) );
+        int N_thread=Ns[i+1]-Ns[i];
+        int blocksPerGrid =(N_thread + threadsPerBlock - 1) / threadsPerBlock;
         fx_sum<<<blocksPerGrid, threadsPerBlock>>>(d_fx[i],d_fx_store[i],h_parameter[16]-Ns[i]);
     }
     cudaDeviceSynchronize();
@@ -581,6 +590,7 @@ int cuda_kernel::host_store_fx(vector<double *> d_float_pp,int *h_parameter,doub
         }
     }
     cout<<"kernel time: "<<kernel_stop-kernel_start<<" S   fx transfer time: "<<fx_stop-kernel_stop<<endl;
+    cout<<"fx sum time:"<<kernel_stop-fx_kstop<<" S"<<endl;
     /*cout<<"fx 结果:"<<endl;
     for(int i=0;i<end;i++)
         cout<<h_fx[i]<<"   ";*/

@@ -49,6 +49,13 @@
 
 class DPFPWAPdf : public RooAbsPdf {
     public:
+        double lambda;
+        Int_t Nmc;
+        Int_t Nmc_data;
+        void store_fx(int, int) const;
+        Double_t evaluate() const;
+        Double_t evaluate(int) const;
+        void initialize();
     cuda_kernel *mykernel;
         TString work_path;
         //RooAbsReal b;
@@ -168,8 +175,6 @@ class DPFPWAPdf : public RooAbsPdf {
         RooRealProxy p52 ;
         RooRealProxy p53 ;
         RooRealProxy p54 ;
-        Double_t evaluate() const;
-        Double_t evaluate(int) const;
         //Double_t evaluate (
         //        Double_t _p11, Double_t _p12, Double_t _p13, Double_t _p14,
         //        Double_t _p21, Double_t _p22, Double_t _p23, Double_t _p24,
@@ -187,9 +192,7 @@ class DPFPWAPdf : public RooAbsPdf {
         void cu_init_data(int * &h_parameter,double * &h_paraList,double *&h_fx,double* &h_mlk,int iEnd) const;
         void cu_read_paralist() const;
         void store_pwa_paras(); //用来进行内存换时间的操作，将所有需要的PWA_PARAS参数放到队列pwa_paras和pwa_paras_data中去
-        void store_fx(int, int) const;
     private:
-        void initialize();
         RooListProxy _spinList;
         RooListProxy _massList;
         RooListProxy _mass2List;
@@ -244,8 +247,6 @@ class DPFPWAPdf : public RooAbsPdf {
         TString *nameList;
         TString *titleList;
         TString *titleListT;
-        Int_t Nmc;
-        Int_t Nmc_data;
         Int_t nAmps;
         Int_t nStates;
         Int_t nStatesb;

@@ -18,6 +18,7 @@ typedef struct {
     std::string outf_phipp, outf_phikk, proj_phipp, proj_phikk;
     std::string phsp_phipp, phsp_phikk, data_phipp, data_phikk;
     std::string idx_pp, idx_kk;
+    std::string lambda_ss;
 } PWA_CTRL;
 
 void string_to_vector(std::string, std::vector<std::string> &);

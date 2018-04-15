@@ -121,6 +121,7 @@ DPFPWAPdf::DPFPWAPdf(const DPFPWAPdf& other, const char* name) :
     _phiList("phiList", this,other._phiList),
     _propList("propList", this,other._propList)
 {
+    lambda = other.lambda;
     //cout<<"haha: "<< __LINE__ << endl;
     ////cout << "idp=" << idp.getVal() << endl;
     idp.print(cout);
@@ -750,7 +751,7 @@ Double_t DPFPWAPdf::evaluate(int _idp) const
         ////cout << "anaIntegral / Nmc = " << anaIntegral / Nmc << endl;
         ////cout << "fx[0] = " << fx[0];
         //return fx[Nmc];
-        double lambda = 1e0;
+        //double lambda = 1e0;
         ////cout << "penalty = " << penalty << endl;
         ////cout << "penalty_data = " << penalty_data << endl;
         ////cout << "penalty / Nmc = " << penalty / Nmc << endl;
@@ -768,7 +769,7 @@ Double_t DPFPWAPdf::evaluate(int _idp) const
 //     return (sum <= 0) ? 1e-20 : sum;
 //    //cout << "XXXXXX fx - calEva" << "idp = " << _idp << "--->>" << (fx[Nmc + _idp] - sum) << endl;
 
-        double lambda = 1e0;
+        //double lambda = 1e10;
     return h_fx[Nmc + _idp] * exp(- lambda * penalty / Nmc_data);
 }
 
@@ -1397,82 +1398,85 @@ void DPFPWAPdf::projectkk(const PWA_CTRL & pwa_ctrl) {
     setup_iter_vec();
     TString phsp_weight_file_name = "";
     if (pwa_ctrl.actResList.size() > 1) {
-        phsp_weight_file_name = work_path + "phsp_pwa_kk_weight_" + "all.root";
+        phsp_weight_file_name = work_path + "test_log/phsp_pwa_kk_weight_" + "all.root";
     } else {
-        phsp_weight_file_name = work_path + "phsp_pwa_kk_weight_" + pwa_ctrl.actResList[0] + ".root";
+        phsp_weight_file_name = work_path + "test_log/phsp_pwa_kk_weight_" + pwa_ctrl.actResList[0] + ".root";
     }
     DATA_PWA_KK ss;
     DATA_ANA_KK aa;
     TFile *fout = new TFile(phsp_weight_file_name, "RECREATE");
-    TTree *pwa_tr = new TTree("pwa_tr", "pwa information");
+    //TTree *pwa_tr = new TTree("pwa_tr", "pwa information");
     TTree *ana_tr = new TTree("ana_tr", "ana information");
-    pwa_tr->Branch("kk", &ss, MEM_PWA_KK);
+    //pwa_tr->Branch("kk", &ss, MEM_PWA_KK);
     ana_tr->Branch("kk", &aa, MEM_ANA_KK);
     for(Int_t i = 0; i < Nmc; i++) {
         ss.Kp2X = mcp2[i][0]; ss.Kp2Y = mcp2[i][1]; ss.Kp2Z = mcp2[i][2]; ss.Kp2E = mcp2[i][3];
         ss.Km2X = mcp3[i][0]; ss.Km2Y = mcp3[i][1]; ss.Km2Z = mcp3[i][2]; ss.Km2E = mcp3[i][3];
         ss.Kp1X = mcp4[i][0]; ss.Kp1Y = mcp4[i][1]; ss.Kp1Z = mcp4[i][2]; ss.Kp1E = mcp4[i][3];
         ss.Km1X = mcp5[i][0]; ss.Km1Y = mcp5[i][1]; ss.Km1Z = mcp5[i][2]; ss.Km1E = mcp5[i][3];
-        PWA_PARAS pp;
-        _amp.calculate0p(
-                mcp1[i][0],mcp1[i][1],mcp1[i][2],mcp1[i][3],
-                mcp2[i][0],mcp2[i][1],mcp2[i][2],mcp2[i][3],
-                mcp3[i][0],mcp3[i][1],mcp3[i][2],mcp3[i][3],
-                mcp4[i][0],mcp4[i][1],mcp4[i][2],mcp4[i][3],
-                mcp5[i][0],mcp5[i][1],mcp5[i][2],mcp5[i][3],
-                pp);
+    //    PWA_PARAS pp;
+    //    _amp.calculate0p(
+    //            mcp1[i][0],mcp1[i][1],mcp1[i][2],mcp1[i][3],
+    //            mcp2[i][0],mcp2[i][1],mcp2[i][2],mcp2[i][3],
+    //            mcp3[i][0],mcp3[i][1],mcp3[i][2],mcp3[i][3],
+    //            mcp4[i][0],mcp4[i][1],mcp4[i][2],mcp4[i][3],
+    //            mcp5[i][0],mcp5[i][1],mcp5[i][2],mcp5[i][3],
+    //            pp);
 
-        ss.weight = calEva(pp, i);
-        cout << "haha: " << __FILE__ << " " << __FUNCTION__ << " " << __LINE__ << endl;
-        pwa_tr->Fill();
+    //    ss.weight = calEva(pp, i);
+        ss.weight = h_fx[i];
+        //pwa_tr->Fill();
         DATA_ORIG_KK tt;
         pwa_to_orig(ss, tt);
         orig_to_ana(tt, aa);
         ana_tr->Fill();
     }
-    pwa_tr->Write();
+        cout << "haha: " << __FILE__ << " " << __FUNCTION__ << " " << __LINE__ << endl;
+    //pwa_tr->Write();
     ana_tr->Write();
     //fout->Write();
     fout->Close();
     cout << phsp_weight_file_name << " is created!!!!" << endl;
 }
 void DPFPWAPdf::projectpipi(const PWA_CTRL & pwa_ctrl) {
-    setup_iter_vec();
+    //setup_iter_vec();
     TString phsp_weight_file_name = "";
     if (pwa_ctrl.actResList.size() > 1) {
-        phsp_weight_file_name = work_path + "phsp_pwa_pipi_weight_" + "all.root";
+        phsp_weight_file_name = work_path + "test_log/phsp_pwa_pipi_weight_" + "all.root";
     } else {
-        phsp_weight_file_name = work_path + "phsp_pwa_pipi_weight_" + pwa_ctrl.actResList[0] + ".root";
+        phsp_weight_file_name = work_path + "test_log/phsp_pwa_pipi_weight_" + pwa_ctrl.actResList[0] + ".root";
     }
     DATA_PWA_PIPI ss;
     DATA_ANA_PIPI aa;
     TFile *fout = new TFile(phsp_weight_file_name, "RECREATE");
-    TTree *pwa_tr = new TTree("pwa_tr", "pwa information");
+    //TTree *pwa_tr = new TTree("pwa_tr", "pwa information");
     TTree *ana_tr = new TTree("ana_tr", "ana information");
-    pwa_tr->Branch("pp", &ss, MEM_PWA_PIPI);
+    //pwa_tr->Branch("pp", &ss, MEM_PWA_PIPI);
     ana_tr->Branch("pp", &aa, MEM_ANA_PIPI);
     for(Int_t i = 0; i < Nmc; i++) {
         ss.pipX = mcp2[i][0]; ss.pipY = mcp2[i][1]; ss.pipZ = mcp2[i][2]; ss.pipE = mcp2[i][3];
         ss.pimX = mcp3[i][0]; ss.pimY = mcp3[i][1]; ss.pimZ = mcp3[i][2]; ss.pimE = mcp3[i][3];
         ss.KpX = mcp4[i][0]; ss.KpY = mcp4[i][1]; ss.KpZ = mcp4[i][2]; ss.KpE = mcp4[i][3];
         ss.KmX = mcp5[i][0]; ss.KmY = mcp5[i][1]; ss.KmZ = mcp5[i][2]; ss.KmE = mcp5[i][3];
-        PWA_PARAS pp;
-        _amp.calculate0p(
-                mcp1[i][0],mcp1[i][1],mcp1[i][2],mcp1[i][3],
-                mcp2[i][0],mcp2[i][1],mcp2[i][2],mcp2[i][3],
-                mcp3[i][0],mcp3[i][1],mcp3[i][2],mcp3[i][3],
-                mcp4[i][0],mcp4[i][1],mcp4[i][2],mcp4[i][3],
-                mcp5[i][0],mcp5[i][1],mcp5[i][2],mcp5[i][3],
-                pp);
+    //    PWA_PARAS pp;
+    //    _amp.calculate0p(
+    //            mcp1[i][0],mcp1[i][1],mcp1[i][2],mcp1[i][3],
+    //            mcp2[i][0],mcp2[i][1],mcp2[i][2],mcp2[i][3],
+    //            mcp3[i][0],mcp3[i][1],mcp3[i][2],mcp3[i][3],
+    //            mcp4[i][0],mcp4[i][1],mcp4[i][2],mcp4[i][3],
+    //            mcp5[i][0],mcp5[i][1],mcp5[i][2],mcp5[i][3],
+    //            pp);
 
-        ss.weight = calEva(pp, i);
-        pwa_tr->Fill();
+    //    ss.weight = calEva(pp, i);
+        ss.weight = h_fx[i];
+        //pwa_tr->Fill();
         DATA_ORIG_PIPI tt;
         pwa_to_orig(ss, tt);
         orig_to_ana(tt, aa);
         ana_tr->Fill();
     }
-    pwa_tr->Write();
+        cout << "haha: " << __FILE__ << " " << __FUNCTION__ << "   Line:" << __LINE__ << endl;
+    //pwa_tr->Write();
     ana_tr->Write();
     //fout->Write();
     fout->Close();

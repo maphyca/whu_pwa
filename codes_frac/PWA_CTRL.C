@@ -23,18 +23,27 @@ static bool readConfigFile(const string & cfgfilepath, const string & key, strin
         cout<<"can not open cfg file!"<<endl;
         return false;
     }
-    char tmp[1000];
+    char tmp[10000];
     cout << "Begin readConfigFile" << endl;
     while(!cfgFile.eof())//循环读取每一行
     {
-        cfgFile.getline(tmp,1000);//每行读取前1000个字符，前
+        cfgFile.getline(tmp,10000);//每行读取前1000个字符，前
         string line(tmp);
-        //cout << "LINE:" << __LINE__ << tmp << endl;
+        cout << "LINE:" << __LINE__ << tmp << endl;
+        cout << line << endl;
         size_t pos = line.find('=');
         if(pos==string::npos) continue;
         string tmpKey = line.substr(0, pos);
+        cout << "tmpKey=" << tmpKey << endl;
         if(key==tmpKey)
         {
+        //cout << "tmpKey2=" << tmpKey << endl;
+        //cout << "line = " << line << endl;
+        //cout << "pos = " << pos << endl;
+        //cout << line.substr(pos + 1) << endl;
+        //cout << "*****" << endl;
+        //    string vv = line.substr(pos + 1);
+        //    cout << "vv = " << vv << endl;
             value = line.substr(pos+1);//取=号之后
             cout << "value = " << value << endl;
             return true;
@@ -83,6 +92,10 @@ void refresh_pwa_ctrl(const string config_file, PWA_CTRL & pwa_ctrl)
 
     readConfigFile(config_file, "phipp_index_weight_file", pwa_ctrl.idx_pp);
     readConfigFile(config_file, "phikk_index_weight_file", pwa_ctrl.idx_kk);
+    cout << "LINE: " << __LINE__ << endl;
+
+    readConfigFile(config_file, "lambda", pwa_ctrl.lambda_ss);
+    cout << "lambda=" << pwa_ctrl.lambda_ss << endl;
 
     cout << "phsp_phipp = " << pwa_ctrl.phsp_phipp << endl;
     cout << "data_phipp = " << pwa_ctrl.data_phipp << endl;

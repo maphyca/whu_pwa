@@ -89,6 +89,7 @@ public:
     void reload_paras(TString fname);
 
     void FIT();
+    void Prepare_Figs(const PWA_CTRL &);
 
 };
 

@@ -320,7 +320,7 @@ void fitproxy::add_res1m_list(TString rn, double mss_min, double mss_max, double
         tmp.push_back(RooRealVar(rn + "a_typ_", rn + "a_typ_", 4));
         tmp.push_back(RooRealVar(rn + "a_mss_", rn + "a_mss_", (mss_min + mss_max) / 2, mss_min, mss_max));
         tmp.push_back(RooRealVar(rn + "a_wdt_", rn + "a_wdt_", (wdt_min + wdt_max) / 2, wdt_min, wdt_max));
-        tmp.push_back(RooRealVar(rn + "a_rho_", rn + "a_rho_", 0, -100, 100));
+        tmp.push_back(RooRealVar(rn + "p_rho_", rn + "p_rho_", 0, -100, 100));
         tmp.push_back(RooRealVar(rn + "k_rho_", rn + "k_rho_", 0, -100, 100));
         // z 1- 1
         tmp.push_back(RooRealVar(rn + "a_spn1", rn + "a_spn1", 111));
@@ -534,6 +534,10 @@ void fitproxy::init_pdf(const PWA_CTRL & pwa_ctrl) {
     pdfphipp->work_path = pwa_ctrl.workPath;
     pdfphikk->work_path = pwa_ctrl.workPath;
     cout<<"DPFPWAPdf is intialized!!"<<endl;
+    
+    stringstream ss(pwa_ctrl.lambda_ss); // 读取lambda的值
+    ss >> pdfphipp->lambda;
+    ss >> pdfphikk->lambda;
 }
 void fitproxy::setup_resonances() {
     add_res0_list("f01000", 1.2, 1.5, 0, 20000);
@@ -665,14 +669,14 @@ void fitproxy::FIT() {
 //    RooRealVar *bb = (RooRealVar*)allparas.find("f01000a_mss_");
 //    cout << bb->GetName() << "---------->" << bb->getVal() << endl;
     RooCategory kapi("kapi","kapi");
-    kapi.defineType("phipp");
     kapi.defineType("phikk");
+    kapi.defineType("phipp");
 
-    RooDataSet combdata("combdata","combined data",theSet, Index(kapi),Import("phipp",*datapp),Import("phikk",*datakk));
+    RooDataSet combdata("combdata","combined data",theSet, Index(kapi),Import("phikk",*datakk),Import("phipp",*datapp));
 
     RooSimultaneous simPdf("simPdf","simultaneous pdf",kapi);
-    simPdf.addPdf(*pdfphipp,"phipp");
     simPdf.addPdf(*pdfphikk,"phikk");
+    simPdf.addPdf(*pdfphipp,"phipp");
 
     cout << "Begin fitTo" << endl;
     RooFitResult* res = simPdf.fitTo(combdata,Save());
@@ -684,6 +688,48 @@ void fitproxy::FIT() {
 
     cout << "The minNll of res is " << res->minNll() << endl;
     cout << "The number of floating parameters is " << (res->floatParsFinal()).getSize() << endl;
+
+//    cout <<((RooRealVar*)fitparas.find("f00980a_mss_"))->getVal() << endl;
+////    ((RooRealVar*)fitparas.find("f00980a_mss_"))->setVal(2);
+//    pdfphikk->change_value("f00980a_mss_", 0.4);
+////    pdfphikk->change_value("f00980k_rho_", 10);
+////    gp("f00980a_mss_")->setVal(1.2);
+//    cout <<((RooRealVar*)fitparas.find("f00980a_mss_"))->getVal() << endl;
+//    cout << "The minNll of res is " << res->minNll() << endl;
+//    cout << "The number of floating parameters is " << (res->floatParsFinal()).getSize() << endl;
+}
+void fitproxy::Prepare_Figs(const PWA_CTRL & pwa_ctrl) {
+    double startTime_Total=omp_get_wtime();
+//    RooRealVar *bb = (RooRealVar*)allparas.find("f01000a_mss_");
+//    cout << bb->GetName() << "---------->" << bb->getVal() << endl;
+    RooCategory kapi("kapi","kapi");
+    kapi.defineType("phikk");
+    kapi.defineType("phipp");
+
+    RooDataSet combdata("combdata","combined data",theSet, Index(kapi),Import("phipp",*datapp),Import("phikk",*datakk));
+
+    RooSimultaneous simPdf("simPdf","simultaneous pdf",kapi);
+    simPdf.addPdf(*pdfphipp,"phipp");
+    simPdf.addPdf(*pdfphikk,"phikk");
+
+    cout << "Begin fitTo" << endl;
+	DPFPWAPdf *_pdfphipp = new DPFPWAPdf(*pdfphipp);
+	_pdfphipp->store_fx(0, _pdfphipp->Nmc + _pdfphipp->Nmc_data);
+	_pdfphipp->projectpipi(pwa_ctrl);
+	DPFPWAPdf *_pdfphikk = new DPFPWAPdf(*pdfphikk);
+	_pdfphikk->store_fx(0, _pdfphikk->Nmc + _pdfphikk->Nmc_data);
+	_pdfphikk->projectkk(pwa_ctrl);
+	//pdfphipp->initialize();
+	//pdfphikk->initialize();
+    //RooFitResult* res = simPdf.fitTo(combdata,Save());
+    //   RooFitResult* res = pdfphikk->fitTo(*datakk,Save());
+
+    //double endTime_Total = omp_get_wtime();
+    //cout<<"Fit time : "<< endTime_Total - startTime_Total <<"\n";
+    //res->Print("V");
+
+    //cout << "The minNll of res is " << res->minNll() << endl;
+    //cout << "The number of floating parameters is " << (res->floatParsFinal()).getSize() << endl;
 
 //    cout <<((RooRealVar*)fitparas.find("f00980a_mss_"))->getVal() << endl;
 ////    ((RooRealVar*)fitparas.find("f00980a_mss_"))->setVal(2);

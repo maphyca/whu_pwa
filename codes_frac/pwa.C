@@ -136,8 +136,9 @@ void pwa_project(fitproxy *A, PWA_CTRL &pwa_ctrl, string res) {
         A->pdfphipp->setup_iter_vec();
         A->pdfphikk->paras_getval();
         A->pdfphipp->paras_getval();
-        A->pdfphikk->projectkk(pwa_ctrl);
-        A->pdfphipp->projectpipi(pwa_ctrl);
+	A->Prepare_Figs(pwa_ctrl);
+     //   A->pdfphikk->projectkk(pwa_ctrl);
+     //   A->pdfphipp->projectpipi(pwa_ctrl);
 }
 
 void pwa_fraction(PWA_CTRL & pwa_ctrl) {
@@ -246,14 +247,17 @@ void pwa_fraction(PWA_CTRL & pwa_ctrl) {
 
 
     A->reload_paras(pwa_ctrl.reloadFitParaFile);
+	A->Prepare_Figs(pwa_ctrl);
 
 
-    A->pdfphikk->projectkk(pwa_ctrl);
-    cout << "finish projectkk23" << endl;
-    A->print_fit_paras();
-    exit(1);
-    A->pdfphipp->projectpipi(pwa_ctrl);
-    cout << "finish projectpipi23" << endl;
+//    A->pdfphikk->projectkk(pwa_ctrl);
+//    cout << "finish projectkk23" << endl;
+//    A->print_fit_paras();
+//
+//    A->pdfphipp->projectpipi(pwa_ctrl);
+//    cout << "finish projectpipi23" << endl;
+//    A->print_fit_paras();
+
     cout << "finish projectpipi and projectkk" << endl;
 
 
@@ -285,7 +289,6 @@ void pwa_fraction(PWA_CTRL & pwa_ctrl) {
             A->act_res0(*it);
         cout << "line: " << __LINE__ << endl;
     A->print_fit_paras();
-    exit(1);
         cout << "line: " << __LINE__ << endl;
             pwa_project(A, pwa_ctrl, *it);
         cout << "line: " << __LINE__ << endl;
@@ -368,8 +371,8 @@ void pwa_fraction(PWA_CTRL & pwa_ctrl) {
     //A->act_res980("f00980");
     //A->act_res0("f01000");
 
-    //A->act_res1m("1m1800");
-    //A->act_res1p("1p1800");
+    A->act_res1m("1m1800");
+    A->act_res1p("1p1800");
 
     //A->act_res0("f01500");
     //    A->act_res2("f21270");
