@@ -818,6 +818,13 @@ Double_t DPFPWAPdf::evaluate(int _idp) const
         //return exp(- 0.5 * lambda * penalty * anaIntegral / Nmc) * fx[Nmc];
         //return fx[Nmc] * anaIntegral / Nmc * exp(- lambda * penalty_data / Nmc_data);
 
+#ifdef GPU
+    return h_fx[Nmc + _idp] * exp(- lambda * penalty / 2.0);
+#endif
+#ifdef CPU
+    return fx[Nmc + _idp] * exp(- lambda * penalty / 2.0);
+#endif
+        
     }
 //            double sum = calEva(pwa_paras[Nmc + _idp]);
 //     return (sum <= 0) ? 1e-20 : sum;
@@ -825,10 +832,10 @@ Double_t DPFPWAPdf::evaluate(int _idp) const
 
         //double lambda = 1e10;
 #ifdef GPU
-    return h_fx[Nmc + _idp] * exp(- lambda * penalty / Nmc_data);
+    return h_fx[Nmc + _idp];
 #endif
 #ifdef CPU
-    return fx[Nmc + _idp] * exp(- lambda * penalty / Nmc_data);
+    return fx[Nmc + _idp];
 #endif
 }
 
