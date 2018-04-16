@@ -41,7 +41,8 @@
 Double_t rk=0.493677,rp=0.13957018 ;
 struct timeval point;
 int steps=0;
-
+double now_time=0;
+double step_total_time=0;
 //#ifndef MALLOC_CPU
 //#define MALLOC_CPU 
 //    int *h_parameter;
@@ -589,15 +590,62 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
 //#pragma omp parallel
     //for(int i = 0; i < Nmc + Nmc_data; i++) {
 #ifdef CPU
-    clock_t start,end;
-    start= clock();
+    struct timeval tp;
+    gettimeofday(&tp,NULL);
+    double start=tp.tv_sec+tp.tv_usec/1000000.0;
+#pragma omp parallel for
+    //for(int i = 0; i < Nmc + Nmc_data; i++) {
     for(int i = iBegin; i < iEnd; i++) {
         double sum = calEva(pwa_paras[i], i);
-        fx[i] = (sum <= 0) ? 1e-20 : sum;
+        //fx[i] = (sum <= 0) ? 1e-20 : sum;
         fx[i] = sum;
     }
-    end=clock();
-    cout << "cpu part  time :" <<(double)(end-start)/CLOCKS_PER_SEC << "S" << endl;
+    Double_t sum = 0;
+    Double_t carry = 0;
+#pragma omp parallel for private(carry) reduction(+:sum)
+    for(int i = 0; i < Nmc; i++)
+    {
+        //  //cout<<"haha: "<< __LINE__ << endl;
+        Double_t y = fx[i] - carry;
+        Double_t t = sum + y;
+        carry = (t - sum) - y;
+        sum = t; // Kahan Summation
+    }
+    anaIntegral = sum;
+    cout<<"CPU anaIntegral:"<<setprecision(25)<<anaIntegral<<endl;
+    cout <<setprecision(6);
+
+    sum = 0;
+    for(int i = 0; i < nAmps; i++)
+    {
+        double tt = 0;
+#pragma omp parallel for reduction(+:tt)
+        for(int j = 0; j < Nmc; j++)
+        {
+            tt += mlk[j][i];
+        }
+        sum += sqrt(tt / Nmc);
+    }
+    penalty = sum;
+
+    sum = 0;
+    for(int i = 0; i < nAmps; i++)
+    {
+        double tt = 0;
+#pragma omp parallel for reduction(+:tt)
+        for(int j = Nmc; j < Nmc + Nmc_data; j++)
+        {
+            tt += mlk[j][i];
+        }
+        sum += sqrt(tt);
+    }
+    penalty_data = sum;
+    gettimeofday(&tp,NULL);
+    double stop=tp.tv_sec+tp.tv_usec/1000000.0;
+    cout<<"cpu part time : "<<stop-start<<"S "<<endl;
+    total_time+=stop-start;
+    cout<<"total time : "<<total_time<<"S "<<endl;
+
 #endif
     //gpu part//
 #ifdef GPU
@@ -609,7 +657,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     gettimeofday(&point,NULL);
     double start = point.tv_sec+point.tv_usec/1000000.0;
     ///存储GPU端的anaIntegral结果
-    double anaint=0;
+   // double anaint=0;
 
 //    int *h_parameter;
 //    double *h_paraList;
@@ -619,7 +667,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     //空间分配交给前面去做
     //cu_init_data(h_parameter,h_paraList,h_fx,h_mlk,iEnd);
     cu_read_paralist();
-    mykernel->host_store_fx(d_float_pp,h_parameter,h_paraList,paraList.size(),h_fx,h_mlk,iEnd,iBegin,&anaint);
+    mykernel->host_store_fx(d_float_pp,h_parameter,h_paraList,paraList.size(),h_fx,h_mlk,iEnd,iBegin,&anaIntegral);
     //int error_num=0;
     //double abs_error;
     //double total_error=0.0;
@@ -697,13 +745,12 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
 //    free(h_fx);
 //    free(h_mlk);
 
-#endif
     //gpu part end!//
     Double_t sum = 0;
     Double_t carry = 0;
 
 //#pragma omp parallel for private(carry) reduction(+:sum)
-    for(int i = 0; i < Nmc; i++)
+/*    for(int i = 0; i < Nmc; i++)
     {
         //  //cout<<"haha: "<< __LINE__ << endl;
         Double_t y = h_fx[i] - carry;
@@ -713,7 +760,7 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     }
     gettimeofday(&point,NULL);
     double fx = point.tv_sec+point.tv_usec/1000000.0;
-    anaIntegral = sum;
+    anaIntegral = sum;*/
     //printf("gpu_anaIntegral : %.10f  cpu_anaIntegral : %.10f\n",d_anaIntegral,anaIntegral);
     sum = 0;
     for(int i = 0; i < nAmps; i++)
@@ -730,14 +777,20 @@ void DPFPWAPdf::store_fx(int iBegin, int iEnd) const {
     penalty_data = sum;
     gettimeofday(&point,NULL);
     double end = point.tv_sec+point.tv_usec/1000000.0;
-    cout << "gpu part  time :" <<gpu-start <<"S  fx to anaIntegral time: "<<fx-gpu<<" S   "<< endl;
+    cout << "gpu part  time :" <<gpu-start <<endl;//"S  fx to anaIntegral time: "<<fx-gpu<<" S   "<< endl;
     cout << "store_fx part  time :" <<end-start << "S" << endl;
     total_time += end-start;
     cout << "Total time : " << total_time << "S" << endl;
     ///比较GPU与CPU端的anaIntegral计算结果
-    cout<<setprecision(25)<<"GPU anaIntegral: "<<anaint<<endl<<"CPU anaIntegral: "<<anaIntegral<<setprecision(6)<<endl;
+   // cout<<setprecision(25)<<"GPU anaIntegral: "<<anaint<<endl<<"CPU anaIntegral: "<<anaIntegral<<setprecision(6)<<endl;
+#endif
     steps++;
     cout<<"steps:"<<steps<<endl;
+    gettimeofday(&point,NULL);
+    double step_time=point.tv_sec+point.tv_usec/1000000.0-now_time;
+    now_time = point.tv_sec+point.tv_usec/1000000.0;
+    if(steps!=1)    step_total_time+=step_time;
+    cout<<"step time: "<<step_time<<endl<<"step total time: "<<step_total_time<<endl;
    //printf("gpu_penalty_data : %.10f  cpu_penalty_data : %.10f\n--------------------------------------------------\n",d_penalty_data,penalty_data);
 }
 
@@ -770,7 +823,12 @@ Double_t DPFPWAPdf::evaluate(int _idp) const
 //    //cout << "XXXXXX fx - calEva" << "idp = " << _idp << "--->>" << (fx[Nmc + _idp] - sum) << endl;
 
         //double lambda = 1e10;
+#ifdef GPU
     return h_fx[Nmc + _idp] * exp(- lambda * penalty / Nmc_data);
+#endif
+#ifdef CPU
+    return fx[Nmc + _idp] * exp(- lambda * penalty / Nmc_data);
+#endif
 }
 
 

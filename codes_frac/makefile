@@ -11,36 +11,32 @@ GLIBS = $(ROOTGLIBS)
 CODEDIR = ./
 CURRDIR = $(shell pwd)
 INCLUDES = $(CXXFLAGS) -D USEROOT -D ROO_COMPLEX -I$(CODEDIR) -D FIXPHI
-OBJS = pwa.o DPFPWAPoint.o DPFPWAPdf.o DPFAngular.o DPFPropogator.o common_tools.o phikk_structure.o phipipi_structure.o fitproxy.o PWA_CTRL.o
+OBJS = pwa.o DPFPWAPoint.o DPFPWAPdf.o  DPFAngular.o DPFPropogator.o common_tools.o phikk_structure.o phipipi_structure.o fitproxy.o PWA_CTRL.o
 
-ifeq ($(MODE),GPU)
 	OBJS+=gpuCode.o cu_DPFPropogator.o kernel_calEva.o
-endif
 
 EXEC = pwa
 
 all:$(OBJS)
 	g++ -o pwa $^ `root-config --libs` -L`root-config --libdir` -lRooFit -D ROO_COMPLEX -fopenmp  -lgomp -lpthread -lRooFitCore -lcudart -L/usr/local/cuda/lib64
+	rm DPFPWAPdf.o
 
-ifeq ($(MODE),GPU)
 gpuCode.o:kernel_calEva.o cu_DPFPropogator.o
 	nvcc $^ -o gpuCode.o -arch=sm_70 -dlink
-endif
 
 pwa.o:pwa.C
 	g++ -c $< $(INCLUDES) -D PWAINI="$(CURRDIR)/pwa_ini.C"
 
-ifeq ($(MODE),GPU)
 cu_DPFPropogator.o:cu_DPFPropogator.cu cu_DPFPropogator.h 
 	nvcc -arch=sm_70 -dc $< -I/usr/local/cuda/include/
 
+DPFPWAPdf.o:$(CODEDIR)/DPFPWAPdf.cc $(CODEDIR)/DPFPWAPdf.h $(CODEDIR)/cu_PWA_PARAS.h $(CODEDIR)/kernel_calEva.h
+		g++ -c $< $(INCLUDES) -D $(MODE) -fopenmp `root-config --libs` -L`root-config --libdir` -lRooFit -lRooFitCore
+
 kernel_calEva.o:kernel_calEva.cu cu_DPFPropogator.h kernel_calEva.h
 	nvcc  -Xptxas -v -arch=sm_70 -dc $< -I/usr/local/cuda/include/
-endif
 
-DPFPWAPdf.o:$(CODEDIR)/DPFPWAPdf.cc $(CODEDIR)/DPFPWAPdf.h $(CODEDIR)/cu_PWA_PARAS.h $(CODEDIR)/kernel_calEva.h
-	g++ -c $< $(INCLUDES) -D $(MODE) -fopenmp `root-config --libs` -L`root-config --libdir` -lRooFit -lRooFitCore -I/usr/local/cuda/include/
-
+DPFPWAPdf.o:
 DPFPWAPoint.o:$(CODEDIR)/DPFPWAPoint.cc $(CODEDIR)/DPFPWAPoint.h
 	g++ -c $< $(INCLUDES)
 
