@@ -33,7 +33,7 @@ struct timeval tp;
 //shared memory per block ：41952 bytes
 //每个block所使用的共享空间大小 ：18×int + paraList + 72×BLOCK_SIZE  
 //控制BLOCK_SIZE 使所使用的shared memory 不可高于上限
-#define BLOCK_SIZE 64
+#define BLOCK_SIZE 32
 
 
 //calEva是在gpu中运行的一个子程序
