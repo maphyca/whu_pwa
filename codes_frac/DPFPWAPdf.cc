@@ -123,6 +123,7 @@ DPFPWAPdf::DPFPWAPdf(const DPFPWAPdf& other, const char* name) :
     _propList("propList", this,other._propList)
 {
     lambda = other.lambda;
+    work_path = other.work_path;
     //cout<<"haha: "<< __LINE__ << endl;
     ////cout << "idp=" << idp.getVal() << endl;
     idp.print(cout);
@@ -1456,9 +1457,9 @@ void DPFPWAPdf::projectkk(const PWA_CTRL & pwa_ctrl) {
     setup_iter_vec();
     TString phsp_weight_file_name = "";
     if (pwa_ctrl.actResList.size() > 1) {
-        phsp_weight_file_name = work_path + "test_log/phsp_pwa_kk_weight_" + "all.root";
+        phsp_weight_file_name = work_path + "kk_weight_" + "all.root";
     } else {
-        phsp_weight_file_name = work_path + "test_log/phsp_pwa_kk_weight_" + pwa_ctrl.actResList[0] + ".root";
+        phsp_weight_file_name = work_path + "kk_weight_" + pwa_ctrl.actResList[0] + ".root";
     }
     DATA_PWA_KK ss;
     DATA_ANA_KK aa;
@@ -1500,9 +1501,9 @@ void DPFPWAPdf::projectpipi(const PWA_CTRL & pwa_ctrl) {
     //setup_iter_vec();
     TString phsp_weight_file_name = "";
     if (pwa_ctrl.actResList.size() > 1) {
-        phsp_weight_file_name = work_path + "test_log/phsp_pwa_pipi_weight_" + "all.root";
+        phsp_weight_file_name = work_path + "pipi_weight_" + "all.root";
     } else {
-        phsp_weight_file_name = work_path + "test_log/phsp_pwa_pipi_weight_" + pwa_ctrl.actResList[0] + ".root";
+        phsp_weight_file_name = work_path + "pipi_weight_" + pwa_ctrl.actResList[0] + ".root";
     }
     DATA_PWA_PIPI ss;
     DATA_ANA_PIPI aa;
