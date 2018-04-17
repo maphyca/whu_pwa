@@ -576,7 +576,7 @@ void fitproxy::setup_resonances() {
 
 
     // PDG left 1--
-    add_res1m_list("1m1800", 1.5, 2.0, 0, 0.3);
+    add_res1m_list("1m1800", 1.5, 2.5, 0, 0.3);
 
     // PDG left 1+-
     add_res1p_list("1p1800", 1.5, 2.0, 0, 0.3);
