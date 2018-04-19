@@ -82,11 +82,11 @@ void draw_pipi(TString var, string cfgFile) {
     string path;
     readConfigFile(cfgFile, "work_path", path);
     cout << "path = " << path << endl;
-    get_para_pipi(path + "data_ana_pipi_signal.root", "signal_tr", "signal_ana_pipi", var, _weight, _dmin, _dmax);
+    get_para_pipi("../phipipi/data_ana_pipi_signal.root", "signal_tr", "signal_ana_pipi", var, _weight, _dmin, _dmax);
     weight.push_back(_weight);
     dmin.push_back(_dmin);
     dmax.push_back(_dmax);
-    get_para_pipi(path + "phsp_pwa_pipi_weight_all.root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
+    get_para_pipi(path + "pipi_weight_all.root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
     weight.push_back(_weight);
     dmin.push_back(_dmin);
     dmax.push_back(_dmax);
@@ -99,7 +99,7 @@ void draw_pipi(TString var, string cfgFile) {
     vector<string> resNameList;
     string_to_vector(value, resNameList);
     for(vector<string>::iterator it = resNameList.begin(); it != resNameList.end(); it++) {
-        get_para_pipi(path + "phsp_pwa_pipi_weight_" + *it + ".root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
+        get_para_pipi(path + "pipi_weight_" + *it + ".root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
         weight.push_back(_weight);
         dmin.push_back(_dmin);
         dmax.push_back(_dmax);
@@ -109,7 +109,7 @@ void draw_pipi(TString var, string cfgFile) {
 
     double scaleFactor = weight[0] / weight[1];
     int tcolor = 1;
-    TH1F *signal_h = hist_pipi(path + "data_ana_pipi_signal.root", "signal_tr", "signal_ana_pipi", "signal", var, _dmin, _dmax);
+    TH1F *signal_h = hist_pipi("../phipipi/data_ana_pipi_signal.root", "signal_tr", "signal_ana_pipi", "signal", var, _dmin, _dmax);
     signal_h->SetLineColor(tcolor++);
     signal_h->SetLineWidth(3);
     signal_h->GetXaxis()->SetTitle(TexName_PIPI(var));
@@ -117,7 +117,7 @@ void draw_pipi(TString var, string cfgFile) {
     double sp = valid_digits((_dmax - _dmin) / 100, 2);
     signal_h->GetYaxis()->SetTitle("Entries / " + Double2Str(sp));
 
-    TH1F *all_h = hist_pipi(path + "phsp_pwa_pipi_weight_all.root", "ana_tr", "pp", "all", var, _dmin, _dmax);
+    TH1F *all_h = hist_pipi(path + "pipi_weight_all.root", "ana_tr", "pp", "all", var, _dmin, _dmax);
     all_h->SetLineColor(tcolor++);
     all_h->SetLineWidth(2);
     all_h->GetXaxis()->SetTitle(TexName_PIPI(var));
@@ -130,7 +130,7 @@ void draw_pipi(TString var, string cfgFile) {
     leg->AddEntry(signal_h, "Data", "le");
     leg->AddEntry(all_h, "Total", "l");
     signal_h->Draw("e");
-    all_h->Draw("same");
+    all_h->Draw("HIST same");
 
     double weight_all = 0;
     for(unsigned int i = 2; i < weight.size(); i++) {
@@ -143,7 +143,7 @@ void draw_pipi(TString var, string cfgFile) {
     }
     int iw = 2;
     for(vector<string>::iterator it = resNameList.begin(); it != resNameList.end(); it++) {
-        TH1F *res_h = hist_pipi(path +"phsp_pwa_pipi_weight_" + *it + ".root", "ana_tr", "pp", *it, var,  _dmin, _dmax);
+        TH1F *res_h = hist_pipi(path +"pipi_weight_" + *it + ".root", "ana_tr", "pp", *it, var,  _dmin, _dmax);
         res_h->Scale(weight[0] / weight[1]);
         //res_h->Scale(weight[0] * weight[iw] / (weight[1] * weight[1]));
         //iw++;
@@ -152,7 +152,7 @@ void draw_pipi(TString var, string cfgFile) {
         if (tcolor == 10) tcolor++;
         res_h->SetLineColor(tcolor++);
         res_h->SetLineWidth(2);
-        res_h->Draw("same");
+        res_h->Draw("HIST same");
         TString ss = *it;
         leg->AddEntry(res_h, ss + " " + Double2Str(valid_digits(weight[iw] / weight[1], 3) * 100) + "%", "l");
         iw++;
@@ -160,6 +160,7 @@ void draw_pipi(TString var, string cfgFile) {
     leg->SetFillStyle(kFDotted1);
     leg->Draw();
     //hs->Draw();
+    tc->SaveAs(path + "figs_pipi/" + var + ".png");
 
 }
 
@@ -243,5 +244,22 @@ void UpdataFigure_sideband() {
     test("Qpim", "");
     test("QKpKm", "");
     test("Qpippim", "");
+}
+
+void draw(string conf)
+{
+  //string conf = "../test08/test08_conf";
+  UpdateFigure("Mphi", conf);
+  UpdateFigure("MKppim", conf);
+  UpdateFigure("MKmpip", conf);
+  UpdateFigure("M2phipip", conf);
+  UpdateFigure("M2phipim", conf);
+  UpdateFigure("Mpippim", conf);
+  UpdateFigure("MKpKm", conf);
+  UpdateFigure("Mphipip", conf);
+  UpdateFigure("Mphipim", conf);
+  UpdateFigure("QKp", conf);
+  UpdateFigure("QKm", conf);
+  UpdateFigure("Qpippim", conf);
 }
 

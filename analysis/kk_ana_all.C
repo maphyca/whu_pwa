@@ -82,11 +82,11 @@ void draw_kk(TString var, string cfgFile) {
     readConfigFile(cfgFile, "work_path", path);
     cout << "path = " << path << endl;
     //TString path = "/public/users/caihao1/tmp/baseline_small/";
-    get_para_kk(path + "data_ana_kk_signal.root", "signal_tr", "signal_ana_kk", var, _weight, _dmin, _dmax);
+    get_para_kk("../phikk/data_ana_kk_signal.root", "signal_tr", "signal_ana_kk", var, _weight, _dmin, _dmax);
     weight.push_back(_weight);
     dmin.push_back(_dmin);
     dmax.push_back(_dmax);
-    get_para_kk(path + "phsp_pwa_kk_weight_all.root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
+    get_para_kk(path + "kk_weight_all.root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
     weight.push_back(_weight);
     dmin.push_back(_dmin);
     dmax.push_back(_dmax);
@@ -99,7 +99,7 @@ void draw_kk(TString var, string cfgFile) {
     vector<string> resNameList;
     string_to_vector(value, resNameList);
     for(vector<string>::iterator it = resNameList.begin(); it != resNameList.end(); it++) {
-        get_para_kk(path + "phsp_pwa_kk_weight_" + *it + ".root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
+        get_para_kk(path + "kk_weight_" + *it + ".root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
         weight.push_back(_weight);
         dmin.push_back(_dmin);
         dmax.push_back(_dmax);
@@ -112,7 +112,7 @@ void draw_kk(TString var, string cfgFile) {
     THStack *hs = new THStack("hs_" + var, "");
     double scaleFactor = weight[0] / weight[1];
     int tcolor = 1;
-    TH1F *signal_h = hist_kk(path + "data_ana_kk_signal.root", "signal_tr", "signal_ana_kk", "signal", var, _dmin, _dmax);
+    TH1F *signal_h = hist_kk("../phikk/data_ana_kk_signal.root", "signal_tr", "signal_ana_kk", "signal", var, _dmin, _dmax);
     signal_h->SetLineColor(tcolor++);
     signal_h->SetLineWidth(3);
     signal_h->GetXaxis()->SetTitle(TexName_KK(var));
@@ -120,7 +120,7 @@ void draw_kk(TString var, string cfgFile) {
     double sp = valid_digits((_dmax - _dmin) / 100, 2);
     signal_h->GetYaxis()->SetTitle("Entries / " + Double2Str(sp));
 
-    TH1F *all_h = hist_kk(path + "phsp_pwa_kk_weight_all.root", "ana_tr", "kk", "all", var, _dmin, _dmax);
+    TH1F *all_h = hist_kk(path + "kk_weight_all.root", "ana_tr", "kk", "all", var, _dmin, _dmax);
     all_h->SetLineColor(tcolor++);
     all_h->SetLineWidth(2);
     all_h->GetXaxis()->SetTitle(TexName_KK(var));
@@ -134,7 +134,7 @@ void draw_kk(TString var, string cfgFile) {
     leg->AddEntry(signal_h, "Data", "le");
     leg->AddEntry(all_h, "Total", "l");
     signal_h->Draw("e");
-    all_h->Draw("same");
+    all_h->Draw("HIST same");
 
     hs->Add(signal_h);
     hs->Add(all_h);
@@ -149,7 +149,7 @@ void draw_kk(TString var, string cfgFile) {
     }
     int iw = 2;
     for(vector<string>::iterator it = resNameList.begin(); it != resNameList.end(); it++) {
-        TH1F *res_h = hist_kk(path +"phsp_pwa_kk_weight_" + *it + ".root", "ana_tr", "kk", *it, var,  _dmin, _dmax);
+        TH1F *res_h = hist_kk(path +"kk_weight_" + *it + ".root", "ana_tr", "kk", *it, var,  _dmin, _dmax);
         res_h->Scale(weight[0] / weight[1]);
         //res_h->Scale(weight[0] * weight[iw] / (weight[1] * weight[1]));
         //res_h->Scale(scaleFactor * weight[iw] / weight_all);
@@ -158,7 +158,7 @@ void draw_kk(TString var, string cfgFile) {
         cout << *it << "--color--" << tcolor << endl;
         res_h->SetLineColor(tcolor++);
         res_h->SetLineWidth(2);
-        res_h->Draw("same");
+        res_h->Draw("HIST same");
         hs->Add(res_h);
         TString ss = *it;
         leg->AddEntry(res_h, ss + " " + Double2Str(valid_digits(weight[iw] / weight[1], 3) * 100) + "%", "l");
@@ -167,6 +167,7 @@ void draw_kk(TString var, string cfgFile) {
     leg->SetFillStyle(kFDotted1);
     leg->Draw();
     //hs->Draw();
+    tc->SaveAs(path + "figs/" + var + ".png");
 }
 
 
@@ -259,4 +260,28 @@ void UpdataFigure_sideband() {
     test("MomKm2", "");
     test("QKp1Km1", "");
     test("QKp2Km2", "");
+}
+
+void draw(string conf)
+{
+  //string conf = "../test05/test05_conf";
+  UpdateFigure("Mphi", conf);
+  UpdateFigure("MKp1Km1", conf);
+  UpdateFigure("MKp2Km2", conf);
+  UpdateFigure("MKp1Km2", conf);
+  UpdateFigure("MKp2Km1", conf);
+  UpdateFigure("MphiKp2", conf);
+  UpdateFigure("MphiKm2", conf);
+  UpdateFigure("M2phiKp2", conf);
+  UpdateFigure("M2phiKm2", conf);
+  UpdateFigure("QKp1", conf);
+  UpdateFigure("QKm1", conf);
+  UpdateFigure("QKp2", conf);
+  UpdateFigure("QKm2", conf);
+  UpdateFigure("MomKp1", conf);
+  UpdateFigure("MomKm1", conf);
+  UpdateFigure("MomKp2", conf);
+  UpdateFigure("MomKm2", conf);
+  UpdateFigure("QKp1Km1", conf);
+  UpdateFigure("QKp2Km2", conf);
 }
