@@ -63,7 +63,7 @@ void FitParametersInterface::prepare_my_parameter_table(const string table_file_
     cout << "There are total " << my_parameter_table_.size() << " parameters in this pwa analysis!" << endl;
 }
 MyParameter FitParametersInterface::gp(std::string parameter_name) {
-    for(int i = 0; i < my_parameter_table_.size(); i++) {
+    for(unsigned i = 0; i < my_parameter_table_.size(); i++) {
         if (parameter_name == my_parameter_table_[i].get_name()) {
             return my_parameter_table_[i];
         }
@@ -73,7 +73,7 @@ MyParameter FitParametersInterface::gp(std::string parameter_name) {
 };
 int FitParametersInterface::position_in_fit_parameter_list(const MyParameter & the_parameter)
 {
-    for(int i = 0; i < fit_parameter_list_.size(); i++) {
+    for(unsigned i = 0; i < fit_parameter_list_.size(); i++) {
         if (fit_parameter_list_[i].get_name() == the_parameter.get_name()) {
             return i;
         }
@@ -87,7 +87,7 @@ void FitParametersInterface::information_of_parameter_table()
         cout << "There is no parameter in the parameter table!" << endl;
     } else {
         cout << "All fit parameters in parameter table: " << endl;
-        for(int i = 0; i < my_parameter_table_.size(); i++)
+        for(unsigned i = 0; i < my_parameter_table_.size(); i++)
         {
             cout << my_parameter_table_[i].get_name() << " ";
         }
@@ -100,7 +100,7 @@ void FitParametersInterface::information_of_parameter_list_sent_to_minuit()
         cout << "There is no parameter in the list sent to minuit!" << endl;
     } else {
         cout << "All fit parameters in the list sent to minuit: " << endl;
-        for(int i = 0; i < fit_parameter_list_.size(); i++)
+        for(unsigned i = 0; i < fit_parameter_list_.size(); i++)
         {
             cout << fit_parameter_list_[i].get_name() << " ";
         }
@@ -127,7 +127,7 @@ void AmplitudeMethodWithFitParametersInterface::initialize_fit_parameter_mapping
 void AmplitudeMethodWithFitParametersInterface::shape_of_mapping()
 {
     cout << "The parameters transported to minuit2: ";
-    for(int i = 0; i < fit_parameter_list_.size(); i++)
+    for(unsigned i = 0; i < fit_parameter_list_.size(); i++)
     {
         cout << fit_parameter_list_[i].get_name() << " ";
     }
@@ -135,7 +135,7 @@ void AmplitudeMethodWithFitParametersInterface::shape_of_mapping()
     for(int i = start_category; i < end_category; i++)
     {
         cout << i << " ";
-        for(int j = 0; j < fit_parameter_mapping_[i].size(); j++)
+        for(unsigned j = 0; j < fit_parameter_mapping_[i].size(); j++)
         {
             cout << fit_parameter_list_[fit_parameter_mapping_[i][j]].get_name() << " ";
         }

@@ -1,65 +1,136 @@
-#export CFLAGS=`root-config --cflags`
-#export LDFLAGS=`root-config --ldflags --libs --lRooFit --lRooFitCore -lMinuit`
+# Makefile for the ROOT test programs.
+# This Makefile shows nicely how to compile and link applications
+# using the ROOT libraries on all supported platforms.
+#
+# Copyright (c) 2000 Rene Brun and Fons Rademakers
+#
+# Author: Fons Rademakers, 29/2/2000
 
-ROOTCFLAGS = $(shell root-config --cflags)
-ROOTLIBS = $(shell root-config --libs)
-ROOTGLIBS = $(shell root-config --glibs)
-CXXFLAGS += $(ROOTCFLAGS)
-MODE=GPU
-LIBS = $(ROOTLIBS)
-GLIBS = $(ROOTGLIBS)
-CODEDIR = ./
-CURRDIR = $(shell pwd)
-INCLUDES = $(CXXFLAGS) -D USEROOT -D ROO_COMPLEX -I$(CODEDIR) -D FIXPHI
-OBJS = pwa.o DPFPWAPoint.o DPFPWAPdf.o  DPFAngular.o DPFPropogator.o common_tools.o phikk_structure.o phipipi_structure.o fitproxy.o PWA_CTRL.o
+ROOTSYS = ./
+include $(ROOTSYS)/Makefile.arch
 
-	OBJS+=gpuCode.o cu_DPFPropogator.o kernel_calEva.o
+#------------------------------------------------------------------------------
 
-EXEC = pwa
+ifeq ($(PLATFORM),win32)
+LIBS        += "$(ROOTSYS)/lib/libMinuit2.lib"
+else
+LIBS        += -lMinuit2 
+CXXFLAGS += -g      
+endif
 
-all:$(OBJS)
-	g++ -o pwa $^ `root-config --libs` -L`root-config --libdir` -lRooFit -D ROO_COMPLEX -fopenmp  -lgomp -lpthread -lRooFitCore -lcudart -L/usr/local/cuda/lib64
-	rm DPFPWAPdf.o
+# for using with MPI
+ifneq ($(USE_OPENMPI),)
+CXX=mpic++
+LD=mpic++
+endif
 
-gpuCode.o:kernel_calEva.o cu_DPFPropogator.o
-	nvcc $^ -o gpuCode.o -arch=sm_61 -dlink
+PWASRC = test_minuit2.$(SrcSuf) DPFPWAPoint.$(SrcSuf) DPFAngular.$(SrcSuf) fit_parameter_interface.$(SrcSuf) whu_my_parameter.$(SrcSuf) data_obj.$(SrcSuf)
+PWAOBJ = test_minuit2.$(ObjSuf) DPFPWAPoint.$(ObjSuf) DPFAngular.$(ObjSuf) fit_parameter_interface.$(ObjSuf) whu_my_parameter.$(ObjSuf) data_obj.$(ObjSuf)
+PWA = test
 
-pwa.o:pwa.C
-	g++ -c $< $(INCLUDES) -D PWAINI="$(CURRDIR)/pwa_ini.C"
+#DEMOGAUSSSIMSRC    = DemoGaussSim.$(SrcSuf) GaussDataGen.$(SrcSuf) GaussFcn.$(SrcSuf)
+#DEMOGAUSSSIMOBJ    = DemoGaussSim.$(ObjSuf) GaussDataGen.$(ObjSuf) GaussFcn.$(ObjSuf)
+#DEMOGAUSSSIM       = test_Minuit2_DemoGaussSim$(ExeSuf)
+#
+#DEMOFUMILISRC     = DemoFumili.$(SrcSuf) GaussDataGen.$(SrcSuf) 
+#DEMOFUMILIOBJ     = DemoFumili.$(ObjSuf) GaussDataGen.$(ObjSuf) 
+#DEMOFUMILI        = test_Minuit2_DemoFumili$(ExeSuf)
+#
+#DEMOMINIMIZERSRC     = demoMinimizer.$(SrcSuf)
+#DEMOMINIMIZEROBJ     = demoMinimizer.$(ObjSuf)
+#DEMOMINIMIZER        = test_Minuit2_DemoMinimizer$(ExeSuf)
+#
+#PTESTSRC    = PaulTest.$(SrcSuf) GaussFcn.$(SrcSuf)
+#PTESTOBJ    = PaulTest.$(ObjSuf) GaussFcn.$(ObjSuf)
+#PTEST       = test_Minuit2_PaulTest$(ExeSuf)
+#
+#PTEST2SRC    = PaulTest2.$(SrcSuf) GaussFcn.$(SrcSuf)
+#PTEST2OBJ    = PaulTest2.$(ObjSuf) GaussFcn.$(ObjSuf)
+#PTEST2       = test_Minuit2_PaulTest2$(ExeSuf)
+#
+#PTEST3SRC    = PaulTest3.$(SrcSuf) GaussFcn2.$(SrcSuf)
+#PTEST3OBJ    = PaulTest3.$(ObjSuf) GaussFcn2.$(ObjSuf)
+#PTEST3       = test_Minuit2_PaulTest3$(ExeSuf)
+#
+#PTEST4SRC    = PaulTest4.$(SrcSuf)
+#PTEST4OBJ    = PaulTest4.$(ObjSuf)
+#PTEST4       = test_Minuit2_PaulTest4$(ExeSuf)
+#
+#RTESTSRC    = ReneTest.$(SrcSuf)
+#RTESTOBJ    = ReneTest.$(ObjSuf)
+#RTEST       = test_Minuit2_ReneTest$(ExeSuf)
+#
+#PARATESTSRC    = ParallelTest.$(SrcSuf) GaussDataGen.$(SrcSuf)
+#PARATESTOBJ    = ParallelTest.$(ObjSuf) GaussDataGen.$(ObjSuf)
+#PARATEST       = test_Minuit2_Parallel$(ExeSuf)
 
-cu_DPFPropogator.o:cu_DPFPropogator.cu cu_DPFPropogator.h 
-	nvcc -arch=sm_61 -dc $< -I/usr/local/cuda/include/
 
-DPFPWAPdf.o:$(CODEDIR)/DPFPWAPdf.cc $(CODEDIR)/DPFPWAPdf.h $(CODEDIR)/cu_PWA_PARAS.h $(CODEDIR)/kernel_calEva.h
-		g++ -c $< $(INCLUDES) -D $(MODE) -fopenmp `root-config --libs` -L`root-config --libdir` -lRooFit -lRooFitCore
+#OBJS          = $(DEMOGAUSSSIMOBJ) $(DEMOFUMILIOBJ) $(PTESTOBJ) $(PTEST2OBJ) $(PTEST3OBJ) $(PTEST4OBJ) $(RTESTOBJ) $(PARATESTOBJ) $(DEMOMINIMIZEROBJ)
+OBJS          = $(PWAOBJ)
+PROGRAMS      = $(PWA)
+.SUFFIXES: .$(SrcSuf) .$(ObjSuf) $(ExeSuf)
 
-kernel_calEva.o:kernel_calEva.cu cu_DPFPropogator.h kernel_calEva.h
-	nvcc  -Xptxas -v -arch=sm_61 -dc $< -I/usr/local/cuda/include/
 
-DPFPWAPdf.o:
-DPFPWAPoint.o:$(CODEDIR)/DPFPWAPoint.cc $(CODEDIR)/DPFPWAPoint.h
-	g++ -c $< $(INCLUDES)
+all:            $(PROGRAMS)
 
-DPFAngular.o:$(CODEDIR)/DPFAngular.cc $(CODEDIR)/DPFAngular.h
-	g++ -c $< $(INCLUDES)
+$(DEMOMINIMIZER): 	$(DEMOMINIMIZEROBJ) 
+			$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+			@echo "$@ done"
 
-DPFPropogator.o:$(CODEDIR)/DPFPropogator.cc $(CODEDIR)/DPFPropogator.h
-	g++ -c $< $(INCLUDES)
 
-common_tools.o:$(CODEDIR)/common_tools.cc $(CODEDIR)/common_tools.h
-	g++ -c $< $(INCLUDES)
+$(PWAOBJ) : DPFPWAPoint.h DPFAngular.h fit_parameter_interface.h whu_constants_and_definitions.h whu_my_parameter.h
+$(PWA): $(PWAOBJ)
+	$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+	@echo "$@ done"
 
-phikk_structure.o:$(CODEDIR)/phikk_structure.cc $(CODEDIR)/phikk_structure.h
-	g++ -c $< $(INCLUDES)
+#$(DEMOGAUSSSIMOBJ) : GaussFunction.h GaussRandomGen.h GaussDataGen.h FlatRandomGen.h GaussFcn.h
+#$(DEMOGAUSSSIM): 	$(DEMOGAUSSSIMOBJ)
+#			$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+#			@echo "$@ done"
+#
+#$(DEMOFUMILIOBJ) : GaussianModelFunction.h GaussRandomGen.h GaussDataGen.h FlatRandomGen.h 
+#$(DEMOFUMILI): 	$(DEMOFUMILIOBJ)
+#		$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+#		@echo "$@ done"
+#
+#$(PTESTOBJ): 	GaussFcn.h
+#$(PTEST): 	$(PTESTOBJ) 
+#		$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+#		@echo "$@ done"
+#
+#$(PTEST2OBJ): 	GaussFcn.h
+#$(PTEST2): 	$(PTEST2OBJ) 
+#		$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+#		@echo "$@ done"
+#
+#$(PTEST3OBJ) : 	GaussFcn2.h 
+#$(PTEST3): 	$(PTEST3OBJ)
+#		$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+#		@echo "$@ done"
+#
+#$(PTEST4): 	$(PTEST4OBJ)
+#		$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+#		@echo "$@ done"
+#
+#$(RTEST): 	$(RTESTOBJ)
+#		$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+#		@echo "$@ done"
+#
+#$(PARATESTOBJ): 	GaussRandomGen.h
+#$(PARATEST): 	$(PARATESTOBJ) 
+#		$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+#		@echo "$@ done"
 
-phipipi_structure.o:$(CODEDIR)/phipipi_structure.cc $(CODEDIR)/phipipi_structure.h
-	g++ -c $< $(INCLUDES)
-
-fitproxy.o:$(CODEDIR)/fitproxy.cc $(CODEDIR)/fitproxy.h
-	g++ -c $< $(INCLUDES)
-
-PWA_CTRL.o:$(CODEDIR)/PWA_CTRL.C $(CODEDIR)/PWA_CTRL.H
-	g++ -c $< $(INCLUDES)
 
 clean:
-	rm -f $(EXEC) $(OBJS)
+		@rm -f $(OBJS) core
+
+distclean:      clean
+		@rm -f $(PROGRAMS)  *Dict.* *.def *.exp \
+		   *.root *.ps *.so *.lib *.dll *.d .def so_locations
+
+.SUFFIXES: .$(SrcSuf)
+
+
+.$(SrcSuf).$(ObjSuf):
+	$(CXX) $(CXXFLAGS) -c $<

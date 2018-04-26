@@ -23,7 +23,7 @@ typedef struct {
 
 void string_to_vector(std::string, std::vector<std::string> &);
 
-static bool readConfigFile(const std::string &, const std::string &, std::string &);
+bool readConfigFile(const std::string &, const std::string &, std::string &);
 
 
 void refresh_pwa_ctrl(const std::string, PWA_CTRL &);

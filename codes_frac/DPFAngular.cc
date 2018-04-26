@@ -54,12 +54,14 @@ Double_t DPFAngular::calculate0p(
   Double_t arwdarw,tmp0;
   fPCMS[0]=fPCMS[1]=fPCMS[2]=0; fPCMS[3]=psi_mass;
   Double_t fFUD=0.22/3.0;
-  Double_t fMK2=kaon_mass*kaon_mass,fMP2=pion_mass*pion_mass, fMPsi2=psi_mass*psi_mass;
+  //Double_t fMK2=kaon_mass*kaon_mass,fMP2=pion_mass*pion_mass
+  Double_t fMPsi2=psi_mass*psi_mass;
   Double_t q2r45,b1q2r45,qjvf2;
   Double_t qf2xx,tmpf2,qjv2,qjv3,qbv2,qbv3;
   Double_t q2r23;
   Double_t tmp12w,tmp13w,tmpv2m3,tmpv3m2;
-  Double_t temp,tmp1,tmp2,tmp;
+  //Double_t temp;
+  Double_t tmp1,tmp2,tmp;
   Double_t (*fDel)[4],(*fGel)[4],(*E)[4][4][4],(*G1)[4][4][4],(*G3)[4][4][4][4][4],t2wf[4][4],del23w[4][4],t2wfu[4][4],w2p1u[4],ttfw[4][4][4],t2p3[4][4],t4wvf[4][4][4][4];
   Double_t t2v2[4][4],t2v3[4][4],t2b3[4][4],t2b2[4][4];
   Double_t w1p12_1u[4],w1p13_1u[4],w1p12_2u[4],w1p13_2u[4];
@@ -456,4 +458,6 @@ Double_t DPFAngular::calculate0p(
       pp.wpf22[i]=pp.wpf22[i]-t2wvf[i][j]*ak23wu[j]; // -\tilde{T}^{(2)\mu\nu}(phi f0) \tilde{t}_nu(34)
     }
   }
+  return 0;
 }
+
