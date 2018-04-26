@@ -17,7 +17,7 @@ public:
   DPFPWAPoint () {}
   inline ~DPFPWAPoint() {
   };
-  DPFPWAPoint (Double_t, Double_t, Double_t, Double_t, Double_t, TString, TString);
+  DPFPWAPoint (Double_t, Double_t, Double_t, Double_t, Double_t);
   DPFPWAPoint (const DPFPWAPoint &other);
 
   Bool_t   valid (const Double_t dalX, const Double_t dalY) const;
@@ -68,8 +68,8 @@ public:
   DPFCoord::Pair _dalitzZ;
 
   Double_t _M, _m[4], _M2, _m2[4], _area, _sum2;
-  TString _phspfile;
-  TString _datafile;
+  //TString _phspfile;
+  //TString _datafile;
   Double_t fm2Mmpi2,fm2Amds2,fm2Ampi2,mpi2Mmds2,D25Dfm2;
   Double_t xLower,xUpper,xDiff,yLower,yUpper,yDiff;
   Double_t fDel[4][4],fGel[4][4],E[4][4][4][4],G1[4][4][4][4],G3[4][4][4][4][4][4];

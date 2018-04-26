@@ -27,7 +27,7 @@ static bool readConfigFile(const string & cfgfilepath, const string & key, strin
     cout << "Begin readConfigFile" << endl;
     while(!cfgFile.eof())//循环读取每一行
     {
-        cfgFile.getline(tmp,10000);//每行读取前1000个字符，前
+        cfgFile.getline(tmp,10000);//每行读取前1000个字符
         string line(tmp);
         cout << "LINE:" << __LINE__ << tmp << endl;
         cout << line << endl;

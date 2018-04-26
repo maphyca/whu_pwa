@@ -112,7 +112,6 @@ void fitproxy::add_res980_list(TString rn, double mss_min, double mss_max) {
         tmp.push_back(RooRealVar(rn + "a_mss_", rn + "a_mss_", (mss_min + mss_max) / 2, mss_min, mss_max));
         tmp.push_back(RooRealVar(rn + "a_g10_", rn + "a_g10_", 0.165, 0.1, 1.0));
         tmp.push_back(RooRealVar(rn + "a_g20_", rn + "a_g20_", 0.695, 0.1, 1.5));
-        tmp.push_back(RooRealVar(rn + "p_rho_", rn + "p_rho_", 23.6, -100, 100));
         tmp.push_back(RooRealVar(rn + "k_rho_", rn + "k_rho_", 23.6, -100, 100));
         // f0(980) 0+ 1
         tmp.push_back(RooRealVar(rn + "a_spn1", rn + "a_spn1", 1));
@@ -447,62 +446,62 @@ void fitproxy::act_res1p(TString rn, bool act_pp, bool act_kk) {
     add_fitparas(rn);
 }
 
-void fitproxy::init_all_files_name(const PWA_CTRL & pwa_ctrl) {
-    outf_phipp = pwa_ctrl.outf_phipp;
-    outf_phikk = pwa_ctrl.outf_phikk;
-    proj_phipp = pwa_ctrl.proj_phipp;
-    proj_phikk = pwa_ctrl.proj_phikk;
-//    if(m_test){
-//      phsp_phipp = "../phipipi/phsp_pwa_pipi_small_sample.dat";
-//      phsp_phikk = "../phikk/phsp_pwa_kk_small_sample.dat";
-//      data_phipp = "../phipipi/data_pwa_pipi_weight_small_sample.dat";
-//      idx_pp = "../phipipi/idp_pp.dat";
-//      data_phikk = "../phikk/data_pwa_kk_weight_small_sample.dat";
-//      idx_kk = "../phikk/idp_kk.dat";
-//      cout << "idx_pp = " << idx_pp << endl;
-//    }
-//    else{
-        phsp_phipp = pwa_ctrl.phsp_phipp;
-        phsp_phikk = pwa_ctrl.phsp_phikk;
-        data_phipp = pwa_ctrl.data_phipp;
-        data_phikk = pwa_ctrl.data_phikk;
-        idx_pp = pwa_ctrl.idx_pp;
-        idx_kk = pwa_ctrl.idx_kk;
-      //phsp_phipp = "../phipipi/phsp_pwa_pipi.dat";
-      //phsp_phikk = "../phikk/phsp_pwa_kk.dat";
-      //data_phipp = "../phipipi/data_pwa_pipi_weight.dat";
-      //data_phikk = "../phikk/data_pwa_kk_weight.dat";
-      //idx_pp = "../phipipi/idp_pp.dat";
-      //idx_kk = "../phikk/idp_kk.dat";
-//    }
-}
-void fitproxy::init_input_argset() {
-    vv.push_back(RooRealVar("idp", "idp", 10));  // idp 是每个事例的编号，用来在计算部分获得实际的数据
-    vv.push_back(RooRealVar("weight", "weight", low, high));
-//    for (int i = 1; i <= 5; i++) {
-//        for (int j = 1; j <= 4; j++) {
-//            TString vname = "v" + Int2Str(i) + Int2Str(j);
-//            TString vdesp = Int2Str(i) + Int2Str(j);
-//            cout << vname << "   " << vdesp << endl;
-//            vv.push_back(RooRealVar(vname, vdesp, low, high));
-//        }
-//    }
-
-    //for (vector<RooRealVar>::iterator iter = vv.begin(); iter != vv.end(); iter++) {
-    //    theSet.add(*iter);
-    //}
-
-    //idp = RooRealVar("idp", "index", 1);
-    theSet.add(vv[0]);
-    theSet.add(vv[1]);
-    cout << "haha: " << __LINE__ << endl;
-    cout << vv[0].getVal() << endl;
-
-//    theSet.writeToFile("para_v.txt");
-//    theSet.readFromFile("para_v.txt");
-//    theSet.writeToStream(cout, false);
-
-}
+//void fitproxy::init_all_files_name(const PWA_CTRL & pwa_ctrl) {
+//    outf_phipp = pwa_ctrl.outf_phipp;
+//    outf_phikk = pwa_ctrl.outf_phikk;
+//    proj_phipp = pwa_ctrl.proj_phipp;
+//    proj_phikk = pwa_ctrl.proj_phikk;
+////    if(m_test){
+////      phsp_phipp = "../phipipi/phsp_pwa_pipi_small_sample.dat";
+////      phsp_phikk = "../phikk/phsp_pwa_kk_small_sample.dat";
+////      data_phipp = "../phipipi/data_pwa_pipi_weight_small_sample.dat";
+////      idx_pp = "../phipipi/idp_pp.dat";
+////      data_phikk = "../phikk/data_pwa_kk_weight_small_sample.dat";
+////      idx_kk = "../phikk/idp_kk.dat";
+////      cout << "idx_pp = " << idx_pp << endl;
+////    }
+////    else{
+//        phsp_phipp = pwa_ctrl.phsp_phipp;
+//        phsp_phikk = pwa_ctrl.phsp_phikk;
+//        data_phipp = pwa_ctrl.data_phipp;
+//        data_phikk = pwa_ctrl.data_phikk;
+//        idx_pp = pwa_ctrl.idx_pp;
+//        idx_kk = pwa_ctrl.idx_kk;
+//      //phsp_phipp = "../phipipi/phsp_pwa_pipi.dat";
+//      //phsp_phikk = "../phikk/phsp_pwa_kk.dat";
+//      //data_phipp = "../phipipi/data_pwa_pipi_weight.dat";
+//      //data_phikk = "../phikk/data_pwa_kk_weight.dat";
+//      //idx_pp = "../phipipi/idp_pp.dat";
+//      //idx_kk = "../phikk/idp_kk.dat";
+////    }
+//}
+//void fitproxy::init_input_argset() {
+//    vv.push_back(RooRealVar("idp", "idp", 10));  // idp 是每个事例的编号，用来在计算部分获得实际的数据
+//    vv.push_back(RooRealVar("weight", "weight", low, high));
+////    for (int i = 1; i <= 5; i++) {
+////        for (int j = 1; j <= 4; j++) {
+////            TString vname = "v" + Int2Str(i) + Int2Str(j);
+////            TString vdesp = Int2Str(i) + Int2Str(j);
+////            cout << vname << "   " << vdesp << endl;
+////            vv.push_back(RooRealVar(vname, vdesp, low, high));
+////        }
+////    }
+//
+//    //for (vector<RooRealVar>::iterator iter = vv.begin(); iter != vv.end(); iter++) {
+//    //    theSet.add(*iter);
+//    //}
+//
+//    //idp = RooRealVar("idp", "index", 1);
+//    theSet.add(vv[0]);
+//    theSet.add(vv[1]);
+//    cout << "haha: " << __LINE__ << endl;
+//    cout << vv[0].getVal() << endl;
+//
+////    theSet.writeToFile("para_v.txt");
+////    theSet.readFromFile("para_v.txt");
+////    theSet.writeToStream(cout, false);
+//
+//}
 void fitproxy::read_data() {
     cout<<"-----------------"<<endl;
     //RooDataSet *data11 = RooDataSet::read(data_phipp,theSet);
@@ -739,37 +738,6 @@ void fitproxy::Prepare_Figs(const PWA_CTRL & pwa_ctrl) {
 //    cout <<((RooRealVar*)fitparas.find("f00980a_mss_"))->getVal() << endl;
 //    cout << "The minNll of res is " << res->minNll() << endl;
 //    cout << "The number of floating parameters is " << (res->floatParsFinal()).getSize() << endl;
-}
-fitproxy::fitproxy () {
-//    init_all_files_name();
-//    init_input_argset();
-//    setup_resonances();
-//    createlist_allparas();
-//    read_data();
-//    init_pdf();
-//
-////    TFile *ff = new TFile("fit_results.root", "RECREATE");
-////    allparas.Write("init_all_paras");
-////    ff->Close();
-//    print_all_paras();
-//
-//    act_res980("f00980");
-////    act_res2("f21270");
-////    FIT();
-//
-//    print_fit_paras();
-//    gp("f00980a_mss_")->setVal(1.05);
-//    cout << "End Write" << endl;
-//    gp("f00980a_mss_")->setVal(0.93);
-//    print_fit_paras();
-//
-//    cout << "Store fit results!!!" << endl;
-////    pdfphipp->writeToFile("pipi_paras_results.root");
-////    pdfphikk->writeToFile("kk_paras_results.root");
-//
-//    cout << "Fit is done!!!!" << endl;
-//    delete datapp;
-//    delete datakk;
 }
 
 

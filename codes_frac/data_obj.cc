@@ -9,12 +9,13 @@
 #include "MultDevice.h"
 #include "data_obj.h"
 #include "DPFAngular.h"
+#include <iostream>
 
 using namespace std;
 
 DataObject::~DataObject()
 {
-  for(Int_t i = 0; i < number_of_events_; i++) {
+  for(int i = 0; i < number_of_events_; i++) {
     delete[] mcp1[i];
     delete[] mcp2[i];
     delete[] mcp3[i];
@@ -29,26 +30,38 @@ DataObject::~DataObject()
 
   pwa_paras_.resize(0);
 }
+void DataObject::read_events_and_convert_to_pwa_paras() {
+    number_of_events_ = count_lines() / 5;
+    initialize_mcp();
+    load_mcp_from_dat_file();
+    cout << "There are " << number_of_events_ << " events in " << dat_file_name_ << std::endl;
+    convert_mcp_to_pwa_paras();
+    cout << "convert data in " << dat_file_name_ << " to PWA_PARAS format." << endl;
+
+}
+void DataObject::read_weight_file() {
+
+}
 void DataObject::initialize_mcp()
 {
-  mcp1=new Double_t*[number_of_events_];
-  mcp2=new Double_t*[number_of_events_];
-  mcp3=new Double_t*[number_of_events_];
-  mcp4=new Double_t*[number_of_events_];
-  mcp5=new Double_t*[number_of_events_];
+  mcp1=new double*[number_of_events_];
+  mcp2=new double*[number_of_events_];
+  mcp3=new double*[number_of_events_];
+  mcp4=new double*[number_of_events_];
+  mcp5=new double*[number_of_events_];
   for(int i=0; i<number_of_events_; i++){
-    mcp1[i]=new Double_t[4];
-    mcp2[i]=new Double_t[4];
-    mcp3[i]=new Double_t[4];
-    mcp4[i]=new Double_t[4];
-    mcp5[i]=new Double_t[4];
+    mcp1[i]=new double[4];
+    mcp2[i]=new double[4];
+    mcp3[i]=new double[4];
+    mcp4[i]=new double[4];
+    mcp5[i]=new double[4];
   }
 
 }
 
 void DataObject::load_mcp_from_dat_file()
 {
-  Double_t fx1,fy1,fz1,ft1,fx2,fy2,fz2,ft2,fx3,fy3,fz3,ft3,fx4,fy4,fz4,ft4,fx5,fy5,fz5,ft5;
+  double fx1,fy1,fz1,ft1,fx2,fy2,fz2,ft2,fx3,fy3,fz3,ft3,fx4,fy4,fz4,ft4,fx5,fy5,fz5,ft5;
   FILE *fp;
   if((fp=fopen(dat_file_name_,"r"))==NULL)
   {printf("can't open input file");
@@ -69,11 +82,9 @@ void DataObject::load_mcp_from_dat_file()
   fclose(fp);
   //    Nmc = count_lines() / 5;
   if (i != number_of_events_) {
-    cout <<"Line:"<< __LINE__ << "  There is memory allocated error!" << endl;
+      std::cout << "Line:" << __LINE__ << "  There is memory allocated error!" << endl;
     exit(1);
   }
-  cout << "in load_mcp_from_dat_file" << endl;
-  cout << number_of_events_ << endl;
 
 }
 int DataObject::count_lines() {
@@ -87,14 +98,11 @@ int DataObject::count_lines() {
   return n;
 }
 void DataObject::convert_mcp_to_pwa_paras() {
-  cout << "Line:" << __LINE__ << endl;
   DPFAngular _amp;
-  cout << "Line:" << __LINE__ << endl;
+  _amp.setdp(pwa_point_);
   pwa_paras_.resize(0);
-  cout << "Line:" << __LINE__ << endl;
   for(Int_t i = 0; i < number_of_events_; i++) {
     PWA_PARAS _the_pwa_paras;
-  cout << "Line:" << __LINE__ << endl;
     _amp.calculate0p(
         mcp1[i][0],mcp1[i][1],mcp1[i][2],mcp1[i][3],
         mcp2[i][0],mcp2[i][1],mcp2[i][2],mcp2[i][3],
@@ -104,6 +112,5 @@ void DataObject::convert_mcp_to_pwa_paras() {
         _the_pwa_paras);
     pwa_paras_.push_back(_the_pwa_paras);
   }
-  cout << "Line:" << __LINE__ << endl;
 }
 

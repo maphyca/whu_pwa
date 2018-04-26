@@ -11,7 +11,7 @@ GLIBS = $(ROOTGLIBS)
 CODEDIR = ./
 CURRDIR = $(shell pwd)
 INCLUDES = $(CXXFLAGS) -D USEROOT -D ROO_COMPLEX -I$(CODEDIR) -D FIXPHI
-OBJS = data_obj.o test_minuit2.o DPFAngular.o DPFPWAPoint.o
+OBJS = data_obj.o test_minuit2.o DPFAngular.o DPFPWAPoint.o fit_parameter_interface.o whu_my_parameter.o
 
 #	OBJS+=gpuCode.o cu_DPFPropogator.o kernel_calEva.o
 
@@ -42,6 +42,10 @@ DPFPWAPoint.o:$(CODEDIR)/DPFPWAPoint.cc $(CODEDIR)/DPFPWAPoint.h
 	g++ -c $< $(INCLUDES)
 #	
 DPFAngular.o:$(CODEDIR)/DPFAngular.cc $(CODEDIR)/DPFAngular.h
+	g++ -c $< $(INCLUDES)
+fit_parameter_interface.o:$(CODEDIR)/fit_parameter_interface.cc $(CODEDIR)/fit_parameter_interface.h $(CODEDIR)/whu_constants_and_definitions.h $(CODEDIR)/whu_my_parameter.h
+	g++ -c $< $(INCLUDES)
+whu_my_parameter.o:$(CODEDIR)/whu_my_parameter.cc $(CODEDIR)/whu_my_parameter.h
 	g++ -c $< $(INCLUDES)
 #	
 #	DPFPropogator.o:$(CODEDIR)/DPFPropogator.cc $(CODEDIR)/DPFPropogator.h

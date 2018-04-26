@@ -72,6 +72,7 @@ Double_t DPFAngular::calculate0p(
 
   //#include dpfangular_cc_commet.cc 影响程序的格式，因此这部分被注释的内容放到了dpfangular_cc_commet中
 
+  //cout<<"haha: "<< __LINE__ << endl;
   for(Int_t i=0;i<4;i++){
     for(Int_t j=0;j<4;j++){
       if(i==j){
@@ -96,7 +97,7 @@ Double_t DPFAngular::calculate0p(
       }
     }
   }
-  //  cout<<"haha: "<< __LINE__ << endl;
+  //cout<<"haha: "<< __LINE__ << endl;
   E[0][1][2][3]= 1.0;
   E[0][1][3][2]=-1.0;
   E[0][2][1][3]=-1.0;

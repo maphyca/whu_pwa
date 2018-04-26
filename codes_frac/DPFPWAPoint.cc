@@ -4,7 +4,7 @@
 //ClassImp (DPFPWAPoint);
 //using namespace DPFCoord;
 
-DPFPWAPoint::DPFPWAPoint(Double_t m1, Double_t m2, Double_t m3, Double_t m4, Double_t M, TString phspfile, TString datafile)
+DPFPWAPoint::DPFPWAPoint(Double_t m1, Double_t m2, Double_t m3, Double_t m4, Double_t M)
 {
     _M    = M;
     _m[0] = m1;
@@ -16,16 +16,16 @@ DPFPWAPoint::DPFPWAPoint(Double_t m1, Double_t m2, Double_t m3, Double_t m4, Dou
     _m2[1] = m2*m2;
     _m2[2] = m3*m3;
     _m2[3] = m4*m4;
-    _phspfile = phspfile;
-    _datafile = datafile;
+    //_phspfile = phspfile;
+    //_datafile = datafile;
     for(Int_t i=0;i<4;i++){
         for(Int_t j=0;j<4;j++){
             if(i==j){
-                if(i<3) 
+                if(i<3)
                     fDel[i][j]=-1;
-                else 
+                else
                     fDel[i][j]=1;
-            } else { 
+            } else {
                 fDel[i][j]=0;
             }
         }
@@ -33,9 +33,9 @@ DPFPWAPoint::DPFPWAPoint(Double_t m1, Double_t m2, Double_t m3, Double_t m4, Dou
     for(Int_t i=0;i<4;i++){
         for(Int_t j=0;j<4;j++){
             if(i==j){
-                if(i<3) 
+                if(i<3)
                     fGel[i][j]=-1;
-                else 
+                else
                     fGel[i][j]=0;
             } else {
                 fGel[i][j]=0;
@@ -340,7 +340,7 @@ Double_t DPFPWAPoint::p1Cal(Double_t sx) const
     Double_t t = D25Dfm2*x*x-_m2[2];
     Double_t p;
     if (t>0.0) {
-        p = sqrt(t);                 
+        p = sqrt(t);
     } else {
         p = 0.04;
     }
@@ -353,7 +353,7 @@ Double_t DPFPWAPoint::p0Cal(Double_t sx) const
     Double_t t = 0.25*x*x/sx-_m2[2];
     Double_t p;
     if (t>0.0) {
-        p = sqrt(t);                 
+        p = sqrt(t);
     } else {
         cout << " hello, less than 0.0" << endl;
         p = 0.04;

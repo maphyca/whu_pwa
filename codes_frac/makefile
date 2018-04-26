@@ -22,19 +22,19 @@ all:$(OBJS)
 	rm DPFPWAPdf.o
 
 gpuCode.o:kernel_calEva.o cu_DPFPropogator.o
-	nvcc $^ -o gpuCode.o -arch=sm_70 -dlink
+	nvcc $^ -o gpuCode.o -arch=sm_61 -dlink
 
 pwa.o:pwa.C
 	g++ -c $< $(INCLUDES) -D PWAINI="$(CURRDIR)/pwa_ini.C"
 
 cu_DPFPropogator.o:cu_DPFPropogator.cu cu_DPFPropogator.h 
-	nvcc -arch=sm_70 -dc $< -I/usr/local/cuda/include/
+	nvcc -arch=sm_61 -dc $< -I/usr/local/cuda/include/
 
 DPFPWAPdf.o:$(CODEDIR)/DPFPWAPdf.cc $(CODEDIR)/DPFPWAPdf.h $(CODEDIR)/cu_PWA_PARAS.h $(CODEDIR)/kernel_calEva.h
 		g++ -c $< $(INCLUDES) -D $(MODE) -fopenmp `root-config --libs` -L`root-config --libdir` -lRooFit -lRooFitCore
 
 kernel_calEva.o:kernel_calEva.cu cu_DPFPropogator.h kernel_calEva.h
-	nvcc  -Xptxas -v -arch=sm_70 -dc $< -I/usr/local/cuda/include/
+	nvcc  -Xptxas -v -arch=sm_61 -dc $< -I/usr/local/cuda/include/
 
 DPFPWAPdf.o:
 DPFPWAPoint.o:$(CODEDIR)/DPFPWAPoint.cc $(CODEDIR)/DPFPWAPoint.h
