@@ -5,14 +5,6 @@ const double mpsip=3.686,mka=0.493677,mpi=0.13957;
 
 const bool binding_phi = true;
 
-//struct MyParameter {
-//    TString name;
-//    double value;
-//    double error;
-//    double uplimit, lowlimit;
-//    int type;
-//};
-
 enum ParameterCategory {
     start_category,
     spin_category, mass_category, mass2_category, width_category,
@@ -22,5 +14,18 @@ enum ParameterCategory {
     end_category
 };
 
+enum DataObjectIndex {
+    phipp_data_index,
+    phipp_phsp_index,
+    phikk_data_index,
+    phikk_phsp_index,
+    end_data_object_index
+};
+
+enum ParameterListIndex {
+    phipp_list_index,
+    phikk_list_index,
+    end_list_index
+};
 #endif
 
