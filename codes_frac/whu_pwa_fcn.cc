@@ -11,7 +11,19 @@ namespace ROOT {
 
         double PWAFcn::operator()(const std::vector<double>& par) const {
 
-//            assert(par.size() == 3);
+            assert(par.size() == number_of_parameters_);
+//            for(int i = 0; i < end_list_index; i++)
+//            {
+//                int _id = 0;
+//                for(int j = start_category; j < end_category; j++)
+//                {
+//                    for(unsigned k = 0; k < parameter_list_set_[i]->get_local_fit_parameter_mapping()[j]; k++)
+//                    {
+//                        par_list_[i][_id++] = parameter_list_set_[i]->get_local_fit_parameter_mapping()[j][k]);
+//                    }
+//                }
+//            }
+
 //            GaussFunction gauss(par[0], par[1], par[2]);
 //
 //            double chi2 = 0.;

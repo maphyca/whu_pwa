@@ -115,6 +115,18 @@ int AmplitudeMethodWithFitParametersInterface::number_of_amplitudes() {
     }
     return _num;
 }
+void AmplitudeMethodWithFitParametersInterface::create_minuit_mapping()
+{
+    minuit_mapping_.resize(number_of_amplitudes());
+    int _id = 0;
+    for(int j = start_category; j < end_category; j++)
+    {
+        for(unsigned k = 0; k < local_fit_parameter_mapping_[j].size(); k++)
+        {
+            minuit_mapping_[_id++] = local_fit_parameter_mapping_[j][k];
+        }
+    }
+}
 
 void AmplitudeMethodWithFitParametersInterface::initialize_fit_parameter_mapping()
 {
@@ -143,6 +155,15 @@ void AmplitudeMethodWithFitParametersInterface::remap_local_mapping_for_minuit(s
         }
     }
 }
+void AmplitudeMethodWithFitParametersInterface::create_category_tags()
+{
+    category_tags_.resize(end_category);
+    category_tags_[start_category] = 0;
+    for(int i = start_category + 1; i < end_category; i++)
+    {
+        category_tags_[i] = category_tags_[i - 1] + local_fit_parameter_mapping_[i - 1].size();
+    }
+}
 void AmplitudeMethodWithFitParametersInterface::shape_of_mapping()
 {
     cout << "The parameters transported to minuit2: " << endl;
@@ -168,6 +189,14 @@ void AmplitudeMethodWithFitParametersInterface::shape_of_local_mapping(vector<in
         }
         cout << endl;
     }
+}
+bool AmplitudeMethodWithFitParametersInterface::already_active(string resonance_name)
+{
+    for(unsigned i = 0; i < resonance_name_list_.size(); i++) {
+        if (resonance_name == resonance_name_list_[i]) return true;
+    }
+    resonance_name_list_.push_back(resonance_name);
+    return false;
 }
 void AmplitudeMethodWithFitParametersInterface::add_amplitude_to_fit_parameter_list(const MyParameter& spin, const MyParameter& mass, const MyParameter& width, const MyParameter& rho, const MyParameter& frac, const MyParameter& phi, const MyParameter& propType)
 {
@@ -219,6 +248,22 @@ void AmplitudeMethodWithFitParametersInterface::add_amplitude980_to_fit_paramete
     fit_parameter_mapping_[propType_category].push_back(position_in_my_parameter_table(propType));
 }
 void FitParametersOfPhiPP::act_resonance(string rn)
+{
+    if (rn.find("f00980") != string::npos) act_resonance_980(rn);
+    else if (rn.find("f0") != string::npos) act_resonance_f0(rn);
+    else if (rn.find("f2") != string::npos) act_resonance_f2(rn);
+    else if (rn.find("1p") != string::npos) act_resonance_1p(rn);
+    else {
+        cout << "Not know how to act resonance " << rn << endl;
+        exit(1);
+    }
+    //if (rn.find("1m") != string::npos) {
+    //    act_resonance_1m(rn);
+    //    continue;
+    //}
+
+}
+void FitParametersOfPhiKK::act_resonance(string rn)
 {
     if (rn.find("f00980") != string::npos) act_resonance_980(rn);
     else if (rn.find("f0") != string::npos) act_resonance_f0(rn);
@@ -305,22 +350,6 @@ void FitParametersOfPhiPP::act_resonance_f0(string rn) {
         add_amplitude_to_fit_parameter_list(gp(rn + "a_spn1"), gp(rn + "a_mss_"), gp(rn + "a_wdt_"), gp(rn + "p_rho_"), gp(rn + "a_frc1"), gp(rn + "p_phi1"), gp(rn + "a_typ_"));
         add_amplitude_to_fit_parameter_list(gp(rn + "a_spn2"), gp(rn + "a_mss_"), gp(rn + "a_wdt_"), gp(rn + "p_rho_"), gp(rn + "a_frc2"), gp(rn + "p_phi2"), gp(rn + "a_typ_"));
     }
-}
-void FitParametersOfPhiKK::act_resonance(string rn)
-{
-    if (rn.find("f00980") != string::npos) act_resonance_980(rn);
-    else if (rn.find("f0") != string::npos) act_resonance_f0(rn);
-    else if (rn.find("f2") != string::npos) act_resonance_f2(rn);
-    else if (rn.find("1p") != string::npos) act_resonance_1p(rn);
-    else {
-        cout << "Not know how to act resonance " << rn << endl;
-        exit(1);
-    }
-    //if (rn.find("1m") != string::npos) {
-    //    act_resonance_1m(rn);
-    //    continue;
-    //}
-
 }
 void FitParametersOfPhiKK::act_resonance_f0(string rn) {
     if (binding_phi) {

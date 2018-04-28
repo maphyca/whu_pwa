@@ -47,28 +47,41 @@ int main()
 
     ((FitParametersOfPhiPP*)parameter_list_set[phipp_list_index])->act_resonance_980("f00980");
     ((FitParametersOfPhiPP*)parameter_list_set[phipp_list_index])->act_resonance_1p("1p1800");
-    ((FitParametersOfPhiPP*)parameter_list_set[phipp_list_index])->act_resonance_1m("1m1800");
-    ((FitParametersOfPhiKK*)parameter_list_set[phikk_list_index])->act_resonance_f0("f01000");
-    ((FitParametersOfPhiKK*)parameter_list_set[phikk_list_index])->act_resonance_980("f00980");
-    ((FitParametersOfPhiKK*)parameter_list_set[phikk_list_index])->act_resonance_f2("f21270");
+    //((FitParametersOfPhiPP*)parameter_list_set[phipp_list_index])->act_resonance_1m("1m1800");
+    //((FitParametersOfPhiKK*)parameter_list_set[phikk_list_index])->act_resonance_f0("f01000");
+    //((FitParametersOfPhiKK*)parameter_list_set[phikk_list_index])->act_resonance_980("f00980");
+    //((FitParametersOfPhiKK*)parameter_list_set[phikk_list_index])->act_resonance_f2("f21270");
 
     vector<int> parameter_list_for_minuit(end_list_index);
     for(unsigned i = 0; i < parameter_list_set.size(); i++) {
         if (parameter_list_set[i] == NULL) continue;
         parameter_list_set[i]->remap_local_mapping_for_minuit(parameter_list_for_minuit);
+        parameter_list_set[i]->create_category_tags();
+        parameter_list_set[i]->create_minuit_mapping();
+    }
+    for(unsigned i = 0; i < parameter_list_set.size(); i++) {
+        if (parameter_list_set[i] == NULL) continue;
+        int _id = 0;
+        for(int j = start_category; j < end_category; j++)
+        {
+            for(unsigned k = 0; k < parameter_list_set[i]->get_local_fit_parameter_mapping()[j].size(); k++)
+            {
+              cout << FitParametersInterface::get_my_parameter_table()[parameter_list_for_minuit[parameter_list_set[i]->get_minuit_mapping()[_id++]]].get_name() << " == " << FitParametersInterface::get_my_parameter_table()[parameter_list_for_minuit[parameter_list_set[i]->get_local_fit_parameter_mapping()[j][k]]].get_name() << endl;
+            }
+        }
     }
     //FitParametersInterface::information_of_parameter_list_sent_to_minuit();
     //
-    parameter_list_set[phipp_list_index]->shape_of_mapping();
-    parameter_list_set[phipp_list_index]->shape_of_local_mapping(parameter_list_for_minuit);
-    parameter_list_set[phikk_list_index]->shape_of_mapping();
-    parameter_list_set[phikk_list_index]->shape_of_local_mapping(parameter_list_for_minuit);
-    exit(1);
+    //parameter_list_set[phipp_list_index]->shape_of_mapping();
+    //parameter_list_set[phipp_list_index]->shape_of_local_mapping(parameter_list_for_minuit);
+    //parameter_list_set[phikk_list_index]->shape_of_mapping();
+    //parameter_list_set[phikk_list_index]->shape_of_local_mapping(parameter_list_for_minuit);
+    //exit(1);
 
 
 
 
-    PWAFcn my_pwa_fcn(data_set, parameter_list_set);
+    PWAFcn my_pwa_fcn(data_set, parameter_list_set, parameter_list_for_minuit.size());
 
     //FitParametersInterface::information_of_parameter_list_sent_to_minuit();
     return 0;

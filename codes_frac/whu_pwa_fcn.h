@@ -21,16 +21,19 @@ namespace ROOT {
             public:
 
                 //PWAFcn(std::vector<DataObject*>& data_set, FitParametersInterface **parameter_list_set) :
-                PWAFcn(std::vector<DataObject*>& data_set, std::vector<AmplitudeMethodWithFitParametersInterface*>& parameter_list_set) :
+                PWAFcn(std::vector<DataObject*>& data_set, std::vector<AmplitudeMethodWithFitParametersInterface*>& parameter_list_set, int number_of_parameters) :
                     data_set_(data_set),
-                    parameter_list_set_(parameter_list_set)
+                    parameter_list_set_(parameter_list_set),
+                    number_of_parameters_(number_of_parameters)
             {
-                for(int i = 0; i < end_data_object_index; i++) {
-                    std::cout << data_set_[i]->dat_file_name() << std::endl;
-                    std::cout << data_set_[i]->number_of_events() << std::endl;
+                //for(int i = 0; i < end_data_object_index; i++) {
+                //    std::cout << data_set_[i]->dat_file_name() << std::endl;
+                //    std::cout << data_set_[i]->number_of_events() << std::endl;
+                //}
+                for(int i = 0; i < end_list_index; i++) {
+                    if (parameter_list_set_[i] == NULL) continue;
+                    parameter_list_set_[i]->shape_of_mapping();
                 }
-                ((FitParametersOfPhiPP*)parameter_list_set_[phipp_list_index])->shape_of_mapping();
-                ((FitParametersOfPhiKK*)parameter_list_set_[phikk_list_index])->shape_of_mapping();
 
             };
 
@@ -48,6 +51,9 @@ namespace ROOT {
                 std::vector<DataObject*> data_set_ ;
                 std::vector<AmplitudeMethodWithFitParametersInterface*> parameter_list_set_;
                 double fErrorDef;
+                unsigned number_of_parameters_;
+                std::vector<std::vector<int> > tag_list_;
+                std::vector<std::vector<int> > par_list_;
         };
 
     }  // namespace Minuit2
