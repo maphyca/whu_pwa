@@ -107,32 +107,56 @@ void FitParametersInterface::information_of_parameter_table()
 //        cout << endl;
 //    }
 //}
-int AmplitudeMethodWithFitParametersInterface::number_of_amplitudes() {
-    int _num = 0;
-    for(int i = start_category; i < end_category; i++)
-    {
-        _num += fit_parameter_mapping_[i].size();
+unsigned AmplitudeMethodWithFitParametersInterface::number_of_amplitudes() {
+    return fit_parameter_mapping_[0].size();
+    //int _num = 0;
+    //for(int i = 0; i < end_category; i++)
+    //{
+    //    _num += fit_parameter_mapping_[i].size();
+    //}
+    //return _num;
+}
+void AmplitudeMethodWithFitParametersInterface::shape_of_minuit_parameters()
+{
+    for(int i = 0; i < end_category; i++) {
+        cout << i << " ";
+        for(unsigned j = 0; j < number_of_amplitudes(); j++) {
+            cout << minuit_parameters_[i + end_category * j] << " ";
+
+        }
+        cout << endl;
     }
-    return _num;
+}
+void AmplitudeMethodWithFitParametersInterface::assignment_of_minuit_parameters_from_par(const std::vector<double> &par)
+{
+    for(unsigned j = 0; j < minuit_parameters_.size(); j++)
+    {
+        if(minuit_mapping_[j] == kBlank)
+            minuit_parameters_[j] = kParameterLimit;
+        else
+            minuit_parameters_[j] = par[minuit_mapping_[j]];
+    }
+
 }
 void AmplitudeMethodWithFitParametersInterface::create_minuit_mapping()
 {
-    minuit_mapping_.resize(number_of_amplitudes());
+    minuit_mapping_.resize(number_of_amplitudes() * end_category);
     int _id = 0;
-    for(int j = start_category; j < end_category; j++)
+    for(unsigned k = 0; k < number_of_amplitudes(); k++)
     {
-        for(unsigned k = 0; k < local_fit_parameter_mapping_[j].size(); k++)
+        for(int j = 0; j < end_category; j++)
         {
             minuit_mapping_[_id++] = local_fit_parameter_mapping_[j][k];
         }
     }
+    minuit_parameters_.resize(number_of_amplitudes() * end_category);
 }
 
 void AmplitudeMethodWithFitParametersInterface::initialize_fit_parameter_mapping()
 {
     fit_parameter_mapping_.resize(end_category);
     local_fit_parameter_mapping_.resize(end_category);
-    for(int i = start_category; i < end_category; i++) {
+    for(int i = 0; i < end_category; i++) {
         fit_parameter_mapping_[i].resize(0);
         local_fit_parameter_mapping_[i].resize(0);
     }
@@ -148,31 +172,37 @@ int AmplitudeMethodWithFitParametersInterface::position_in_parameter_list_for_mi
 }
 void AmplitudeMethodWithFitParametersInterface::remap_local_mapping_for_minuit(std::vector<int>& parameter_list_for_minuit)
 {
-    for(int i = start_category; i < end_category; i++) {
+    for(int i = 0; i < end_category; i++) {
         local_fit_parameter_mapping_[i].resize(fit_parameter_mapping_[i].size());
         for(unsigned j = 0; j < fit_parameter_mapping_[i].size(); j++) {
-            local_fit_parameter_mapping_[i][j] = position_in_parameter_list_for_minuit(fit_parameter_mapping_[i][j], parameter_list_for_minuit);
+            if(fit_parameter_mapping_[i][j] == kBlank)
+                local_fit_parameter_mapping_[i][j] = kBlank;
+            else
+                local_fit_parameter_mapping_[i][j] = position_in_parameter_list_for_minuit(fit_parameter_mapping_[i][j], parameter_list_for_minuit);
         }
     }
 }
-void AmplitudeMethodWithFitParametersInterface::create_category_tags()
-{
-    category_tags_.resize(end_category);
-    category_tags_[start_category] = 0;
-    for(int i = start_category + 1; i < end_category; i++)
-    {
-        category_tags_[i] = category_tags_[i - 1] + local_fit_parameter_mapping_[i - 1].size();
-    }
-}
+//void AmplitudeMethodWithFitParametersInterface::create_category_tags()
+//{
+//    category_tags_.resize(end_category);
+//    category_tags_[start_category] = 0;
+//    for(int i = start_category + 1; i < end_category; i++)
+//    {
+//        category_tags_[i] = category_tags_[i - 1] + local_fit_parameter_mapping_[i - 1].size();
+//    }
+//}
 void AmplitudeMethodWithFitParametersInterface::shape_of_mapping()
 {
     cout << "The parameters transported to minuit2: " << endl;
-    for(int i = start_category; i < end_category; i++)
+    for(int i = 0; i < end_category; i++)
     {
         cout << i << " ";
         for(unsigned j = 0; j < fit_parameter_mapping_[i].size(); j++)
         {
-            cout << my_parameter_table_[fit_parameter_mapping_[i][j]].get_name() << " ";
+            if(fit_parameter_mapping_[i][j] == kBlank)
+                cout << kBlankParameter << " ";
+            else
+                cout << my_parameter_table_[fit_parameter_mapping_[i][j]].get_name() << " ";
         }
         cout << endl;
     }
@@ -180,12 +210,15 @@ void AmplitudeMethodWithFitParametersInterface::shape_of_mapping()
 void AmplitudeMethodWithFitParametersInterface::shape_of_local_mapping(vector<int> &parameter_list_for_minuit)
 {
     cout << "The parameters for local mapping transported to minuit2: " << endl;
-    for(int i = start_category; i < end_category; i++)
+    for(int i = 0; i < end_category; i++)
     {
         cout << i << " ";
         for(unsigned j = 0; j < fit_parameter_mapping_[i].size(); j++)
         {
-            cout << my_parameter_table_[parameter_list_for_minuit[local_fit_parameter_mapping_[i][j]]].get_name() << " ";
+            if(local_fit_parameter_mapping_[i][j] == kBlank)
+                cout << kBlankParameter << " ";
+            else
+                cout << my_parameter_table_[parameter_list_for_minuit[local_fit_parameter_mapping_[i][j]]].get_name() << " ";
         }
         cout << endl;
     }
@@ -193,10 +226,27 @@ void AmplitudeMethodWithFitParametersInterface::shape_of_local_mapping(vector<in
 bool AmplitudeMethodWithFitParametersInterface::already_active(string resonance_name)
 {
     for(unsigned i = 0; i < resonance_name_list_.size(); i++) {
+        cout << resonance_name << " has been already activated!" << endl;
         if (resonance_name == resonance_name_list_[i]) return true;
     }
     resonance_name_list_.push_back(resonance_name);
     return false;
+}
+void AmplitudeMethodWithFitParametersInterface::fill_blank_of_fit_parameter_mapping()
+{
+    unsigned _max_length(0);
+    for(int i = 0; i < end_category; i++) {
+        if(_max_length < fit_parameter_mapping_[i].size()) _max_length = fit_parameter_mapping_[i].size();
+    }
+    for(int i = 0; i < end_category; i++) {
+        if(_max_length > fit_parameter_mapping_[i].size()) fit_parameter_mapping_[i].push_back(kBlank);
+    }
+    for(int i = 0; i < end_category; i++) {
+        if(_max_length != fit_parameter_mapping_[i].size()) {
+            cout << "Fails filling blannk of fit parameter mapping!!!!" << endl;
+            exit(1);
+        }
+    }
 }
 void AmplitudeMethodWithFitParametersInterface::add_amplitude_to_fit_parameter_list(const MyParameter& spin, const MyParameter& mass, const MyParameter& width, const MyParameter& rho, const MyParameter& frac, const MyParameter& phi, const MyParameter& propType)
 {
@@ -207,6 +257,7 @@ void AmplitudeMethodWithFitParametersInterface::add_amplitude_to_fit_parameter_l
     fit_parameter_mapping_[frac_category].push_back(position_in_my_parameter_table(frac));
     fit_parameter_mapping_[phi_category].push_back(position_in_my_parameter_table(phi));
     fit_parameter_mapping_[propType_category].push_back(position_in_my_parameter_table(propType));
+    fill_blank_of_fit_parameter_mapping();
 }
 void AmplitudeMethodWithFitParametersInterface::add_amplitude1680_to_fit_parameter_list(const MyParameter& spin, const MyParameter& mass1680, const MyParameter& mass2, const MyParameter& width, const MyParameter& g1, const MyParameter& g2, const MyParameter& rho, const MyParameter& frac, const MyParameter& phi, const MyParameter& propType)
 {
@@ -220,7 +271,7 @@ void AmplitudeMethodWithFitParametersInterface::add_amplitude1680_to_fit_paramet
     fit_parameter_mapping_[frac_category].push_back(position_in_my_parameter_table(frac));
     fit_parameter_mapping_[phi_category].push_back(position_in_my_parameter_table(phi));
     fit_parameter_mapping_[propType_category].push_back(position_in_my_parameter_table(propType));
-
+    fill_blank_of_fit_parameter_mapping();
 }
 void AmplitudeMethodWithFitParametersInterface::add_amplitude600_to_fit_parameter_list(const MyParameter& spin, const MyParameter& mass, const MyParameter& b1, const MyParameter& b2, const MyParameter& b3, const MyParameter& b4, const MyParameter& b5, const MyParameter& rho, const MyParameter& frac, const MyParameter& phi, const MyParameter& propType)
 {
@@ -235,6 +286,7 @@ void AmplitudeMethodWithFitParametersInterface::add_amplitude600_to_fit_paramete
     fit_parameter_mapping_[frac_category].push_back(position_in_my_parameter_table(frac));
     fit_parameter_mapping_[phi_category].push_back(position_in_my_parameter_table(phi));
     fit_parameter_mapping_[propType_category].push_back(position_in_my_parameter_table(propType));
+    fill_blank_of_fit_parameter_mapping();
 }
 void AmplitudeMethodWithFitParametersInterface::add_amplitude980_to_fit_parameter_list(const MyParameter& spin, const MyParameter& mass, const MyParameter& g1, const MyParameter& g2, const MyParameter& rho, const MyParameter& frac, const MyParameter&phi, const MyParameter& propType)
 {
@@ -246,6 +298,7 @@ void AmplitudeMethodWithFitParametersInterface::add_amplitude980_to_fit_paramete
     fit_parameter_mapping_[frac_category].push_back(position_in_my_parameter_table(frac));
     fit_parameter_mapping_[phi_category].push_back(position_in_my_parameter_table(phi));
     fit_parameter_mapping_[propType_category].push_back(position_in_my_parameter_table(propType));
+    fill_blank_of_fit_parameter_mapping();
 }
 void FitParametersOfPhiPP::act_resonance(string rn)
 {
@@ -388,5 +441,12 @@ void FitParametersOfPhiKK::act_resonance_f2(string rn) {
         add_amplitude_to_fit_parameter_list(gp(rn + "a_spn3"), gp(rn + "a_mss_"), gp(rn + "a_wdt_"), gp(rn + "k_rho_"), gp(rn + "a_frc3"), gp(rn + "k_phi3"), gp(rn + "a_typ_"));
         add_amplitude_to_fit_parameter_list(gp(rn + "a_spn4"), gp(rn + "a_mss_"), gp(rn + "a_wdt_"), gp(rn + "k_rho_"), gp(rn + "a_frc4"), gp(rn + "k_phi4"), gp(rn + "a_typ_"));
         add_amplitude_to_fit_parameter_list(gp(rn + "a_spn5"), gp(rn + "a_mss_"), gp(rn + "a_wdt_"), gp(rn + "k_rho_"), gp(rn + "a_frc5"), gp(rn + "k_phi5"), gp(rn + "a_typ_"));
+    }
+}
+void AmplitudeMethodWithFitParametersInterface::act_resonances(vector<string> & resonance_list)
+{
+    for(unsigned i = 0; i < resonance_list.size(); i++) {
+        if (!already_active(resonance_list[i]))
+            act_resonance(resonance_list[i]);
     }
 }

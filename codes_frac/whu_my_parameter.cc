@@ -1,4 +1,5 @@
 #include "whu_my_parameter.h"
+#include "whu_constants_and_definitions.h"
 #include <iostream>
 
 using namespace std;
@@ -30,7 +31,7 @@ MyParameter::MyParameter(string the_name, double the_value)
     error = 0;
     uplimit = the_value;
     lowlimit = the_value;
-    type = 0;
+    type = fixxd;
 }
 MyParameter::MyParameter(string the_name, double the_value, double the_error)
 {
@@ -39,7 +40,7 @@ MyParameter::MyParameter(string the_name, double the_value, double the_error)
     error = the_error;
     uplimit = +parameter_limit;
     lowlimit = -parameter_limit;
-    type = 1;
+    type = freed;
 }
 MyParameter::MyParameter(string the_name, double the_value, double the_error, double the_lowlimit, double the_uplimit)
 {
@@ -49,11 +50,11 @@ MyParameter::MyParameter(string the_name, double the_value, double the_error, do
     lowlimit = the_lowlimit;
     uplimit = the_uplimit;
     if (lowlimit > -parameter_limit && uplimit < +parameter_limit) {
-        type = 2; // 设置了上下界
+        type = both_limits; // 设置了上下界
     } else if (lowlimit > -parameter_limit) {
-        type = 3; // 设置了下界
+        type = only_lowlimit; // 设置了下界
     } else if (uplimit < +parameter_limit) {
-        type = 4; // 设置了上界
+        type = only_uplimit; // 设置了上界
     } else {
         cout << "Formatting parameter " << name << " failed as limits cannot be comparable with 1e20!!!" << endl;
         exit(1);

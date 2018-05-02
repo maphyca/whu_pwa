@@ -34,7 +34,6 @@ namespace ROOT {
                     if (parameter_list_set_[i] == NULL) continue;
                     parameter_list_set_[i]->shape_of_mapping();
                 }
-
             };
 
                 ~PWAFcn() {}
@@ -50,10 +49,9 @@ namespace ROOT {
                 //FitParametersInterface **parameter_list_set_;
                 std::vector<DataObject*> data_set_ ;
                 std::vector<AmplitudeMethodWithFitParametersInterface*> parameter_list_set_;
-                double fErrorDef;
                 unsigned number_of_parameters_;
-                std::vector<std::vector<int> > tag_list_;
-                std::vector<std::vector<int> > par_list_;
+                double fErrorDef;
+
         };
 
     }  // namespace Minuit2
