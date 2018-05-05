@@ -11,6 +11,10 @@ const int kBlank = -1;
 const std::string kBlankParameter = "xxxxxxxxxxxx";
 const double kParameterLimit = 1e30;
 
+const double rk=0.493677;
+const double rp=0.139556995;
+
+
 enum ParameterCategory {
     //start_category,
     spin_category, mass_category, mass2_category, width_category,

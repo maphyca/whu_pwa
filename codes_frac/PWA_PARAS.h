@@ -12,7 +12,5 @@ typedef struct {
     Double_t w1p12_3[2],w1p13_3[2],w1p12_4[2],w1p13_4[2];
     Double_t w1m12[2],w1m13[2];
 } PWA_PARAS;
-
-
 #endif
 
