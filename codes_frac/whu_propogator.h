@@ -1,156 +1,204 @@
 #ifndef PROPOGATOR_HH
 #define PROPOGATOR_HH
 
-#include <iostream>
-#include <fstream>
 #include <math.h>
-#include "TNamed.h"
-
-//#if defined(USEROOT) || defined(__CINT__)
-//#include "RooComplex.h"
-//#else
-//#include "RooFitCore/RooComplex.hh"
-//#endif
-
-#include "DPFPWAPoint.h"
 #include "TComplex.h"
+#include "data_obj.h"
 
 using namespace std;
 
-class Propogator {
+class CPUWaveFunc : public DataObject {
 
-public:
-  Propogator() {};
+    public:
+        //CPUWaveFunc() {};
+        CPUWaveFunc(TString dat_file_name, DPFPWAPoint *pwa_point)
+            : DataObject(dat_file_name, pwa_point)
+        {};
+        CPUWaveFunc(TString dat_file_name, TString weight_file_name, DPFPWAPoint *pwa_point)
+        : DataObject(dat_file_name, weight_file_name, pwa_point)
+        {};
 
-  virtual ~Propogator() {}
-
-
-  TComplex cro(Double_t sx, Double_t am1, Double_t am2)const;
-  TComplex propogator980(Double_t mass, Double_t g11, Double_t g22,Double_t sx)const;
-  TComplex pip(Double_t sx)const;
-  TComplex propogator600(Double_t mass, Double_t b1, Double_t b2, Double_t b3, Double_t b4, Double_t b5, Double_t sx)const;
-  TComplex propogator(Double_t mass,Double_t width,Double_t sx) const;
-  TComplex propogator1270(Double_t mass,Double_t width,Double_t sx) const;
-
-  void cpu_propogator(double, double, vector<TComplex> &, const vector<double>&, int);
-  void cpu_propogator980(double, double, double, vector<TComplex> &, const vector<double>&, int);
-  void cpu_propogator600(double, double, double, double, double, double, vector<TComplex> &, const vector<double>&, int);
-  void cpu_propogator1270(double, double, vector<TComplex> &, const vector<double>&, int);
-
-void cpu_cast_spin11(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin12(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin13(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin14(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin111(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin191(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin192(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin1(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin2(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin21(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin22(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin23(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin24(
-        vector<vector<TComplex> > &fCF,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        int);
-void cpu_cast_spin25(
-        vector<vector<TComplex> > &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<double> &,
-        const vector<vector<double> > &,
-        int);
+        virtual ~CPUWaveFunc() {}
 
 
-private:
+        TComplex cro(
+                double,
+                double,
+                double) const;
+        TComplex propogator980(
+                double,
+                double,
+                double,
+                double) const;
+        TComplex pip(
+                double) const;
+        TComplex propogator600(
+                double,
+                double,
+                double,
+                double,
+                double,
+                double,
+                double) const;
+        TComplex propogator(
+                double,
+                double,
+                double) const;
+        TComplex propogator1270(
+                double,
+                double,
+                double) const;
 
-//  DPFPWAPoint* _dp;
+        void cpu_propogator(
+                double,
+                double,
+                vector<TComplex> &,
+                const vector<double>&,
+                int);
+        void cpu_propogator980(
+                double,
+                double,
+                double,
+                vector<TComplex> &,
+                const vector<double>&,
+                int);
+        void cpu_propogator600(
+                double,
+                double,
+                double,
+                double,
+                double,
+                double,
+                vector<TComplex> &,
+                const vector<double>&,
+                int);
+        void cpu_propogator1270(
+                double,
+                double,
+                vector<TComplex> &,
+                const vector<double>&,
+                int);
 
-//  ClassDef(Propogator,1)
+        void cpu_cast_spin11(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin12(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin13(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin14(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin111(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin191(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin192(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin1(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin2(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin21(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin22(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin23(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin24(
+                vector<vector<TComplex> > &fCF,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                int);
+        void cpu_cast_spin25(
+                vector<vector<TComplex> > &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<double> &,
+                const vector<vector<double> > &,
+                int);
+
+    //vector<vector<double> > wu,w0p22,ak23w,w2p2,w2p1;
+    //vector<vector<double> > w2p3,w2p4,w2p5;
+    //vector<double> b2qf2xx,b4qjvf2,b2qjv2,b2qjv3,b2qbv2,b2qbv3,b1qjv2,b1qjv3,b1qbv2,b1qbv3,b1q2r23;
+    //vector<double> sv,s23,sv2,sv3;
+    //vector<vector<double> > wpf22;
+    //vector<double> b2qjvf2;
+    //vector<vector<double> > w1p12_1,w1p13_1,w1p12_2,w1p13_2;
+    //vector<vector<double> > w1p12_3,w1p13_3,w1p12_4,w1p13_4;
+    //vector<vector<double> > w1m12,w1m13;
+
+    private:
+
 };
 
 #endif

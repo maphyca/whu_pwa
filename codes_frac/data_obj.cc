@@ -68,12 +68,12 @@ void DataObject::parameters_vector_resize()
     w1m12.resize(number_of_events_, vector<double>(2));
     w1m13.resize(number_of_events_, vector<double>(2));
 }
-void DataObject::read_events_and_convert_to_pwa_paras() {
+void DataObject::read_events() {
     initialize_mcp();
     load_mcp_from_dat_file();
     cout << "There are " << number_of_events_ << " events in " << dat_file_name_ << std::endl;
-    convert_mcp_to_pwa_paras();
-    cout << "convert data in " << dat_file_name_ << " to PWA_PARAS format." << endl;
+    //convert_mcp_to_pwa_paras();
+    //cout << "convert data in " << dat_file_name_ << " to PWA_PARAS format." << endl;
 
 }
 void DataObject::read_weight_file() {

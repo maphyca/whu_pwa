@@ -16,7 +16,7 @@ class DataObject {
         number_of_events_ = count_lines() / 5;
         cout << "lines = " << number_of_events_ << endl;
         parameters_vector_resize();
-        read_events_and_convert_to_pwa_paras();
+        read_events();
         cout << "begin cpu convert mcp to pwa paras!!!" << endl;
         cpu_convert_mcp_to_pwa_paras();
         //if (!check_integraty()) {
@@ -32,7 +32,8 @@ class DataObject {
     {
         number_of_events_ = count_lines() / 5;
         parameters_vector_resize();
-        read_events_and_convert_to_pwa_paras();
+        read_events();
+        convert_mcp_to_pwa_paras();
         read_weight_file();
     };
         ~DataObject();
@@ -53,7 +54,7 @@ class DataObject {
         void cpu_convert_mcp_to_pwa_paras();
         bool check_integraty();
 
-    private:
+    protected:
         double **mcp1; // 用来读取格式化的四动量和权重数
         double **mcp2;
         double **mcp3;
@@ -71,7 +72,7 @@ class DataObject {
         void initialize_mcp();
         int  count_lines();
         void read_weight_file();
-        void read_events_and_convert_to_pwa_paras();
+        void read_events();
 
     vector<vector<double> > wu,w0p22,ak23w,w2p2,w2p1;
     vector<vector<double> > w2p3,w2p4,w2p5;
