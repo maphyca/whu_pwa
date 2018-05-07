@@ -1,6 +1,7 @@
 #include "whu_propogator.h"
 #include "TComplex.h"
 #include "whu_constants_and_definitions.h"
+#include "DPFAngular.h"
 
 //const double rk=0.493677;
 //const double rp=0.139556995;
@@ -139,8 +140,8 @@ void CPUWaveFunc::cpu_propogator1270(
 }
 void CPUWaveFunc::cpu_cast_spin11(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
-        const vector<double> &crp11,
+        const vector<TComplex> &crp1,
+        const vector<TComplex> &crp11,
         const vector<vector<double> > &w1p12_1,
         const vector<vector<double> > &w1p13_1,
         int vec_size)
@@ -153,8 +154,8 @@ void CPUWaveFunc::cpu_cast_spin11(
 }
 void CPUWaveFunc::cpu_cast_spin12(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
-        const vector<double> &crp11,
+        const vector<TComplex> &crp1,
+        const vector<TComplex> &crp11,
         const vector<double> &b2qbv2,
         const vector<double> &b2qbv3,
         const vector<vector<double> > &w1p12_2,
@@ -171,8 +172,8 @@ void CPUWaveFunc::cpu_cast_spin12(
 }
 void CPUWaveFunc::cpu_cast_spin13(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
-        const vector<double> &crp11,
+        const vector<TComplex> &crp1,
+        const vector<TComplex> &crp11,
         const vector<double> &b2qjv2,
         const vector<double> &b2qjv3,
         const vector<vector<double> > &w1p12_3,
@@ -189,8 +190,8 @@ void CPUWaveFunc::cpu_cast_spin13(
 }
 void CPUWaveFunc::cpu_cast_spin14(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
-        const vector<double> &crp11,
+        const vector<TComplex> &crp1,
+        const vector<TComplex> &crp11,
         const vector<double> &b2qbv2,
         const vector<double> &b2qjv2,
         const vector<double> &b2qbv3,
@@ -211,8 +212,8 @@ void CPUWaveFunc::cpu_cast_spin14(
 }
 void CPUWaveFunc::cpu_cast_spin111(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
-        const vector<double> &crp11,
+        const vector<TComplex> &crp1,
+        const vector<TComplex> &crp11,
         const vector<double> &b1qjv2,
         const vector<double> &b1qbv2,
         const vector<double> &b1qjv3,
@@ -231,8 +232,8 @@ void CPUWaveFunc::cpu_cast_spin111(
 }
 void CPUWaveFunc::cpu_cast_spin191(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
-        const vector<double> &crp11,
+        const vector<TComplex> &crp1,
+        const vector<TComplex> &crp11,
         const vector<double> &b1q2r23,
         const vector<vector<double> > &ak23w,
         int vec_size)
@@ -246,8 +247,8 @@ void CPUWaveFunc::cpu_cast_spin191(
 }
 void CPUWaveFunc::cpu_cast_spin192(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
-        const vector<double> &crp11,
+        const vector<TComplex> &crp1,
+        const vector<TComplex> &crp11,
         const vector<double> &b1q2r23,
         const vector<double> &b2qjvf2,
         const vector<vector<double> > &wpf22,
@@ -263,7 +264,7 @@ void CPUWaveFunc::cpu_cast_spin192(
 }
 void CPUWaveFunc::cpu_cast_spin1(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
+        const vector<TComplex> &crp1,
         const vector<vector<double> > &wu,
         int vec_size)
 {
@@ -275,7 +276,7 @@ void CPUWaveFunc::cpu_cast_spin1(
 }
 void CPUWaveFunc::cpu_cast_spin2(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
+        const vector<TComplex> &crp1,
         const vector<double> &b2qjvf2,
         const vector<vector<double> > &w0p22,
         int vec_size)
@@ -289,7 +290,7 @@ void CPUWaveFunc::cpu_cast_spin2(
 }
 void CPUWaveFunc::cpu_cast_spin21(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
+        const vector<TComplex> &crp1,
         const vector<double> &b2qf2xx,
         const vector<vector<double> > &w2p1,
         int vec_size)
@@ -303,7 +304,7 @@ void CPUWaveFunc::cpu_cast_spin21(
 }
 void CPUWaveFunc::cpu_cast_spin22(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
+        const vector<TComplex> &crp1,
         const vector<double> &b2qf2xx,
         const vector<double> &b2qjvf2,
         const vector<vector<double> > &w2p2,
@@ -319,7 +320,7 @@ void CPUWaveFunc::cpu_cast_spin22(
 }
 void CPUWaveFunc::cpu_cast_spin23(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
+        const vector<TComplex> &crp1,
         const vector<double> &b2qf2xx,
         const vector<double> &b2qjvf2,
         const vector<vector<double> > &w2p3,
@@ -336,7 +337,7 @@ void CPUWaveFunc::cpu_cast_spin23(
 }
 void CPUWaveFunc::cpu_cast_spin24(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
+        const vector<TComplex> &crp1,
         const vector<double> &b2qf2xx,
         const vector<double> &b2qjvf2,
         const vector<vector<double> > &w2p4,
@@ -352,7 +353,7 @@ void CPUWaveFunc::cpu_cast_spin24(
 }
 void CPUWaveFunc::cpu_cast_spin25(
         vector<vector<TComplex> > &fCF,
-        const vector<double> &crp1,
+        const vector<TComplex> &crp1,
         const vector<double> &b2qf2xx,
         const vector<double> &b4qjvf2,
         const vector<vector<double> > &w2p5,
@@ -365,4 +366,438 @@ void CPUWaveFunc::cpu_cast_spin25(
         fCF[i][0] = w2p5[i][0] * cw2p15;
         fCF[i][1] = w2p5[i][1] * cw2p15;
     }
+}
+void CPUWaveFunc::parameters_vector_resize()
+{
+    wu.resize(number_of_events_, vector<double>(4));
+    w0p22.resize(number_of_events_, vector<double>(4));
+    ak23w.resize(number_of_events_, vector<double>(4));
+    w2p2.resize(number_of_events_, vector<double>(4));
+    w2p1.resize(number_of_events_, vector<double>(4));
+    w2p3.resize(number_of_events_, vector<double>(4));
+    w2p4.resize(number_of_events_, vector<double>(4));
+    w2p5.resize(number_of_events_, vector<double>(4));
+    b2qf2xx.resize(number_of_events_, 0);
+    b4qjvf2.resize(number_of_events_, 0);
+    b2qjv2.resize(number_of_events_, 0);
+    b2qjv3.resize(number_of_events_, 0);
+    b2qbv2.resize(number_of_events_, 0);
+    b2qbv3.resize(number_of_events_, 0);
+    b1qjv2.resize(number_of_events_, 0);
+    b1qjv3.resize(number_of_events_, 0);
+    b1qbv2.resize(number_of_events_, 0);
+    b1qbv3.resize(number_of_events_, 0);
+    b1q2r23.resize(number_of_events_, 0);
+    sv.resize(number_of_events_, 0);
+    s23.resize(number_of_events_, 0);
+    sv2.resize(number_of_events_, 0);
+    sv3.resize(number_of_events_, 0);
+    wpf22.resize(number_of_events_, vector<double>(2));
+    b2qjvf2.resize(number_of_events_, 0);
+    w1p12_1.resize(number_of_events_, vector<double>(4));
+    w1p13_1.resize(number_of_events_, vector<double>(4));
+    w1p12_2.resize(number_of_events_, vector<double>(4));
+    w1p13_2.resize(number_of_events_, vector<double>(4));
+    w1p12_3.resize(number_of_events_, vector<double>(2));
+    w1p13_3.resize(number_of_events_, vector<double>(2));
+    w1p12_4.resize(number_of_events_, vector<double>(2));
+    w1p13_4.resize(number_of_events_, vector<double>(2));
+    w1m12.resize(number_of_events_, vector<double>(2));
+    w1m13.resize(number_of_events_, vector<double>(2));
+
+}
+void CPUWaveFunc::cpu_convert_mcp_to_pwa_paras() {
+    pwa_paras_.resize(0);
+    for(int i = 0; i < number_of_events_; i++) {
+        cpu_calculate0p(i);
+    }
+}
+void CPUWaveFunc::convert_mcp_to_pwa_paras() {
+    DPFAngular _amp;
+    _amp.setdp(_dp);
+    pwa_paras_.resize(0);
+    for(int i = 0; i < number_of_events_; i++) {
+        PWA_PARAS _the_pwa_paras;
+        _amp.calculate0p(
+                mcp1[i][0],mcp1[i][1],mcp1[i][2],mcp1[i][3],
+                mcp2[i][0],mcp2[i][1],mcp2[i][2],mcp2[i][3],
+                mcp3[i][0],mcp3[i][1],mcp3[i][2],mcp3[i][3],
+                mcp4[i][0],mcp4[i][1],mcp4[i][2],mcp4[i][3],
+                mcp5[i][0],mcp5[i][1],mcp5[i][2],mcp5[i][3],
+                _the_pwa_paras);
+        pwa_paras_.push_back(_the_pwa_paras);
+    }
+}
+bool CPUWaveFunc::check_integraty()
+{
+    for(int i = 0; i < number_of_events_; i++) {
+        if (pwa_paras_[i].b2qjvf2 != b2qjvf2[i]) return false;
+        if (pwa_paras_[i].w0p22[0] != w0p22[i][0]) return false;
+        if (pwa_paras_[i].w0p22[1] != w0p22[i][1]) return false;
+        if (pwa_paras_[i].ak23w[1] != ak23w[i][1]) return false;
+        if (pwa_paras_[i].w1m12[1] != w1m12[i][1]) return false;
+        if (pwa_paras_[i].w1m13[1] != w1m13[i][1]) return false;
+        if (pwa_paras_[i].w1m13[0] != w1m13[i][0]) return false;
+    }
+    return true;
+
+}
+void CPUWaveFunc::cpu_resize_intermediate_variables(int number_of_amplitudes)
+{
+    fCP.resize(number_of_amplitudes);
+    crp1.resize(number_of_amplitudes);
+    crp11.resize(number_of_amplitudes);
+    fCF.resize(number_of_amplitudes);
+    for(unsigned i = 0; i < crp1.size(); i++)
+    {
+        crp1[i].resize(number_of_events_);
+        crp11[i].resize(number_of_events_);
+        fCF[i].resize(number_of_events_, vector<TComplex>(4));
+    }
+}
+double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_back, int number_of_amplitudes)
+{
+    for(int i = 0; i < number_of_amplitudes; i++)
+    {
+        double rho0 = par[end_category * i + rho_category];
+        double frac0 = par[end_category * i + frac_category];
+        double phi0 = par[end_category * i + phi_category];
+        int spin_now = par[end_category * i + spin_category];
+        int propType_now = par[end_category * i + propType_category];
+        rho0 *= TMath::Exp(frac0);
+        fCP[i]=TComplex(rho0*TMath::Cos(phi0),rho0*TMath::Sin(phi0));
+
+        switch(propType_now)
+        {
+            case 1:
+                {
+                    double mass0 = par[end_category * i + mass_category];
+                    double width0 = par[end_category * i + width_category];
+                    cpu_propogator(
+                            mass0,
+                            width0,
+                            crp1[i],
+                            s23,
+                            number_of_events_);
+                }
+                break;
+                //	Flatte   Propagator Contribution
+            case 2:
+                {
+                    double mass980 = par[end_category * i + mass_category];
+                    double g10 = par[end_category * i + g1_category];
+                    double g20 = par[end_category * i + g2_category];
+                    cpu_propogator980(
+                            mass980,
+                            g10,
+                            g20,
+                            crp1[i],
+                            s23,
+                            number_of_events_);
+                }
+                break;
+                // sigma  Propagator Contribution
+            case 3:
+                {
+                    double mass600 = par[end_category * i + mass_category];
+                    double b10 = par[end_category * i + b1_category];
+                    double b20 = par[end_category * i + b2_category];
+                    double b30 = par[end_category * i + b3_category];
+                    double b40 = par[end_category * i + b4_category];
+                    double b50 = par[end_category * i + b5_category];
+                    cpu_propogator600(
+                            mass600,
+                            b10,
+                            b20,
+                            b30,
+                            b40,
+                            b50,
+                            crp1[i],
+                            s23,
+                            number_of_events_);
+                }
+                break;
+                // 1- or 1+  Contribution
+            case 4:
+                {
+                    double mass0 = par[end_category * i + mass_category];
+                    double width0 = par[end_category * i + width_category];
+                    cpu_propogator(
+                            mass0,
+                            width0,
+                            crp1[i],
+                            sv2,
+                            number_of_events_);
+                    cpu_propogator(
+                            mass0,
+                            width0,
+                            crp11[i],
+                            sv3,
+                            number_of_events_);
+                }
+                break;
+                //  phi(1650) f0(980) include flatte and ordinary Propagator joint Contribution
+            case 5:
+                {
+                    double mass980 = par[end_category * i + mass2_category];
+                    double g10 = par[end_category * i + g1_category];
+                    double g20 = par[end_category * i + g2_category];
+                    cpu_propogator980(
+                            mass980,
+                            g10,
+                            g20,
+                            crp1[i],
+                            sv,
+                            number_of_events_);
+                    double mass1680 = par[end_category * i + mass_category];
+                    double width1680 = par[end_category * i + width_category];
+                    cpu_propogator(
+                            mass1680,
+                            width1680,
+                            crp11[i],
+                            s23,
+                            number_of_events_);
+                }
+                break;
+            case 6:
+                {
+                    double mass0 = par[end_category * i + mass_category];
+                    double width0 = par[end_category * i + width_category];
+                    cpu_propogator1270(
+                            mass0,
+                            width0,
+                            crp1[i],
+                            s23,
+                            number_of_events_);
+                }
+            default :
+                cout << "Do not know how to deal with prop type " << propType_now << endl;
+                exit(1);
+                ;
+        }
+        switch(spin_now)
+        {
+            case 11:
+                //1+_1 contribution
+                cpu_cast_spin11(
+                        fCF[i],
+                        crp1[i],
+                        crp11[i],
+                        w1p12_1,
+                        w1p13_1,
+                        number_of_events_);
+                break;
+            case 12:
+                //1+_2 contribution
+                cpu_cast_spin12(
+                        fCF[i],
+                        crp1[i],
+                        crp1[i],
+                        b2qbv2,
+                        b2qbv3,
+                        w1p12_2,
+                        w1p13_2,
+                        number_of_events_);
+                break;
+            case 13:
+                //1+_3 contribution
+                cpu_cast_spin13(
+                        fCF[i],
+                        crp1[i],
+                        crp11[i],
+                        b2qjv2,
+                        b2qjv3,
+                        w1p12_3,
+                        w1p13_3,
+                        number_of_events_);
+                break;
+            case 14:
+                //1+_4 contribution
+                cpu_cast_spin14(
+                        fCF[i],
+                        crp1[i],
+                        crp11[i],
+                        b2qbv2,
+                        b2qjv2,
+                        b2qbv3,
+                        b2qjv3,
+                        w1p12_4,
+                        w1p13_4,
+                        number_of_events_);
+                break;
+            case 111:
+                //1-__1 contribution
+                cpu_cast_spin111(
+                        fCF[i],
+                        crp1[i],
+                        crp11[i],
+                        b1qjv2,
+                        b1qbv2,
+                        b1qjv3,
+                        b1qbv3,
+                        w1m12,
+                        w1m13,
+                        number_of_events_);
+                break;
+            case 191:
+                //phi(1650)f0(980)_1 contribution
+                cpu_cast_spin191(
+                        fCF[i],
+                        crp1[i],
+                        crp11[i],
+                        b1q2r23,
+                        ak23w,
+                        number_of_events_);
+                break;
+            case 192:
+                //phi(1650)f0(980)_2 contribution
+                cpu_cast_spin192(
+                        fCF[i],
+                        crp1[i],
+                        crp11[i],
+                        b1q2r23,
+                        b2qjvf2,
+                        wpf22,
+                        number_of_events_);
+                break;
+            case 1:
+                //01 contribution
+                cpu_cast_spin1(
+                        fCF[i],
+                        crp1[i],
+                        wu,
+                        number_of_events_);
+                break;
+            case 2:
+                //02 contribution
+                cpu_cast_spin2(
+                        fCF[i],
+                        crp1[i],
+                        b2qjvf2,
+                        w0p22,
+                        number_of_events_);
+                break;
+            case 21:
+                //21 contribution
+                cpu_cast_spin21(
+                        fCF[i],
+                        crp1[i],
+                        b2qf2xx,
+                        w2p1,
+                        number_of_events_);
+                break;
+            case 22:
+                //22 contribution
+                cpu_cast_spin22(
+                        fCF[i],
+                        crp1[i],
+                        b2qf2xx,
+                        b2qjvf2,
+                        w2p2,
+                        number_of_events_);
+                break;
+            case 23:
+                //23 contribution
+                cpu_cast_spin23(
+                        fCF[i],
+                        crp1[i],
+                        b2qf2xx,
+                        b2qjvf2,
+                        w2p3,
+                        number_of_events_);
+                break;
+            case 24:
+                //24 contribution
+                cpu_cast_spin24(
+                        fCF[i],
+                        crp1[i],
+                        b2qf2xx,
+                        b2qjvf2,
+                        w2p4,
+                        number_of_events_);
+                break;
+            case 25:
+                //25 contribution
+                cpu_cast_spin25(
+                        fCF[i],
+                        crp1[i],
+                        b2qf2xx,
+                        b4qjvf2,
+                        w2p5,
+                        number_of_events_);
+            default:
+                cout << "Cannot deal with this spin " << spin_now << endl;
+                exit(1);
+                ;
+        }
+    }
+    vector<double> cw1(number_of_events_, 0), cw2(number_of_events_, 0);
+    for(int _event = 0; _event < number_of_events_; _event++)
+    {
+        for(int i = 0; i < number_of_amplitudes; i++)
+        {
+            cw1[_event] = cw1[_event] + fCP[i] * fCF[i][_event][0];
+            cw2[_event] = cw2[_event] + fCP[i] * fCF[i][_event][1];
+        }
+        //value[_event] = (cw1[_event] * TComplex::Conjugate(cw1[_event]) + cw2[_event] * TComplex::Conjugate(cw2[_event]) ) / 2.0;
+    }
+    for(int _event = 0; _event < number_of_events_; _event++)
+    {
+        for(int i = 0; i < number_of_amplitudes; i++)
+        {
+            TComplex cw = fCP[i] * TComplex::Conjugate(fCP[i]);
+            double pa = cw.Re();
+            cw = TComplex(0, 0);
+            cw += fCF[i][_event][0] * TComplex::Conjugate(fCF[i][_event][0]) / 2.0;
+            cw += fCF[i][_event][1] * TComplex::Conjugate(fCF[i][_event][1]) / 2.0;
+            double fu = cw.Re();
+        //mlk[_event][i] = pa * fu;
+        }
+    }
+
+
+    for(int _event = 0; _event < number_of_events_; _event++)
+    {
+        double carry(0);
+        for(int i = 0; i < number_of_amplitudes; i++)
+        {
+            for(int j = 0; j < number_of_amplitudes; j++)
+            {
+                double pa, fu;
+                TComplex cw = fCP[i] * TComplex::Conjugate(fCP[j]);
+                if (i==j) pa = cw.Re();
+                else if(i<j) pa = 2*cw.Re();
+                else pa = 2 * cw.Im();
+
+                cw = TComplex(0,0);
+                for(int k=0; k < 2; k++)
+                {
+                    cw += fCF[i][_event][k] * TComplex::Conjugate(fCF[j][_event][k]) / 2.0;
+                }
+                if (i <= j) fu = cw.Re();
+                if (i > j) fu = -cw.Im();
+
+                carry += pa * fu;
+            }
+        }
+        //value[_event] = (carry <= 0) ? 1e-30 : carry;
+    }
+    for(int _event = 0; _event < number_of_events_; _event++)
+    {
+        for(int i = 0; i < number_of_amplitudes; i++)
+        {
+                TComplex cw = fCP[i] * TComplex::Conjugate(fCP[i]);
+                double pa = cw.Re();
+
+                cw = TComplex(0,0);
+                for(int k=0; k < 2; k++)
+                {
+                    cw += fCF[i][_event][k] * TComplex::Conjugate(fCF[i][_event][k]) / 2.0;
+                }
+                double fu = cw.Re();
+                //mlk[_event][i] = pa * fu;
+        }
+    }
+    return 0;
+
 }

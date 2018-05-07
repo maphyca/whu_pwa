@@ -150,6 +150,7 @@ void AmplitudeMethodWithFitParametersInterface::create_minuit_mapping()
         }
     }
     minuit_parameters_.resize(number_of_amplitudes() * end_category);
+    minuit_parameters_back_.resize(number_of_amplitudes() * end_category);
 }
 
 void AmplitudeMethodWithFitParametersInterface::initialize_fit_parameter_mapping()
