@@ -51,14 +51,6 @@ class CPUWaveFunc : public DataObject {
                 double) const;
         TComplex pip(
                 double) const;
-//        TComplex propogator600(
-//                double,
-//                double,
-//                double,
-//                double,
-//                double,
-//                double,
-//                double) const;
         TComplex propogator(
                 double,
                 double,
@@ -67,36 +59,6 @@ class CPUWaveFunc : public DataObject {
                 double,
                 double,
                 double) const;
-
-        void cpu_propogator(
-                double,
-                double,
-                vector<TComplex> &,
-                const vector<double>&,
-                int);
-        void cpu_propogator980(
-                double,
-                double,
-                double,
-                vector<TComplex> &,
-                const vector<double>&,
-                int);
-//        void cpu_propogator600(
-//                double,
-//                double,
-//                double,
-//                double,
-//                double,
-//                double,
-//                vector<TComplex> &,
-//                const vector<double>&,
-//                int);
-        void cpu_propogator1270(
-                double,
-                double,
-                vector<TComplex> &,
-                const vector<double>&,
-                int);
 
         void cpu_cast_spin801(
                 vector<vector<TComplex> > &,
@@ -145,21 +107,6 @@ class CPUWaveFunc : public DataObject {
                 const vector<vector<double> > &,
                 const vector<vector<double> > &,
                 int);
-//        void cpu_cast_spin191(
-//                vector<vector<TComplex> > &,
-//                const vector<TComplex> &,
-//                const vector<TComplex> &,
-//                const vector<double> &,
-//                const vector<vector<double> > &,
-//                int);
-//        void cpu_cast_spin192(
-//                vector<vector<TComplex> > &,
-//                const vector<TComplex> &,
-//                const vector<TComplex> &,
-//                const vector<double> &,
-//                const vector<double> &,
-//                const vector<vector<double> > &,
-//                int);
         void cpu_cast_spin101(
                 vector<vector<TComplex> > &,
                 const vector<TComplex> &,
@@ -219,6 +166,80 @@ class CPUWaveFunc : public DataObject {
 
         std::vector<PWA_PARAS> pwa_paras() const { return pwa_paras_; }
 
+        void cpu_propogator1(
+                double mass,
+                double width,
+                const vector<double> &sx,
+                const vector<double> &b2qjvf2,
+                const vector<vector<double> > &wu,
+                const vector<vector<double> > &w0p22,
+                vector<vector<TComplex> > &fCF0,
+                vector<vector<TComplex> > &fCF1,
+                int vec_size);
+        void cpu_propogator2(
+                double mass,
+                double g11,
+                double g22,
+                const vector<double> &sx,
+                const vector<double> &b2qjvf2,
+                const vector<vector<double> > &wu,
+                const vector<vector<double> > &w0p22,
+                vector<vector<TComplex> > &fCF0,
+                vector<vector<TComplex> > &fCF1,
+                int vec_size);
+        void cpu_propogator7(
+                double mass,
+                double width,
+                const vector<double> &sv2,
+                const vector<double> &sv3,
+                const vector<double> &b1qjv2,
+                const vector<double> &b1qbv2,
+                const vector<double> &b1qjv3,
+                const vector<double> &b1qbv3,
+                const vector<vector<double> > &w1m12,
+                const vector<vector<double> > &w1m13,
+                vector<vector<TComplex> > &fCF,
+                int vec_size);
+        void cpu_propogator8(
+                double mass,
+                double width,
+                const vector<double> &sv2,
+                const vector<double> &sv3,
+                const vector<double> &b2qbv2,
+                const vector<double> &b2qbv3,
+                const vector<double> &b2qjv2,
+                const vector<double> &b2qjv3,
+                const vector<vector<double> > &w1p12_1,
+                const vector<vector<double> > &w1p13_1,
+                const vector<vector<double> > &w1p12_2,
+                const vector<vector<double> > &w1p13_2,
+                const vector<vector<double> > &w1p12_3,
+                const vector<vector<double> > &w1p13_3,
+                const vector<vector<double> > &w1p12_4,
+                const vector<vector<double> > &w1p13_4,
+                vector<vector<TComplex> > &fCF0,
+                vector<vector<TComplex> > &fCF1,
+                vector<vector<TComplex> > &fCF2,
+                vector<vector<TComplex> > &fCF3,
+                int vec_size);
+        void cpu_propogator6(
+                double mass,
+                double width,
+                const vector<double> &sx,
+                const vector<double> &b2qf2xx,
+                const vector<double> &b2qjvf2,
+                const vector<double> &b4qjvf2,
+                const vector<vector<double> > &w2p1,
+                const vector<vector<double> > &w2p2,
+                const vector<vector<double> > &w2p3,
+                const vector<vector<double> > &w2p4,
+                const vector<vector<double> > &w2p5,
+                vector<vector<TComplex> > &fCF0,
+                vector<vector<TComplex> > &fCF1,
+                vector<vector<TComplex> > &fCF2,
+                vector<vector<TComplex> > &fCF3,
+                vector<vector<TComplex> > &fCF4,
+                int vec_size);
 
     private:
         std::vector<PWA_PARAS> pwa_paras_; // 利用四动量转换而来的中间变量

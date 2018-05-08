@@ -85,59 +85,184 @@ TComplex CPUWaveFunc::propogator1270(
     TComplex prop=gr/(sx-rm+ci*g1);
     return prop;
 }
-void CPUWaveFunc::cpu_propogator(
+void CPUWaveFunc::cpu_propogator1(
         double mass,
         double width,
-        vector<TComplex> &crp1,
         const vector<double> &sx,
+        const vector<double> &b2qjvf2,
+        const vector<vector<double> > &wu,
+        const vector<vector<double> > &w0p22,
+        vector<vector<TComplex> > &fCF0,
+        vector<vector<TComplex> > &fCF1,
         int vec_size)
 {
     for(int i = 0; i < vec_size; i++)
     {
-        crp1[i] = propogator(mass, width, sx[i]);
+        double crp1 = propogator(mass, width, sx[i]);
+        double cr0p11 = crp1 / b2qjvf2[i];
+
+        //01 contribution
+        fCF0[i][0] = wu[i][0] * crp1;
+        fCF0[i][1] = wu[i][1] * crp1;
+
+        //02 contribution
+        fCF1[i][0] = w0p22[i][0] * cr0p11;
+        fCF1[i][1] = w0p22[i][1] * cr0p11;
     }
+
 }
-void CPUWaveFunc::cpu_propogator980(
+void CPUWaveFunc::cpu_propogator2(
         double mass,
         double g11,
         double g22,
-        vector<TComplex> &crp1,
         const vector<double> &sx,
+        const vector<double> &b2qjvf2,
+        const vector<vector<double> > &wu,
+        const vector<vector<double> > &w0p22,
+        vector<vector<TComplex> > &fCF0,
+        vector<vector<TComplex> > &fCF1,
         int vec_size)
 {
     for(int i = 0; i < vec_size; i++)
     {
-        crp1[i] = propogator980(mass, g11, g22, sx[i]);
+        double crp1 = propogator980(mass, g11, g22, sx[i]);
+        double cr0p11 = crp1 / b2qjvf2[i];
+
+        //01 contribution
+        fCF0[i][0] = wu[i][0] * crp1;
+        fCF0[i][1] = wu[i][1] * crp1;
+
+        //02 contribution
+        fCF1[i][0] = w0p22[i][0] * cr0p11;
+        fCF1[i][1] = w0p22[i][1] * cr0p11;
     }
+
 }
-//void CPUWaveFunc::cpu_propogator600(
-//        double mass,
-//        double b1,
-//        double b2,
-//        double b3,
-//        double b4,
-//        double b5,
-//        vector<TComplex> &crp1,
-//        const vector<double> &sx,
-//        int vec_size)
-//{
-//    for(int i = 0; i < vec_size; i++)
-//    {
-//        crp1[i] = propogator600(mass, b1, b2, b3, b4, b5, sx[i]);
-//    }
-//}
-void CPUWaveFunc::cpu_propogator1270(
+void CPUWaveFunc::cpu_propogator7(
         double mass,
         double width,
-        vector<TComplex> &crp1,
-        const vector<double> &sx,
+        const vector<double> &sv2,
+        const vector<double> &sv3,
+        const vector<double> &b1qjv2,
+        const vector<double> &b1qbv2,
+        const vector<double> &b1qjv3,
+        const vector<double> &b1qbv3,
+        const vector<vector<double> > &w1m12,
+        const vector<vector<double> > &w1m13,
+        vector<vector<TComplex> > &fCF,
         int vec_size)
 {
     for(int i = 0; i < vec_size; i++)
     {
-        crp1[i] = propogator1270(mass, width, sx[i]);
+        double crp1 = propogator(mass, width, sv2[i]);
+        double crp11 = propogator(mass, width, sv3[i]);
+        double cr1m12_1 = crp1 / b1qjv2[i] / b1qbv2[i];
+        double cr1m13_1 = crp11 / b1qjv3[i] / b1qbv3[i];
+
+        //1-__1 contribution
+        fCF[i][0] = w1m12[i][0] * cr1m12_1 + w1m13[i][0] * cr1m13_1;
+        fCF[i][1] = w1m12[i][1] * cr1m12_1 + w1m13[i][1] * cr1m13_1;
     }
 }
+void CPUWaveFunc::cpu_propogator8(
+        double mass,
+        double width,
+        const vector<double> &sv2,
+        const vector<double> &sv3,
+        const vector<double> &b2qbv2,
+        const vector<double> &b2qbv3,
+        const vector<double> &b2qjv2,
+        const vector<double> &b2qjv3,
+        const vector<vector<double> > &w1p12_1,
+        const vector<vector<double> > &w1p13_1,
+        const vector<vector<double> > &w1p12_2,
+        const vector<vector<double> > &w1p13_2,
+        const vector<vector<double> > &w1p12_3,
+        const vector<vector<double> > &w1p13_3,
+        const vector<vector<double> > &w1p12_4,
+        const vector<vector<double> > &w1p13_4,
+        vector<vector<TComplex> > &fCF0,
+        vector<vector<TComplex> > &fCF1,
+        vector<vector<TComplex> > &fCF2,
+        vector<vector<TComplex> > &fCF3,
+        int vec_size)
+{
+    for(int i = 0; i < vec_size; i++)
+    {
+        double crp1 = propogator(mass, width, sv2[i]);
+        double crp11 = propogator(mass, width, sv3[i]);
+        double c1p12_12 = crp1 / b2qbv2[i];
+        double c1p13_12 = crp11 / b2qbv3[i];
+        double c1p12_13 = crp1 / b2qjv2[i];
+        double c1p13_13 = crp11 / b2qjv3[i];
+        double c1p12_14 = c1p12_12 / b2qjv2[i];
+        double c1p13_14 = c1p13_12 / b2qjv3[i];
+
+        // z 1+ 1
+        fCF0[i][0] = w1p12_1[i][0] * crp1 + w1p13_1[i][0] * crp11;
+        fCF0[i][1] = w1p12_1[i][1] * crp1 + w1p13_1[i][1] * crp11;
+
+        // z 1+ 2
+        fCF1[i][0] = w1p12_2[i][0] * c1p12_12 + w1p13_2[i][0] * c1p13_12;
+        fCF1[i][1] = w1p12_2[i][1] * c1p12_12 + w1p13_2[i][1] * c1p13_12;
+
+        // z 1+ 3
+        fCF2[i][0] = w1p12_3[i][0] * c1p12_13 + w1p13_3[i][0] * c1p13_13;
+        fCF2[i][1] = w1p12_3[i][1] * c1p12_13 + w1p13_3[i][1] * c1p13_13;
+
+        // z 1+ 4
+        fCF3[i][0] = w1p12_4[i][0] * c1p12_14 + w1p13_4[i][0] * c1p13_14;
+        fCF3[i][1] = w1p12_4[i][1] * c1p12_14 + w1p13_4[i][1] * c1p13_14;
+    }
+}
+void CPUWaveFunc::cpu_propogator6(
+        double mass,
+        double width,
+        const vector<double> &sx,
+        const vector<double> &b2qf2xx,
+        const vector<double> &b2qjvf2,
+        const vector<double> &b4qjvf2,
+        const vector<vector<double> > &w2p1,
+        const vector<vector<double> > &w2p2,
+        const vector<vector<double> > &w2p3,
+        const vector<vector<double> > &w2p4,
+        const vector<vector<double> > &w2p5,
+        vector<vector<TComplex> > &fCF0,
+        vector<vector<TComplex> > &fCF1,
+        vector<vector<TComplex> > &fCF2,
+        vector<vector<TComplex> > &fCF3,
+        vector<vector<TComplex> > &fCF4,
+        int vec_size)
+{
+    for(int i = 0; i < vec_size; i++)
+    {
+        double crp1 = propogator1270(mass, width, sx[i]);
+        double cw2p11 = crp1 / b2qf2xx[i];
+        double cw2p12 = cw2p11 / b2qjvf2[i];
+        double cw2p15 = cw2p11 / b4qjvf2[i];
+
+        //21 contribution
+        fCF0[i][0] = w2p1[i][0] * cw2p11;
+        fCF0[i][1] = w2p1[i][1] * cw2p11;
+
+        //22 contribution
+        fCF1[i][0]=w2p2[i][0] * cw2p12;
+        fCF1[i][1]=w2p2[i][1] * cw2p12;
+
+        //23 contribution
+        fCF2[i][0] = w2p3[i][0] * cw2p12;
+        fCF2[i][1] = w2p3[i][1] * cw2p12;
+
+        //24 contribution
+        fCF3[i][0] = w2p4[i][0] * cw2p12;
+        fCF3[i][1] = w2p4[i][1] * cw2p12;
+
+        //25 contribution
+        fCF4[i][0] = w2p5[i][0] * cw2p15;
+        fCF4[i][1] = w2p5[i][1] * cw2p15;
+    }
+}
+
 void CPUWaveFunc::cpu_cast_spin801(
         vector<vector<TComplex> > &fCF,
         const vector<TComplex> &crp1,
@@ -230,38 +355,6 @@ void CPUWaveFunc::cpu_cast_spin701(
         fCF[i][1] = w1m12[i][1] * cr1m12_1 + w1m13[i][1] * cr1m13_1;
     }
 }
-//void CPUWaveFunc::cpu_cast_spin191(
-//        vector<vector<TComplex> > &fCF,
-//        const vector<TComplex> &crp1,
-//        const vector<TComplex> &crp11,
-//        const vector<double> &b1q2r23,
-//        const vector<vector<double> > &ak23w,
-//        int vec_size)
-//{
-//    for(int i = 0; i < vec_size; i++)
-//    {
-//        double crpf1 = crp1[i]*crp11[i]/b1q2r23[i];
-//        fCF[i][0] = ak23w[i][0]*crpf1;
-//        fCF[i][1] = ak23w[i][1]*crpf1;
-//    }
-//}
-//void CPUWaveFunc::cpu_cast_spin192(
-//        vector<vector<TComplex> > &fCF,
-//        const vector<TComplex> &crp1,
-//        const vector<TComplex> &crp11,
-//        const vector<double> &b1q2r23,
-//        const vector<double> &b2qjvf2,
-//        const vector<vector<double> > &wpf22,
-//        int vec_size)
-//{
-//    for(int i = 0; i < vec_size; i++)
-//    {
-//        double crpf1 = crp1[i] * crp11[i] / b1q2r23[i];
-//        double crpf2 = crpf1 / b2qjvf2[i];
-//        fCF[i][0] = wpf22[i][0] * crpf2;
-//        fCF[i][1] = wpf22[i][1] * crpf2;
-//    }
-//}
 void CPUWaveFunc::cpu_cast_spin101(
         vector<vector<TComplex> > &fCF,
         const vector<TComplex> &crp1,
@@ -484,35 +577,36 @@ void CPUWaveFunc::cpu_resize_intermediate_variables(int number_of_amplitudes)
 double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_back, int number_of_amplitudes)
 {
     vector<bool> not_changed(number_of_amplitudes);
-    for(int i = 0; i < number_of_amplitudes; i++)
+    int i = 0;
+    while (i < number_of_amplitudes)
     {
-        double rho0 = par[end_category * i + rho_category];
-        double frac0 = par[end_category * i + frac_category];
-        double phi0 = par[end_category * i + phi_category];
         int propType_now = par[end_category * i + propType_category];
-        rho0 *= TMath::Exp(frac0);
-        fCP[i]=TComplex(rho0*TMath::Cos(phi0),rho0*TMath::Sin(phi0));
-
         switch(propType_now)
         {
-            case 1:
+            case 1: // f0
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
                     not_changed[i] =
                         ((mass0 == par_back[end_category * i + mass_category])
                          && (width0 == par_back[end_category * i + width_category]));
-                    if (!not_changed[i])
-                        cpu_propogator(
+                    if (!not_changed[i]) {
+                        cpu_propogator1(
                                 mass0,
                                 width0,
-                                crp1[i],
                                 s23,
+                                b2qjvf2,
+                                wu,
+                                w0p22,
+                                fCF[i],
+                                fCF[i + 1],
                                 number_of_events_);
+                        i = i + 2;
+                    }
                 }
                 break;
                 //	Flatte   Propagator Contribution
-            case 2:
+            case 2: // f0 980
                 {
                     double mass980 = par[end_category * i + mass_category];
                     double g10 = par[end_category * i + g1_category];
@@ -521,47 +615,23 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                         ((mass980 == par_back[end_category * i + mass_category])
                          && (g10 == par_back[end_category * i + g1_category])
                          && (g20 == par_back[end_category * i + g2_category]));
-                    if (!not_changed[i])
-                        cpu_propogator980(
+                    if (!not_changed[i]) {
+                        cpu_propogator2(
                                 mass980,
                                 g10,
                                 g20,
-                                crp1[i],
                                 s23,
+                                b2qjvf2,
+                                w0p22,
+                                wu,
+                                fCF[i],
+                                fCF[i + 1],
                                 number_of_events_);
+                        i = i + 2;
+                    }
                 }
                 break;
-                // sigma  Propagator Contribution
-//            case 3:
-//                {
-//                    double mass600 = par[end_category * i + mass_category];
-//                    double b10 = par[end_category * i + b1_category];
-//                    double b20 = par[end_category * i + b2_category];
-//                    double b30 = par[end_category * i + b3_category];
-//                    double b40 = par[end_category * i + b4_category];
-//                    double b50 = par[end_category * i + b5_category];
-//                    not_changed[i] =
-//                        ((mass600 == par_back[end_category * i + mass_category])
-//                         && (b10 == par_back[end_category * i + b1_category])
-//                         && (b20 == par_back[end_category * i + b2_category])
-//                         && (b30 == par_back[end_category * i + b3_category])
-//                         && (b40 == par_back[end_category * i + b4_category])
-//                         && (b50 == par_back[end_category * i + b5_category]));
-//                    if (!not_changed[i])
-//                        cpu_propogator600(
-//                                mass600,
-//                                b10,
-//                                b20,
-//                                b30,
-//                                b40,
-//                                b50,
-//                                crp1[i],
-//                                s23,
-//                                number_of_events_);
-//                }
-//                break;
-//                // 1- or 1+  Contribution
-            case 7:
+            case 7: //1m1800
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
@@ -570,22 +640,24 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                          && (width0 == par_back[end_category * i + width_category]));
                     if (!not_changed[i])
                     {
-                        cpu_propogator(
+                        cpu_propogator7(
                                 mass0,
                                 width0,
-                                crp1[i],
                                 sv2,
-                                number_of_events_);
-                        cpu_propogator(
-                                mass0,
-                                width0,
-                                crp11[i],
                                 sv3,
+                                b1qjv2,
+                                b1qbv2,
+                                b1qjv3,
+                                b1qbv3,
+                                w1m12,
+                                w1m13,
+                                fCF[i],
                                 number_of_events_);
+                        i = i + 1;
                     }
                 }
                 break;
-            case 8:
+            case 8: //1p1800
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
@@ -594,69 +666,60 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                          && (width0 == par_back[end_category * i + width_category]));
                     if (!not_changed[i])
                     {
-                        cpu_propogator(
+                        cpu_propogator8(
                                 mass0,
                                 width0,
-                                crp1[i],
                                 sv2,
-                                number_of_events_);
-                        cpu_propogator(
-                                mass0,
-                                width0,
-                                crp11[i],
                                 sv3,
+                                b2qbv2,
+                                b2qbv3,
+                                b2qjv2,
+                                b2qjv3,
+                                w1p12_1,
+                                w1p13_1,
+                                w1p12_2,
+                                w1p13_2,
+                                w1p12_3,
+                                w1p13_3,
+                                w1p12_4,
+                                w1p13_4,
+                                fCF[i],
+                                fCF[i + 1],
+                                fCF[i + 2],
+                                fCF[i + 3],
                                 number_of_events_);
+                        i = i + 4;
                     }
                 }
                 break;
-                //  phi(1650) f0(980) include flatte and ordinary Propagator joint Contribution
-//            case 5:
-//                {
-//                    double mass980 = par[end_category * i + mass2_category];
-//                    double g10 = par[end_category * i + g1_category];
-//                    double g20 = par[end_category * i + g2_category];
-//                    not_changed[i] =
-//                        ((mass980 == par_back[end_category * i + mass_category])
-//                         && (g10 == par_back[end_category * i + g1_category])
-//                         && (g20 == par_back[end_category * i + g2_category]));
-//                    if (!not_changed[i])
-//                        cpu_propogator980(
-//                                mass980,
-//                                g10,
-//                                g20,
-//                                crp1[i],
-//                                sv,
-//                                number_of_events_);
-//
-//                    double mass1680 = par[end_category * i + mass_category];
-//                    double width1680 = par[end_category * i + width_category];
-//                    bool _temp =
-//                        ((mass1680 == par_back[end_category * i + mass_category])
-//                         && (width1680 == par_back[end_category * i + width_category]));
-//                    if (!_temp)
-//                        cpu_propogator(
-//                                mass1680,
-//                                width1680,
-//                                crp11[i],
-//                                s23,
-//                                number_of_events_);
-//                    not_changed[i] = not_changed[i] && _temp;
-//                }
-//                break;
-            case 6:
+            case 6: //f2
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
                     not_changed[i] =
                         ((mass0 == par_back[end_category * i + mass_category])
                          && (width0 == par_back[end_category * i + width_category]));
-                    if (!not_changed[i])
-                        cpu_propogator1270(
+                    if (!not_changed[i]) {
+                        cpu_propogator6(
                                 mass0,
                                 width0,
-                                crp1[i],
                                 s23,
+                                b2qf2xx,
+                                b2qjvf2,
+                                b4qjvf2,
+                                w2p1,
+                                w2p2,
+                                w2p3,
+                                w2p4,
+                                w2p5,
+                                fCF[i],
+                                fCF[i + 1],
+                                fCF[i + 2],
+                                fCF[i + 3],
+                                fCF[i + 4],
                                 number_of_events_);
+                        i = i + 5;
+                    }
                 }
             default :
                 cout << "Do not know how to deal with prop type " << propType_now << endl;
@@ -667,182 +730,13 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
 
     par_back = par;
 
-    for(int i = 0; i < number_of_amplitudes; i++)
-    {
-        int spin_now = par[end_category * i + spin_category];
-        if (!not_changed[i])
-        switch(spin_now)
-        {
-            case 801:
-                //1+_1 contribution
-                cpu_cast_spin801(
-                        fCF[i],
-                        crp1[i],
-                        crp11[i],
-                        w1p12_1,
-                        w1p13_1,
-                        number_of_events_);
-                break;
-            case 802:
-                //1+_2 contribution
-                cpu_cast_spin802(
-                        fCF[i],
-                        crp1[i],
-                        crp1[i],
-                        b2qbv2,
-                        b2qbv3,
-                        w1p12_2,
-                        w1p13_2,
-                        number_of_events_);
-                break;
-            case 803:
-                //1+_3 contribution
-                cpu_cast_spin803(
-                        fCF[i],
-                        crp1[i],
-                        crp11[i],
-                        b2qjv2,
-                        b2qjv3,
-                        w1p12_3,
-                        w1p13_3,
-                        number_of_events_);
-                break;
-            case 804:
-                //1+_4 contribution
-                cpu_cast_spin804(
-                        fCF[i],
-                        crp1[i],
-                        crp11[i],
-                        b2qbv2,
-                        b2qjv2,
-                        b2qbv3,
-                        b2qjv3,
-                        w1p12_4,
-                        w1p13_4,
-                        number_of_events_);
-                break;
-            case 701:
-                //1-__1 contribution
-                cpu_cast_spin701(
-                        fCF[i],
-                        crp1[i],
-                        crp11[i],
-                        b1qjv2,
-                        b1qbv2,
-                        b1qjv3,
-                        b1qbv3,
-                        w1m12,
-                        w1m13,
-                        number_of_events_);
-                break;
-//            case 191:
-//                //phi(1650)f0(980)_1 contribution
-//                cpu_cast_spin191(
-//                        fCF[i],
-//                        crp1[i],
-//                        crp11[i],
-//                        b1q2r23,
-//                        ak23w,
-//                        number_of_events_);
-//                break;
-//            case 192:
-//                //phi(1650)f0(980)_2 contribution
-//                cpu_cast_spin192(
-//                        fCF[i],
-//                        crp1[i],
-//                        crp11[i],
-//                        b1q2r23,
-//                        b2qjvf2,
-//                        wpf22,
-//                        number_of_events_);
-//                break;
-            case 101:
-                //01 contribution
-                cpu_cast_spin101(
-                        fCF[i],
-                        crp1[i],
-                        wu,
-                        number_of_events_);
-                break;
-            case 102:
-                //02 contribution
-                cpu_cast_spin102(
-                        fCF[i],
-                        crp1[i],
-                        b2qjvf2,
-                        w0p22,
-                        number_of_events_);
-                break;
-            case 201:
-                //01 contribution
-                cpu_cast_spin101(
-                        fCF[i],
-                        crp1[i],
-                        wu,
-                        number_of_events_);
-                break;
-            case 202:
-                //02 contribution
-                cpu_cast_spin102(
-                        fCF[i],
-                        crp1[i],
-                        b2qjvf2,
-                        w0p22,
-                        number_of_events_);
-                break;
-            case 601:
-                //21 contribution
-                cpu_cast_spin601(
-                        fCF[i],
-                        crp1[i],
-                        b2qf2xx,
-                        w2p1,
-                        number_of_events_);
-                break;
-            case 602:
-                //22 contribution
-                cpu_cast_spin602(
-                        fCF[i],
-                        crp1[i],
-                        b2qf2xx,
-                        b2qjvf2,
-                        w2p2,
-                        number_of_events_);
-                break;
-            case 603:
-                //23 contribution
-                cpu_cast_spin603(
-                        fCF[i],
-                        crp1[i],
-                        b2qf2xx,
-                        b2qjvf2,
-                        w2p3,
-                        number_of_events_);
-                break;
-            case 604:
-                //24 contribution
-                cpu_cast_spin604(
-                        fCF[i],
-                        crp1[i],
-                        b2qf2xx,
-                        b2qjvf2,
-                        w2p4,
-                        number_of_events_);
-                break;
-            case 605:
-                //25 contribution
-                cpu_cast_spin605(
-                        fCF[i],
-                        crp1[i],
-                        b2qf2xx,
-                        b4qjvf2,
-                        w2p5,
-                        number_of_events_);
-            default:
-                cout << "Cannot deal with this spin " << spin_now << endl;
-                exit(1);
-                ;
-        }
+    for(int i = 0; i < number_of_amplitudes; i++) {
+        double rho0 = par[end_category * i + rho_category];
+        double frac0 = par[end_category * i + frac_category];
+        double phi0 = par[end_category * i + phi_category];
+        int propType_now = par[end_category * i + propType_category];
+        rho0 *= TMath::Exp(frac0);
+        fCP[i]=TComplex(rho0*TMath::Cos(phi0),rho0*TMath::Sin(phi0));
     }
     vector<double> cw1(number_of_events_, 0), cw2(number_of_events_, 0);
     for(int _event = 0; _event < number_of_events_; _event++)
