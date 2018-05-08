@@ -457,12 +457,12 @@ void CPUWaveFunc::cpu_resize_intermediate_variables(int number_of_amplitudes)
 }
 double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_back, int number_of_amplitudes)
 {
+    vector<bool> not_changed(number_of_amplitudes);
     for(int i = 0; i < number_of_amplitudes; i++)
     {
         double rho0 = par[end_category * i + rho_category];
         double frac0 = par[end_category * i + frac_category];
         double phi0 = par[end_category * i + phi_category];
-        int spin_now = par[end_category * i + spin_category];
         int propType_now = par[end_category * i + propType_category];
         rho0 *= TMath::Exp(frac0);
         fCP[i]=TComplex(rho0*TMath::Cos(phi0),rho0*TMath::Sin(phi0));
@@ -473,12 +473,16 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
-                    cpu_propogator(
-                            mass0,
-                            width0,
-                            crp1[i],
-                            s23,
-                            number_of_events_);
+                    not_changed[i] =
+                        ((mass0 == par_back[end_category * i + mass_category])
+                         && (width0 == par_back[end_category * i + width_category]));
+                    if (!not_changed[i])
+                        cpu_propogator(
+                                mass0,
+                                width0,
+                                crp1[i],
+                                s23,
+                                number_of_events_);
                 }
                 break;
                 //	Flatte   Propagator Contribution
@@ -487,13 +491,18 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                     double mass980 = par[end_category * i + mass_category];
                     double g10 = par[end_category * i + g1_category];
                     double g20 = par[end_category * i + g2_category];
-                    cpu_propogator980(
-                            mass980,
-                            g10,
-                            g20,
-                            crp1[i],
-                            s23,
-                            number_of_events_);
+                    not_changed[i] =
+                        ((mass980 == par_back[end_category * i + mass_category])
+                         && (g10 == par_back[end_category * i + g1_category])
+                         && (g20 == par_back[end_category * i + g2_category]));
+                    if (!not_changed[i])
+                        cpu_propogator980(
+                                mass980,
+                                g10,
+                                g20,
+                                crp1[i],
+                                s23,
+                                number_of_events_);
                 }
                 break;
                 // sigma  Propagator Contribution
@@ -505,16 +514,24 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                     double b30 = par[end_category * i + b3_category];
                     double b40 = par[end_category * i + b4_category];
                     double b50 = par[end_category * i + b5_category];
-                    cpu_propogator600(
-                            mass600,
-                            b10,
-                            b20,
-                            b30,
-                            b40,
-                            b50,
-                            crp1[i],
-                            s23,
-                            number_of_events_);
+                    not_changed[i] =
+                        ((mass600 == par_back[end_category * i + mass_category])
+                         && (b10 == par_back[end_category * i + b1_category])
+                         && (b20 == par_back[end_category * i + b2_category])
+                         && (b30 == par_back[end_category * i + b3_category])
+                         && (b40 == par_back[end_category * i + b4_category])
+                         && (b50 == par_back[end_category * i + b5_category]));
+                    if (!not_changed[i])
+                        cpu_propogator600(
+                                mass600,
+                                b10,
+                                b20,
+                                b30,
+                                b40,
+                                b50,
+                                crp1[i],
+                                s23,
+                                number_of_events_);
                 }
                 break;
                 // 1- or 1+  Contribution
@@ -522,18 +539,24 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
-                    cpu_propogator(
-                            mass0,
-                            width0,
-                            crp1[i],
-                            sv2,
-                            number_of_events_);
-                    cpu_propogator(
-                            mass0,
-                            width0,
-                            crp11[i],
-                            sv3,
-                            number_of_events_);
+                    not_changed[i] =
+                        ((mass0 == par_back[end_category * i + mass_category])
+                         && (width0 == par_back[end_category * i + width_category]));
+                    if (!not_changed[i])
+                    {
+                        cpu_propogator(
+                                mass0,
+                                width0,
+                                crp1[i],
+                                sv2,
+                                number_of_events_);
+                        cpu_propogator(
+                                mass0,
+                                width0,
+                                crp11[i],
+                                sv3,
+                                number_of_events_);
+                    }
                 }
                 break;
                 //  phi(1650) f0(980) include flatte and ordinary Propagator joint Contribution
@@ -542,39 +565,62 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                     double mass980 = par[end_category * i + mass2_category];
                     double g10 = par[end_category * i + g1_category];
                     double g20 = par[end_category * i + g2_category];
-                    cpu_propogator980(
-                            mass980,
-                            g10,
-                            g20,
-                            crp1[i],
-                            sv,
-                            number_of_events_);
+                    not_changed[i] =
+                        ((mass980 == par_back[end_category * i + mass_category])
+                         && (g10 == par_back[end_category * i + g1_category])
+                         && (g20 == par_back[end_category * i + g2_category]));
+                    if (!not_changed[i])
+                        cpu_propogator980(
+                                mass980,
+                                g10,
+                                g20,
+                                crp1[i],
+                                sv,
+                                number_of_events_);
+
                     double mass1680 = par[end_category * i + mass_category];
                     double width1680 = par[end_category * i + width_category];
-                    cpu_propogator(
-                            mass1680,
-                            width1680,
-                            crp11[i],
-                            s23,
-                            number_of_events_);
+                    bool _temp =
+                        ((mass1680 == par_back[end_category * i + mass_category])
+                         && (width1680 == par_back[end_category * i + width_category]));
+                    if (!_temp)
+                        cpu_propogator(
+                                mass1680,
+                                width1680,
+                                crp11[i],
+                                s23,
+                                number_of_events_);
+                    not_changed[i] = not_changed[i] && _temp;
                 }
                 break;
             case 6:
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
-                    cpu_propogator1270(
-                            mass0,
-                            width0,
-                            crp1[i],
-                            s23,
-                            number_of_events_);
+                    not_changed[i] =
+                        ((mass0 == par_back[end_category * i + mass_category])
+                         && (width0 == par_back[end_category * i + width_category]));
+                    if (!not_changed[i])
+                        cpu_propogator1270(
+                                mass0,
+                                width0,
+                                crp1[i],
+                                s23,
+                                number_of_events_);
                 }
             default :
                 cout << "Do not know how to deal with prop type " << propType_now << endl;
                 exit(1);
                 ;
         }
+    }
+
+    par_back = par;
+
+    for(int i = 0; i < number_of_amplitudes; i++)
+    {
+        int spin_now = par[end_category * i + spin_category];
+        if (!not_changed[i])
         switch(spin_now)
         {
             case 11:

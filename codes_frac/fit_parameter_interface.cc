@@ -182,7 +182,69 @@ void AmplitudeMethodWithFitParametersInterface::remap_local_mapping_for_minuit(s
                 local_fit_parameter_mapping_[i][j] = position_in_parameter_list_for_minuit(fit_parameter_mapping_[i][j], parameter_list_for_minuit);
         }
     }
+//    create_reduction_list_of_propogator_computation();
 }
+//void AmplitudeMethodWithFitParametersInterface::create_reduction_list_of_propogator_computation()
+//{
+//    int crp_id(0);
+//    for(unsigned i = 0; i < number_of_amplitudes(); i++)
+//    {
+//        int _pt = my_parameter_table_(fit_parameter_mapping_[propType_category][i]).get_value();
+//        switch(_pt)
+//        {
+//            case 1:
+//            case 2:
+//                crp_mapping_[i] = crp_id;
+//                crp_mapping_[i + 1] = crp_id;
+//                crp_id++;
+//                ignore_switch_[i] = true;
+//                ignore_switch_[i + 1] = false;
+//                i = i + 1;
+//                break;
+//            case 4:
+//                crp_mapping_[i] = crp_id;
+//                crp_mapping_[i + 1] = crp_id;
+//                crp_mapping_[i + 2] = crp_id;
+//                crp_mapping_[i + 3] = crp_id;
+//                crp_id++;
+//                ignore_switch_[i] = true;
+//                ignore_switch_[i + 1] = false;
+//                ignore_switch_[i + 2] = false;
+//                ignore_switch_[i + 3] = false;
+//                i = i + 3;
+//                break;
+//            case 6:
+//                crp_mapping_[i] = crp_id;
+//                crp_mapping_[i + 1] = crp_id;
+//                crp_mapping_[i + 2] = crp_id;
+//                crp_mapping_[i + 3] = crp_id;
+//                crp_mapping_[i + 4] = crp_id;
+//                crp_id++;
+//                ignore_switch_[i] = true;
+//                ignore_switch_[i + 1] = false;
+//                ignore_switch_[i + 2] = false;
+//                ignore_switch_[i + 3] = false;
+//                ignore_switch_[i + 4] = false;
+//                i = i + 4;
+//                break;
+//            default:
+//                cout << "Do not know how to set the reduction list of propogator computation with prop type " << _pt << endl;
+//                exit(1);
+//        }
+//    }
+//    cout << "The crp mapping is " << endl;
+//    for(unsigned i = 0; i < number_of_amplitudes(); i++)
+//    {
+//        cout << crp_mapping_[i] << " ";
+//    }
+//    cout << endl;
+//    cout << "The ignore switch mapping is " << endl;
+//    for(unsigned i = 0; i < number_of_amplitudes(); i++)
+//    {
+//        cout << ignore_switch_[i] << " ";
+//    }
+//    cout << endl;
+//}
 //void AmplitudeMethodWithFitParametersInterface::create_category_tags()
 //{
 //    category_tags_.resize(end_category);
@@ -307,6 +369,7 @@ void FitParametersOfPhiPP::act_resonance(string rn)
     else if (rn.find("f0") != string::npos) act_resonance_f0(rn);
     else if (rn.find("f2") != string::npos) act_resonance_f2(rn);
     else if (rn.find("1p") != string::npos) act_resonance_1p(rn);
+    else if (rn.find("1m") != string::npos) act_resonance_1m(rn);
     else {
         cout << "Not know how to act resonance " << rn << endl;
         exit(1);
@@ -323,6 +386,7 @@ void FitParametersOfPhiKK::act_resonance(string rn)
     else if (rn.find("f0") != string::npos) act_resonance_f0(rn);
     else if (rn.find("f2") != string::npos) act_resonance_f2(rn);
     else if (rn.find("1p") != string::npos) act_resonance_1p(rn);
+    else if (rn.find("1m") != string::npos) act_resonance_1m(rn);
     else {
         cout << "Not know how to act resonance " << rn << endl;
         exit(1);

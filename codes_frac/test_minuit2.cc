@@ -17,6 +17,7 @@
 #include "data_obj.h"
 #include "whu_constants_and_definitions.h"
 #include "fit_parameter_interface.h"
+#include "whu_propogator.h"
 
 using namespace ROOT::Minuit2;
 
@@ -54,12 +55,12 @@ int main()
     DPFPWAPoint *pwa_point_phikk = new DPFPWAPoint(mka, mka, mka, mka, mpsip);
 
     vector<DataObject*> data_set(end_data_object_index);
-    data_set[phipp_phsp_index] = new DataObject("../newbase/phsp_pwa_pp_1000.dat", pwa_point_phipp);
-    data_set[phipp_data_index] = new DataObject("../newbase/data_pwa_pipi_weight_superlength_all.dat", pwa_point_phipp);
+    data_set[phipp_phsp_index] = new CPUWaveFunc("../newbase/phsp_pwa_pp_1000.dat", pwa_point_phipp);
+    data_set[phipp_data_index] = new CPUWaveFunc("../newbase/data_pwa_pipi_weight_superlength_all.dat", pwa_point_phipp);
     //DataObject phsp_pp_200000("../newbase/phsp_pwa_pp_200000.dat", pwa_point_phipp);
 
-    data_set[phikk_phsp_index] = new DataObject("../newbase/phsp_pwa_kk_1000.dat", pwa_point_phikk);
-    data_set[phikk_data_index] = new DataObject("../newbase/data_pwa_kk_weight_superlength_all.dat", pwa_point_phikk);
+    data_set[phikk_phsp_index] = new CPUWaveFunc("../newbase/phsp_pwa_kk_1000.dat", pwa_point_phikk);
+    data_set[phikk_data_index] = new CPUWaveFunc("../newbase/data_pwa_kk_weight_superlength_all.dat", pwa_point_phikk);
     //DataObject phsp_kk_200000("../newbase/phsp_pwa_kk_200000.dat", pwa_point_phikk);
 
 
@@ -73,7 +74,7 @@ int main()
     parameter_list_set[phikk_list_index]=new FitParametersOfPhiKK();
 
     vector<vector<string> > resonance_list_set(end_list_index);
-    resonance_list_set[phipp_list_index] = {"f00980", "1p1800"};
+    resonance_list_set[phipp_list_index] = {"f00980", "1p1800", "1m1800"};
     resonance_list_set[phikk_list_index] = {"f01000", "f00980", "f21270"};
 
     ((FitParametersOfPhiPP*)parameter_list_set[phipp_list_index])->act_resonances(resonance_list_set[phipp_list_index]);
@@ -122,6 +123,11 @@ int main()
 
     FunctionMinimum min = migrad();
     }
+            for(int i = 0; i < end_list_index; i++) {
+                if (parameter_list_set[i] == NULL) continue;
+                parameter_list_set[i]->shape_of_mapping();
+                parameter_list_set[i]->shape_of_minuit_parameters();
+            }
 
     //FitParametersInterface::information_of_parameter_list_sent_to_minuit();
     return 0;

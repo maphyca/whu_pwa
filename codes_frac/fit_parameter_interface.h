@@ -50,7 +50,9 @@ class AmplitudeMethodWithFitParametersInterface: public FitParametersInterface {
         void act_resonances(std::vector<std::string> &);
         virtual void act_resonance(std::string) = 0;
         std::vector<double> &get_minuit_parameters() { return minuit_parameters_; }
+        std::vector<double> &get_minuit_parameters_back() { return minuit_parameters_back_; }
         void assignment_of_minuit_parameters_from_par(const std::vector<double> &);
+        //void create_reduction_list_of_propogator_computation();
 
     protected:
         int position_in_parameter_list_for_minuit(int, std::vector<int>&);
@@ -60,6 +62,8 @@ class AmplitudeMethodWithFitParametersInterface: public FitParametersInterface {
         std::vector<std::string> resonance_name_list_;
         std::vector<double> minuit_parameters_;
         std::vector<double> minuit_parameters_back_;
+        std::vector<int> crp_mapping_;
+        std::vector<bool> ignore_switch_;
 };
 class FitParametersOfPhiPP : public AmplitudeMethodWithFitParametersInterface {
     public:

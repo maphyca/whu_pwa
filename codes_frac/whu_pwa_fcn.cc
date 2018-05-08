@@ -10,14 +10,14 @@ namespace ROOT {
 
 
         double PWAFcn::operator()(const std::vector<double>& par) const {
-            cout << par.size() << " === " << number_of_parameters_ << endl;
-            cout << par[36] << endl;
+            //cout << par.size() << " === " << number_of_parameters_ << endl;
+            //cout << par[36] << endl;
             assert(par.size() == number_of_parameters_);
             for(int i = 0; i < end_list_index; i++) {
                 if (parameter_list_set_[i] == NULL) continue;
                 parameter_list_set_[i]->assignment_of_minuit_parameters_from_par(par);
-                parameter_list_set_[i]->shape_of_mapping();
-                parameter_list_set_[i]->shape_of_minuit_parameters();
+                //parameter_list_set_[i]->shape_of_mapping();
+                //parameter_list_set_[i]->shape_of_minuit_parameters();
             }
             //cout << ">>>>>>>>>>>>" << endl;
             //for(unsigned i = 0; i < par.size(); i++) {
