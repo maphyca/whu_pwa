@@ -353,7 +353,6 @@ void CPUWaveFunc::cpu_resize_intermediate_variables(int number_of_amplitudes)
 }
 double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_back, int number_of_amplitudes)
 {
-    vector<bool> not_changed(number_of_amplitudes);
     int i = 0;
     while (i < number_of_amplitudes)
     {
@@ -364,10 +363,10 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
-                    not_changed[i] =
+                    bool _not_changed =
                         ((mass0 == par_back[end_category * i + mass_category])
                          && (width0 == par_back[end_category * i + width_category]));
-                    if (!not_changed[i]) {
+                    if (!_not_changed) {
                         cpu_propogator1(
                                 mass0,
                                 width0,
@@ -388,11 +387,11 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                     double mass980 = par[end_category * i + mass_category];
                     double g10 = par[end_category * i + g1_category];
                     double g20 = par[end_category * i + g2_category];
-                    not_changed[i] =
+                    bool _not_changed =
                         ((mass980 == par_back[end_category * i + mass_category])
                          && (g10 == par_back[end_category * i + g1_category])
                          && (g20 == par_back[end_category * i + g2_category]));
-                    if (!not_changed[i]) {
+                    if (!_not_changed) {
                         cpu_propogator2(
                                 mass980,
                                 g10,
@@ -412,10 +411,10 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
-                    not_changed[i] =
+                    bool _not_changed =
                         ((mass0 == par_back[end_category * i + mass_category])
                          && (width0 == par_back[end_category * i + width_category]));
-                    if (!not_changed[i])
+                    if (!_not_changed)
                     {
                         cpu_propogator7(
                                 mass0,
@@ -438,10 +437,10 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
-                    not_changed[i] =
+                    bool _not_changed =
                         ((mass0 == par_back[end_category * i + mass_category])
                          && (width0 == par_back[end_category * i + width_category]));
-                    if (!not_changed[i])
+                    if (!_not_changed)
                     {
                         cpu_propogator8(
                                 mass0,
@@ -473,10 +472,10 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                 {
                     double mass0 = par[end_category * i + mass_category];
                     double width0 = par[end_category * i + width_category];
-                    not_changed[i] =
+                    bool _not_changed =
                         ((mass0 == par_back[end_category * i + mass_category])
                          && (width0 == par_back[end_category * i + width_category]));
-                    if (!not_changed[i]) {
+                    if (!_not_changed) {
                         cpu_propogator6(
                                 mass0,
                                 width0,
@@ -505,83 +504,63 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
         }
     }
 
-    par_back = par;
 
     for(int i = 0; i < number_of_amplitudes; i++) {
         double rho0 = par[end_category * i + rho_category];
         double frac0 = par[end_category * i + frac_category];
         double phi0 = par[end_category * i + phi_category];
-        int propType_now = par[end_category * i + propType_category];
         rho0 *= TMath::Exp(frac0);
         fCP[i]=TComplex(rho0*TMath::Cos(phi0),rho0*TMath::Sin(phi0));
     }
-    vector<double> cw1(number_of_events_, 0), cw2(number_of_events_, 0);
-    for(int _event = 0; _event < number_of_events_; _event++)
-    {
-        for(int i = 0; i < number_of_amplitudes; i++)
-        {
-            cw1[_event] = cw1[_event] + fCP[i] * fCF[i][_event][0];
-            cw2[_event] = cw2[_event] + fCP[i] * fCF[i][_event][1];
-        }
-        //value[_event] = (cw1[_event] * TComplex::Conjugate(cw1[_event]) + cw2[_event] * TComplex::Conjugate(cw2[_event]) ) / 2.0;
-    }
-    for(int _event = 0; _event < number_of_events_; _event++)
-    {
-        for(int i = 0; i < number_of_amplitudes; i++)
-        {
-            TComplex cw = fCP[i] * TComplex::Conjugate(fCP[i]);
-            double pa = cw.Re();
-            cw = TComplex(0, 0);
-            cw += fCF[i][_event][0] * TComplex::Conjugate(fCF[i][_event][0]) / 2.0;
-            cw += fCF[i][_event][1] * TComplex::Conjugate(fCF[i][_event][1]) / 2.0;
-            double fu = cw.Re();
-        //mlk[_event][i] = pa * fu;
-        }
-    }
 
+    par_back = par;
 
-    for(int _event = 0; _event < number_of_events_; _event++)
-    {
-        double carry(0);
-        for(int i = 0; i < number_of_amplitudes; i++)
-        {
-            for(int j = 0; j < number_of_amplitudes; j++)
-            {
-                double pa, fu;
-                TComplex cw = fCP[i] * TComplex::Conjugate(fCP[j]);
-                if (i==j) pa = cw.Re();
-                else if(i<j) pa = 2*cw.Re();
-                else pa = 2 * cw.Im();
-
-                cw = TComplex(0,0);
-                for(int k=0; k < 2; k++)
-                {
-                    cw += fCF[i][_event][k] * TComplex::Conjugate(fCF[j][_event][k]) / 2.0;
-                }
-                if (i <= j) fu = cw.Re();
-                if (i > j) fu = -cw.Im();
-
-                carry += pa * fu;
-            }
-        }
-        //value[_event] = (carry <= 0) ? 1e-30 : carry;
-    }
-    for(int _event = 0; _event < number_of_events_; _event++)
-    {
-        for(int i = 0; i < number_of_amplitudes; i++)
-        {
-                TComplex cw = fCP[i] * TComplex::Conjugate(fCP[i]);
-                double pa = cw.Re();
-
-                cw = TComplex(0,0);
-                for(int k=0; k < 2; k++)
-                {
-                    cw += fCF[i][_event][k] * TComplex::Conjugate(fCF[i][_event][k]) / 2.0;
-                }
-                double fu = cw.Re();
-                //mlk[_event][i] = pa * fu;
-        }
-    }
     return 0;
+}
 
+double CPUWaveFunc::sum_phsp(int number_of_amplitudes)
+{
+    double _sum(0);
+    for(int _event = 0; _event < number_of_events_; _event++)
+    {
+        TComplex cw1(0, 0), cw2(0, 0);
+        for(int i = 0; i < number_of_amplitudes; i++)
+        {
+            cw1 = cw1 + fCP[i] * fCF[i][_event][0];
+            cw2 = cw2 + fCP[i] * fCF[i][_event][1];
+        }
+        _sum += (cw1.Re() * cw1.Re() + cw1.Im() * cw1.Im() + cw2.Re() * cw2.Re() + cw2.Im() * cw2.Im()) / 2.0;
+    }
+    return _sum;
+}
+double CPUWaveFunc::sum_likelihood(int number_of_amplitudes)
+{
+    double _sum(0);
+    for(int _event = 0; _event < number_of_events_; _event++)
+    {
+        TComplex cw1(0, 0), cw2(0, 0);
+        for(int i = 0; i < number_of_amplitudes; i++)
+        {
+            cw1 = cw1 + fCP[i] * fCF[i][_event][0];
+            cw2 = cw2 + fCP[i] * fCF[i][_event][1];
+        }
+        _sum += -log((cw1.Re() * cw1.Re() + cw1.Im() * cw1.Im() + cw2.Re() * cw2.Re() + cw2.Im() * cw2.Im()) / 2.0);
+    }
+    return _sum;
+}
+double CPUWaveFunc::sum_penalty(int number_of_amplitudes)
+{
+    double _sum(0);
+    for(int _event = 0; _event < number_of_events_; _event++)
+    {
+        for(int i = 0; i < number_of_amplitudes; i++)
+        {
+            TComplex cw1 = fCP[i] * TComplex::Conjugate(fCP[i]);
+            TComplex cw2(0, 0);
+            cw2 += fCF[i][_event][0] * TComplex::Conjugate(fCF[i][_event][0]) / 2.0;
+            cw2 += fCF[i][_event][1] * TComplex::Conjugate(fCF[i][_event][1]) / 2.0;
+            _sum += cw1.Re() * cw2.Re();
+        }
+    }
+    return _sum;
 }

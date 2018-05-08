@@ -27,7 +27,7 @@ class CPUWaveFunc : public DataObject {
             : DataObject(dat_file_name, weight_file_name, pwa_point)
         {
             parameters_vector_resize();
-            convert_mcp_to_pwa_paras();
+            cpu_convert_mcp_to_pwa_paras();
         };
 
         virtual ~CPUWaveFunc() {}
@@ -136,6 +136,10 @@ class CPUWaveFunc : public DataObject {
                 vector<vector<TComplex> > &fCF3,
                 vector<vector<TComplex> > &fCF4,
                 int vec_size);
+
+        double sum_likelihood(int);
+        double sum_phsp(int);
+        double sum_penalty(int);
 
     private:
         std::vector<PWA_PARAS> pwa_paras_; // 利用四动量转换而来的中间变量
