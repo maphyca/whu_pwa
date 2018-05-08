@@ -136,7 +136,7 @@ void AmplitudeMethodWithFitParametersInterface::assignment_of_minuit_parameters_
         else
             minuit_parameters_[j] = par[minuit_mapping_[j]];
     }
-
+    //minuit_parameters_back_.resize(minuit_parameters_.size(), -kParameterLimit);
 }
 void AmplitudeMethodWithFitParametersInterface::create_minuit_mapping()
 {
@@ -514,4 +514,8 @@ void AmplitudeMethodWithFitParametersInterface::act_resonances(vector<string> & 
         if (!already_active(resonance_list[i]))
             act_resonance(resonance_list[i]);
     }
+}
+void AmplitudeMethodWithFitParametersInterface::copy_minuit_parameter_to_back()
+{
+    minuit_parameters_back_ = minuit_parameters_;
 }

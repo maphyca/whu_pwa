@@ -40,23 +40,6 @@ TComplex CPUWaveFunc::pip(
     double r4pip=sqrt(xk2/sx)/(1.0+exp(9.8-3.5*sx));    //9.8=3.5*2.8
     return  r4pip;
 }
-//TComplex CPUWaveFunc::propogator600(
-//        double mass,
-//        double b1,
-//        double b2,
-//        double b3,
-//        double b4,
-//        double b5,
-//        double sx) const
-//{
-//    TComplex ci(0,1);
-//    double am1=mass;
-//    double as=am1*am1;
-//    double cgam1=am1*(b1+b2*sx)*cro(sx,rp,rp)/cro(as,rp,rp)*(sx-0.0097)/(as-0.0097)*exp(-(sx-as)/b3);
-//    double cgam2=am1*b4*pip(sx)/pip(as);
-//    TComplex propogator600=1.0/(as-sx-ci*b5*(cgam1+cgam2));
-//    return propogator600;
-//}
 TComplex CPUWaveFunc::propogator(
         double mass,
         double width,
@@ -353,10 +336,14 @@ void CPUWaveFunc::cpu_resize_intermediate_variables(int number_of_amplitudes)
 }
 double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_back, int number_of_amplitudes)
 {
+    //cout << "number_of_amplitudes = " << number_of_amplitudes << endl;
+    //cout << "number_of_events_ = " << number_of_events_ << endl;
     int i = 0;
     while (i < number_of_amplitudes)
     {
         int propType_now = par[end_category * i + propType_category];
+        cout << "amplitude i = " << i << endl;
+        cout << "propType_now = " << propType_now << endl;
         switch(propType_now)
         {
             case 1: // f0
@@ -377,8 +364,8 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                                 fCF[i],
                                 fCF[i + 1],
                                 number_of_events_);
-                        i = i + 2;
                     }
+                        i = i + 2;
                 }
                 break;
                 //	Flatte   Propagator Contribution
@@ -403,8 +390,8 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                                 fCF[i],
                                 fCF[i + 1],
                                 number_of_events_);
-                        i = i + 2;
                     }
+                        i = i + 2;
                 }
                 break;
             case 7: //1m1800
@@ -429,8 +416,8 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                                 w1m13,
                                 fCF[i],
                                 number_of_events_);
-                        i = i + 1;
                     }
+                        i = i + 1;
                 }
                 break;
             case 8: //1p1800
@@ -464,8 +451,8 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                                 fCF[i + 2],
                                 fCF[i + 3],
                                 number_of_events_);
-                        i = i + 4;
                     }
+                        i = i + 4;
                 }
                 break;
             case 6: //f2
@@ -494,9 +481,10 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                                 fCF[i + 3],
                                 fCF[i + 4],
                                 number_of_events_);
-                        i = i + 5;
                     }
+                        i = i + 5;
                 }
+                break;
             default :
                 cout << "Do not know how to deal with prop type " << propType_now << endl;
                 exit(1);
@@ -513,7 +501,6 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
         fCP[i]=TComplex(rho0*TMath::Cos(phi0),rho0*TMath::Sin(phi0));
     }
 
-    par_back = par;
 
     return 0;
 }

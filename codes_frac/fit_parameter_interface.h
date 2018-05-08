@@ -53,6 +53,7 @@ class AmplitudeMethodWithFitParametersInterface: public FitParametersInterface {
         std::vector<double> &get_minuit_parameters_back() { return minuit_parameters_back_; }
         void assignment_of_minuit_parameters_from_par(const std::vector<double> &);
         //void create_reduction_list_of_propogator_computation();
+void copy_minuit_parameter_to_back();
 
     protected:
         int position_in_parameter_list_for_minuit(int, std::vector<int>&);

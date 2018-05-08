@@ -24,8 +24,8 @@ CXX=mpic++
 LD=mpic++
 endif
 
-PWASRC = test_minuit2.$(SrcSuf) DPFPWAPoint.$(SrcSuf) DPFAngular.$(SrcSuf) fit_parameter_interface.$(SrcSuf) whu_my_parameter.$(SrcSuf) data_obj.$(SrcSuf) whu_pwa_fcn.$(SrcSuf)
-PWAOBJ = test_minuit2.$(ObjSuf) DPFPWAPoint.$(ObjSuf) DPFAngular.$(ObjSuf) fit_parameter_interface.$(ObjSuf) whu_my_parameter.$(ObjSuf) data_obj.$(ObjSuf) whu_pwa_fcn.$(ObjSuf)
+PWASRC = test_minuit2.$(SrcSuf) DPFPWAPoint.$(SrcSuf) DPFAngular.$(SrcSuf) fit_parameter_interface.$(SrcSuf) whu_my_parameter.$(SrcSuf) data_obj.$(SrcSuf) whu_pwa_fcn.$(SrcSuf) whu_propogator.$(SrcSuf) calculate0p.$(SrcSuf)
+PWAOBJ = test_minuit2.$(ObjSuf) DPFPWAPoint.$(ObjSuf) DPFAngular.$(ObjSuf) fit_parameter_interface.$(ObjSuf) whu_my_parameter.$(ObjSuf) data_obj.$(ObjSuf) whu_pwa_fcn.$(ObjSuf) whu_propogator.$(ObjSuf) calculate0p.$(ObjSuf)
 PWA = test
 
 OBJS          = $(PWAOBJ)
@@ -40,7 +40,7 @@ $(DEMOMINIMIZER): 	$(DEMOMINIMIZEROBJ)
 			@echo "$@ done"
 
 
-$(PWAOBJ) : DPFPWAPoint.h DPFAngular.h fit_parameter_interface.h whu_constants_and_definitions.h whu_my_parameter.h whu_pwa_fcn.h
+$(PWAOBJ) : DPFPWAPoint.h DPFAngular.h fit_parameter_interface.h whu_constants_and_definitions.h whu_my_parameter.h whu_pwa_fcn.h DPFPropogator.h
 $(PWA): $(PWAOBJ)
 	$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
 	@echo "$@ done"

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "whu_constants_and_definitions.h"
 #include "fit_parameter_interface.h"
+#include "whu_propogator.h"
 
 #include <vector>
 
@@ -34,6 +35,18 @@ namespace ROOT {
                     if (parameter_list_set_[i] == NULL) continue;
                     parameter_list_set_[i]->shape_of_mapping();
                 }
+                ((CPUWaveFunc*)data_set_[phipp_phsp_index])
+                    ->cpu_resize_intermediate_variables(
+                            parameter_list_set_[phipp_list_index]->number_of_amplitudes());
+                ((CPUWaveFunc*)data_set_[phipp_data_index])
+                    ->cpu_resize_intermediate_variables(
+                            parameter_list_set_[phipp_list_index]->number_of_amplitudes());
+                ((CPUWaveFunc*)data_set_[phikk_phsp_index])
+                    ->cpu_resize_intermediate_variables(
+                            parameter_list_set_[phikk_list_index]->number_of_amplitudes());
+                ((CPUWaveFunc*)data_set_[phikk_data_index])
+                    ->cpu_resize_intermediate_variables(
+                            parameter_list_set_[phikk_list_index]->number_of_amplitudes());
             };
 
                 ~PWAFcn() {}
