@@ -73,7 +73,9 @@ namespace ROOT {
                 //parameter_list_set_[i]->shape_of_minuit_parameters();
             }
 
-            double _rec = phsp_phipp + likelihood_phipp + penalty_phipp + phsp_phikk + likelihood_phikk + penalty_phikk;
+            //double _rec = likelihood_phipp + likelihood_phikk;
+            double _rec = + log(phsp_phipp * number_of_events[phipp_data_index] / number_of_events[phipp_phsp_index]) * number_of_events[phipp_data_index] + likelihood_phipp + log(phsp_phikk * number_of_events[phikk_data_index] / number_of_events[phikk_phsp_index]) * number_of_events[phikk_data_index] + likelihood_phikk;
+            //double _rec = + log(phsp_phipp) * 1000 + likelihood_phipp + penalty_phipp + log(phsp_phikk) * 100 + likelihood_phikk + penalty_phikk;
             cout << "rec = " << _rec << endl;
             return _rec;
         }

@@ -47,6 +47,10 @@ namespace ROOT {
                 ((CPUWaveFunc*)data_set_[phikk_data_index])
                     ->cpu_resize_intermediate_variables(
                             parameter_list_set_[phikk_list_index]->number_of_amplitudes());
+                number_of_events.resize(end_data_object_index);
+                for(int i = 0; i < end_data_object_index; i++) {
+                    number_of_events[i] = ((CPUWaveFunc*)data_set_[i])->number_of_events();
+                }
             };
 
                 ~PWAFcn() {}
@@ -64,6 +68,7 @@ namespace ROOT {
                 std::vector<AmplitudeMethodWithFitParametersInterface*> parameter_list_set_;
                 unsigned number_of_parameters_;
                 double fErrorDef;
+                std::vector<int> number_of_events;
 
         };
 

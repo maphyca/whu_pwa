@@ -354,6 +354,7 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                         ((mass0 == par_back[end_category * i + mass_category])
                          && (width0 == par_back[end_category * i + width_category]));
                     if (!_not_changed) {
+                        cout << "prop = " << propType_now << " : work one time!!!" << endl;
                         cpu_propogator1(
                                 mass0,
                                 width0,
@@ -379,6 +380,7 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                          && (g10 == par_back[end_category * i + g1_category])
                          && (g20 == par_back[end_category * i + g2_category]));
                     if (!_not_changed) {
+                        cout << "prop = " << propType_now << " : work one time!!!" << endl;
                         cpu_propogator2(
                                 mass980,
                                 g10,
@@ -403,6 +405,7 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                          && (width0 == par_back[end_category * i + width_category]));
                     if (!_not_changed)
                     {
+                        cout << "prop = " << propType_now << " : work one time!!!" << endl;
                         cpu_propogator7(
                                 mass0,
                                 width0,
@@ -429,6 +432,7 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                          && (width0 == par_back[end_category * i + width_category]));
                     if (!_not_changed)
                     {
+                        cout << "prop = " << propType_now << " : work one time!!!" << endl;
                         cpu_propogator8(
                                 mass0,
                                 width0,
@@ -463,6 +467,7 @@ double CPUWaveFunc::cpu_calEva(const vector<double> &par, vector<double> &par_ba
                         ((mass0 == par_back[end_category * i + mass_category])
                          && (width0 == par_back[end_category * i + width_category]));
                     if (!_not_changed) {
+                        cout << "prop = " << propType_now << " : work one time!!!" << endl;
                         cpu_propogator6(
                                 mass0,
                                 width0,

@@ -55,11 +55,11 @@ int main()
     DPFPWAPoint *pwa_point_phikk = new DPFPWAPoint(mka, mka, mka, mka, mpsip);
 
     vector<DataObject*> data_set(end_data_object_index);
-    data_set[phipp_phsp_index] = new CPUWaveFunc("../newbase/phsp_pwa_pp_1000.dat", pwa_point_phipp);
+    data_set[phipp_phsp_index] = new CPUWaveFunc("../newbase/phsp_pwa_pp_200000.dat", pwa_point_phipp);
     data_set[phipp_data_index] = new CPUWaveFunc("../newbase/data_pwa_pipi_weight_superlength_all.dat", pwa_point_phipp);
     //DataObject phsp_pp_200000("../newbase/phsp_pwa_pp_200000.dat", pwa_point_phipp);
 
-    data_set[phikk_phsp_index] = new CPUWaveFunc("../newbase/phsp_pwa_kk_1000.dat", pwa_point_phikk);
+    data_set[phikk_phsp_index] = new CPUWaveFunc("../newbase/phsp_pwa_kk_200000.dat", pwa_point_phikk);
     data_set[phikk_data_index] = new CPUWaveFunc("../newbase/data_pwa_kk_weight_superlength_all.dat", pwa_point_phikk);
     //DataObject phsp_kk_200000("../newbase/phsp_pwa_kk_200000.dat", pwa_point_phikk);
 
