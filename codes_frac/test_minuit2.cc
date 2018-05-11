@@ -73,9 +73,30 @@ int main()
     parameter_list_set[phipp_list_index]=new FitParametersOfPhiPP();
     parameter_list_set[phikk_list_index]=new FitParametersOfPhiKK();
 
+    vector<string> resonances = {
+        "f00980",
+        "1p1800",
+        "1m1800",
+        "f01000",
+        "f01370",
+        "f01500",
+        "f01710",
+        "f02020",
+        "f02100",
+        "f02200",
+        "f02330",
+        "f21000",
+        "f21270",
+        "f21525",
+        "f21501",
+        "f21810",
+        "f21910",
+        "f21950",
+        "f22150",
+        "f22300"};
     vector<vector<string> > resonance_list_set(end_list_index);
-    resonance_list_set[phipp_list_index] = {"f00980", "1p1800", "1m1800"};
-    resonance_list_set[phikk_list_index] = {"f01000", "f00980", "f21270"};
+    resonance_list_set[phipp_list_index] = resonances;
+    resonance_list_set[phikk_list_index] = resonances;
 
     ((FitParametersOfPhiPP*)parameter_list_set[phipp_list_index])->act_resonances(resonance_list_set[phipp_list_index]);
     ((FitParametersOfPhiKK*)parameter_list_set[phikk_list_index])->act_resonances(resonance_list_set[phikk_list_index]);
