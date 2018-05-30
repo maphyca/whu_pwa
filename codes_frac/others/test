@@ -1,0 +1,22 @@
+
+for(Int_t i=0;i<2;i++)
+{
+    w2p4[i]=0.0;
+    for(Int_t j1=0;j1<4;j1++)
+    {
+        for(Int_t j2=0;j2<4;j2++)
+        {
+            for(Int_t j3=0;j3<4;j3++)
+            {
+                for(Int_t j4=0;j4<4;j4++)
+                {
+                    for(Int_t j5=0;j5<4;j5++)
+                    {
+                        w2p4[i]=w2p4[i]+G3[i][j1][j2][j3][j4][j5]*t2wvf[j1][j2]*ttfw[j3][j4][j5];
+                        test = 1;
+                    }
+                }
+            }
+        }
+    }
+}

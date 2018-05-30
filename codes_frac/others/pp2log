@@ -1,0 +1,1457 @@
+
+[1mRooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby[0m 
+                Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
+                All rights reserved, please read http://roofit.sourceforge.net/license.txt
+
+pwa_config file is ../newbase/conf2
+Begin readConfigFile
+value = f01000a_mss_,f01000a_wdt_,f21000a_mss_,f21000a_wdt_
+Begin readConfigFile
+value = f01000,f21000,f00980,f01370,f01500,f01710,f02020,f02100,f02200,f02330,f02201,f21270,f21525,f21501,f21810,f21910,f22150,f22300
+Begin readConfigFile
+value = NONE
+Begin readConfigFile
+value = NONE
+Begin readConfigFile
+value = ../newbase/phsp_pwa_pipi_200000.dat
+Begin readConfigFile
+value = ../newbase/phsp_pwa_kk_200000.dat
+Begin readConfigFile
+value = ../newbase/data_pwa_pipi_weight_superlength_all.dat
+Begin readConfigFile
+value = ../newbase/data_pwa_kk_weight_superlength_all.dat
+Begin readConfigFile
+value = NONE
+Begin readConfigFile
+value = ../newbase/
+Begin readConfigFile
+value = conf2_fitresult.root
+Begin readConfigFile
+value = conf2_outf_phipp.root
+Begin readConfigFile
+value = conf2_outf_phikk.root
+Begin readConfigFile
+value = conf2_proj_phipp.root
+Begin readConfigFile
+Begin readConfigFile
+value = ../newbase/idp_pp_all.dat 
+Begin readConfigFile
+phsp_phipp = ../newbase/phsp_pwa_pipi_200000.dat
+data_phipp = ../newbase/data_pwa_pipi_weight_superlength_all.dat
+idx_pp = ../newbase/idp_pp_all.dat 
+NONE
+TESTTEST
+Begin pwa_fraction
+haha: 498
+10
+f01000a_mss_
+f01000a_wdt_
+f21000a_mss_
+f21000a_wdt_
+-----------------
+[#1] INFO:DataHandling -- RooDataSet::read: reading file ../newbase/idp_pp_all.dat
+[#0] ERROR:DataHandling -- RooDataSet::read(static): read error at line 11017
+[#1] INFO:DataHandling -- RooDataSet::read: read 11016 events (ignored 0 out of range events)
+RooDataSet::dataset[idp,weight,blindState] = 11016 entries
+haha: 511
+haha: 513
+RooDataSet::dataset[idp,blindState,weight:weight] = 11016 entries (9886.41 weighted)
+-----------------
+[#1] INFO:DataHandling -- RooDataSet::read: read 0 events (ignored 0 out of range events)
+RooDataSet::dataset[idp,weight,blindState] = 0 entries
+RooDataSet::dataset[idp,blindState,weight:weight] = 0 entries (0 weighted)
+RooDataSet is initialized!!
+[DPFPWAPoint] ==> Creating DPFPWAPoint !
+[DPFPWAPoint] ==> Creating DPFPWAPoint !
+DPFPWAPoint is intialized!!
+idp=idpidp=idpDPFPWAPdf is intialized!!
+f01000a_typ_
+f01000a_phi1
+f01000a_frc1
+f01000p_rho_
+f01000a_wdt_
+f01000a_mss_
+f01000a_spn1
+f01000a_typ_
+f01000a_phi2
+f01000a_frc2
+f01000p_rho_
+f01000a_wdt_
+f01000a_mss_
+f01000a_spn2
+f01000a_typ_
+f01000a_phi1
+f01000a_frc1
+f01000k_rho_
+f01000a_wdt_
+f01000a_mss_
+f01000a_spn1
+f01000a_typ_
+f01000a_phi2
+f01000a_frc2
+f01000k_rho_
+f01000a_wdt_
+f01000a_mss_
+f01000a_spn2
+f21000a_typ_
+f21000a_phi1
+f21000a_frc1
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn1
+f21000a_typ_
+f21000a_phi2
+f21000a_frc2
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn2
+f21000a_typ_
+f21000a_phi3
+f21000a_frc3
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn3
+f21000a_typ_
+f21000a_phi4
+f21000a_frc4
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn4
+f21000a_typ_
+f21000a_phi5
+f21000a_frc5
+f21000p_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn5
+f21000a_typ_
+f21000a_phi1
+f21000a_frc1
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn1
+f21000a_typ_
+f21000a_phi2
+f21000a_frc2
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn2
+f21000a_typ_
+f21000a_phi3
+f21000a_frc3
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn3
+f21000a_typ_
+f21000a_phi4
+f21000a_frc4
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn4
+f21000a_typ_
+f21000a_phi5
+f21000a_frc5
+f21000k_rho_
+f21000a_wdt_
+f21000a_mss_
+f21000a_spn5
+f00980a_typ_
+f00980a_phi1
+f00980a_frc1
+f00980p_rho_
+f00980a_g20_
+f00980a_g10_
+f00980a_mss_
+f00980a_spn1
+f00980a_typ_
+f00980a_phi2
+f00980a_frc2
+f00980p_rho_
+f00980a_g20_
+f00980a_g10_
+f00980a_mss_
+f00980a_spn2
+f00980a_typ_
+f00980a_phi1
+f00980a_frc1
+f00980k_rho_
+f00980a_g20_
+f00980a_g10_
+f00980a_mss_
+f00980a_spn1
+f00980a_typ_
+f00980a_phi2
+f00980a_frc2
+f00980k_rho_
+f00980a_g20_
+f00980a_g10_
+f00980a_mss_
+f00980a_spn2
+f01370a_typ_
+f01370a_phi1
+f01370a_frc1
+f01370p_rho_
+f01370a_wdt_
+f01370a_mss_
+f01370a_spn1
+f01370a_typ_
+f01370a_phi2
+f01370a_frc2
+f01370p_rho_
+f01370a_wdt_
+f01370a_mss_
+f01370a_spn2
+f01370a_typ_
+f01370a_phi1
+f01370a_frc1
+f01370k_rho_
+f01370a_wdt_
+f01370a_mss_
+f01370a_spn1
+f01370a_typ_
+f01370a_phi2
+f01370a_frc2
+f01370k_rho_
+f01370a_wdt_
+f01370a_mss_
+f01370a_spn2
+f01500a_typ_
+f01500a_phi1
+f01500a_frc1
+f01500p_rho_
+f01500a_wdt_
+f01500a_mss_
+f01500a_spn1
+f01500a_typ_
+f01500a_phi2
+f01500a_frc2
+f01500p_rho_
+f01500a_wdt_
+f01500a_mss_
+f01500a_spn2
+f01500a_typ_
+f01500a_phi1
+f01500a_frc1
+f01500k_rho_
+f01500a_wdt_
+f01500a_mss_
+f01500a_spn1
+f01500a_typ_
+f01500a_phi2
+f01500a_frc2
+f01500k_rho_
+f01500a_wdt_
+f01500a_mss_
+f01500a_spn2
+f01710a_typ_
+f01710a_phi1
+f01710a_frc1
+f01710p_rho_
+f01710a_wdt_
+f01710a_mss_
+f01710a_spn1
+f01710a_typ_
+f01710a_phi2
+f01710a_frc2
+f01710p_rho_
+f01710a_wdt_
+f01710a_mss_
+f01710a_spn2
+f01710a_typ_
+f01710a_phi1
+f01710a_frc1
+f01710k_rho_
+f01710a_wdt_
+f01710a_mss_
+f01710a_spn1
+f01710a_typ_
+f01710a_phi2
+f01710a_frc2
+f01710k_rho_
+f01710a_wdt_
+f01710a_mss_
+f01710a_spn2
+f02020a_typ_
+f02020a_phi1
+f02020a_frc1
+f02020p_rho_
+f02020a_wdt_
+f02020a_mss_
+f02020a_spn1
+f02020a_typ_
+f02020a_phi2
+f02020a_frc2
+f02020p_rho_
+f02020a_wdt_
+f02020a_mss_
+f02020a_spn2
+f02020a_typ_
+f02020a_phi1
+f02020a_frc1
+f02020k_rho_
+f02020a_wdt_
+f02020a_mss_
+f02020a_spn1
+f02020a_typ_
+f02020a_phi2
+f02020a_frc2
+f02020k_rho_
+f02020a_wdt_
+f02020a_mss_
+f02020a_spn2
+f02100a_typ_
+f02100a_phi1
+f02100a_frc1
+f02100p_rho_
+f02100a_wdt_
+f02100a_mss_
+f02100a_spn1
+f02100a_typ_
+f02100a_phi2
+f02100a_frc2
+f02100p_rho_
+f02100a_wdt_
+f02100a_mss_
+f02100a_spn2
+f02100a_typ_
+f02100a_phi1
+f02100a_frc1
+f02100k_rho_
+f02100a_wdt_
+f02100a_mss_
+f02100a_spn1
+f02100a_typ_
+f02100a_phi2
+f02100a_frc2
+f02100k_rho_
+f02100a_wdt_
+f02100a_mss_
+f02100a_spn2
+f02200a_typ_
+f02200a_phi1
+f02200a_frc1
+f02200p_rho_
+f02200a_wdt_
+f02200a_mss_
+f02200a_spn1
+f02200a_typ_
+f02200a_phi2
+f02200a_frc2
+f02200p_rho_
+f02200a_wdt_
+f02200a_mss_
+f02200a_spn2
+f02200a_typ_
+f02200a_phi1
+f02200a_frc1
+f02200k_rho_
+f02200a_wdt_
+f02200a_mss_
+f02200a_spn1
+f02200a_typ_
+f02200a_phi2
+f02200a_frc2
+f02200k_rho_
+f02200a_wdt_
+f02200a_mss_
+f02200a_spn2
+f02330a_typ_
+f02330a_phi1
+f02330a_frc1
+f02330p_rho_
+f02330a_wdt_
+f02330a_mss_
+f02330a_spn1
+f02330a_typ_
+f02330a_phi2
+f02330a_frc2
+f02330p_rho_
+f02330a_wdt_
+f02330a_mss_
+f02330a_spn2
+f02330a_typ_
+f02330a_phi1
+f02330a_frc1
+f02330k_rho_
+f02330a_wdt_
+f02330a_mss_
+f02330a_spn1
+f02330a_typ_
+f02330a_phi2
+f02330a_frc2
+f02330k_rho_
+f02330a_wdt_
+f02330a_mss_
+f02330a_spn2
+f02201a_typ_
+f02201a_phi1
+f02201a_frc1
+f02201p_rho_
+f02201a_wdt_
+f02201a_mss_
+f02201a_spn1
+f02201a_typ_
+f02201a_phi2
+f02201a_frc2
+f02201p_rho_
+f02201a_wdt_
+f02201a_mss_
+f02201a_spn2
+f02201a_typ_
+f02201a_phi1
+f02201a_frc1
+f02201k_rho_
+f02201a_wdt_
+f02201a_mss_
+f02201a_spn1
+f02201a_typ_
+f02201a_phi2
+f02201a_frc2
+f02201k_rho_
+f02201a_wdt_
+f02201a_mss_
+f02201a_spn2
+f21270a_typ_
+f21270a_phi1
+f21270a_frc1
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn1
+f21270a_typ_
+f21270a_phi2
+f21270a_frc2
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn2
+f21270a_typ_
+f21270a_phi3
+f21270a_frc3
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn3
+f21270a_typ_
+f21270a_phi4
+f21270a_frc4
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn4
+f21270a_typ_
+f21270a_phi5
+f21270a_frc5
+f21270p_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn5
+f21270a_typ_
+f21270a_phi1
+f21270a_frc1
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn1
+f21270a_typ_
+f21270a_phi2
+f21270a_frc2
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn2
+f21270a_typ_
+f21270a_phi3
+f21270a_frc3
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn3
+f21270a_typ_
+f21270a_phi4
+f21270a_frc4
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn4
+f21270a_typ_
+f21270a_phi5
+f21270a_frc5
+f21270k_rho_
+f21270a_wdt_
+f21270a_mss_
+f21270a_spn5
+f21525a_typ_
+f21525a_phi1
+f21525a_frc1
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn1
+f21525a_typ_
+f21525a_phi2
+f21525a_frc2
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn2
+f21525a_typ_
+f21525a_phi3
+f21525a_frc3
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn3
+f21525a_typ_
+f21525a_phi4
+f21525a_frc4
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn4
+f21525a_typ_
+f21525a_phi5
+f21525a_frc5
+f21525p_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn5
+f21525a_typ_
+f21525a_phi1
+f21525a_frc1
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn1
+f21525a_typ_
+f21525a_phi2
+f21525a_frc2
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn2
+f21525a_typ_
+f21525a_phi3
+f21525a_frc3
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn3
+f21525a_typ_
+f21525a_phi4
+f21525a_frc4
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn4
+f21525a_typ_
+f21525a_phi5
+f21525a_frc5
+f21525k_rho_
+f21525a_wdt_
+f21525a_mss_
+f21525a_spn5
+f21501a_typ_
+f21501a_phi1
+f21501a_frc1
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn1
+f21501a_typ_
+f21501a_phi2
+f21501a_frc2
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn2
+f21501a_typ_
+f21501a_phi3
+f21501a_frc3
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn3
+f21501a_typ_
+f21501a_phi4
+f21501a_frc4
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn4
+f21501a_typ_
+f21501a_phi5
+f21501a_frc5
+f21501p_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn5
+f21501a_typ_
+f21501a_phi1
+f21501a_frc1
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn1
+f21501a_typ_
+f21501a_phi2
+f21501a_frc2
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn2
+f21501a_typ_
+f21501a_phi3
+f21501a_frc3
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn3
+f21501a_typ_
+f21501a_phi4
+f21501a_frc4
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn4
+f21501a_typ_
+f21501a_phi5
+f21501a_frc5
+f21501k_rho_
+f21501a_wdt_
+f21501a_mss_
+f21501a_spn5
+f21810a_typ_
+f21810a_phi1
+f21810a_frc1
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn1
+f21810a_typ_
+f21810a_phi2
+f21810a_frc2
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn2
+f21810a_typ_
+f21810a_phi3
+f21810a_frc3
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn3
+f21810a_typ_
+f21810a_phi4
+f21810a_frc4
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn4
+f21810a_typ_
+f21810a_phi5
+f21810a_frc5
+f21810p_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn5
+f21810a_typ_
+f21810a_phi1
+f21810a_frc1
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn1
+f21810a_typ_
+f21810a_phi2
+f21810a_frc2
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn2
+f21810a_typ_
+f21810a_phi3
+f21810a_frc3
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn3
+f21810a_typ_
+f21810a_phi4
+f21810a_frc4
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn4
+f21810a_typ_
+f21810a_phi5
+f21810a_frc5
+f21810k_rho_
+f21810a_wdt_
+f21810a_mss_
+f21810a_spn5
+f21910a_typ_
+f21910a_phi1
+f21910a_frc1
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn1
+f21910a_typ_
+f21910a_phi2
+f21910a_frc2
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn2
+f21910a_typ_
+f21910a_phi3
+f21910a_frc3
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn3
+f21910a_typ_
+f21910a_phi4
+f21910a_frc4
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn4
+f21910a_typ_
+f21910a_phi5
+f21910a_frc5
+f21910p_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn5
+f21910a_typ_
+f21910a_phi1
+f21910a_frc1
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn1
+f21910a_typ_
+f21910a_phi2
+f21910a_frc2
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn2
+f21910a_typ_
+f21910a_phi3
+f21910a_frc3
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn3
+f21910a_typ_
+f21910a_phi4
+f21910a_frc4
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn4
+f21910a_typ_
+f21910a_phi5
+f21910a_frc5
+f21910k_rho_
+f21910a_wdt_
+f21910a_mss_
+f21910a_spn5
+f22150a_typ_
+f22150a_phi1
+f22150a_frc1
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn1
+f22150a_typ_
+f22150a_phi2
+f22150a_frc2
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn2
+f22150a_typ_
+f22150a_phi3
+f22150a_frc3
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn3
+f22150a_typ_
+f22150a_phi4
+f22150a_frc4
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn4
+f22150a_typ_
+f22150a_phi5
+f22150a_frc5
+f22150p_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn5
+f22150a_typ_
+f22150a_phi1
+f22150a_frc1
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn1
+f22150a_typ_
+f22150a_phi2
+f22150a_frc2
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn2
+f22150a_typ_
+f22150a_phi3
+f22150a_frc3
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn3
+f22150a_typ_
+f22150a_phi4
+f22150a_frc4
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn4
+f22150a_typ_
+f22150a_phi5
+f22150a_frc5
+f22150k_rho_
+f22150a_wdt_
+f22150a_mss_
+f22150a_spn5
+f22300a_typ_
+f22300a_phi1
+f22300a_frc1
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn1
+f22300a_typ_
+f22300a_phi2
+f22300a_frc2
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn2
+f22300a_typ_
+f22300a_phi3
+f22300a_frc3
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn3
+f22300a_typ_
+f22300a_phi4
+f22300a_frc4
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn4
+f22300a_typ_
+f22300a_phi5
+f22300a_frc5
+f22300p_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn5
+f22300a_typ_
+f22300a_phi1
+f22300a_frc1
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn1
+f22300a_typ_
+f22300a_phi2
+f22300a_frc2
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn2
+f22300a_typ_
+f22300a_phi3
+f22300a_frc3
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn3
+f22300a_typ_
+f22300a_phi4
+f22300a_frc4
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn4
+f22300a_typ_
+f22300a_phi5
+f22300a_frc5
+f22300k_rho_
+f22300a_wdt_
+f22300a_mss_
+f22300a_spn5
+Active Res PP
+Active Res KK 
+@@@@@@@ fitparas size = 271
++++++++++++++++++++++++++++
+f01000a_typ_the point is 1
++++++++++++++++++++++++++++
+f01000a_mss_the point is 1.35
++++++++++++++++++++++++++++
+f01000a_wdt_the point is 10000
++++++++++++++++++++++++++++
+f01000p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f01000k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f01000a_spn1the point is 1
++++++++++++++++++++++++++++
+f01000a_frc1the point is 0
++++++++++++++++++++++++++++
+f01000a_phi1the point is 0
++++++++++++++++++++++++++++
+f01000a_spn2the point is 2
++++++++++++++++++++++++++++
+f01000a_frc2the point is 0
++++++++++++++++++++++++++++
+f01000a_phi2the point is 0
++++++++++++++++++++++++++++
+f21000a_typ_the point is 6
++++++++++++++++++++++++++++
+f21000a_mss_the point is 1.35
++++++++++++++++++++++++++++
+f21000a_wdt_the point is 10000
++++++++++++++++++++++++++++
+f21000p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21000k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21000a_spn1the point is 21
++++++++++++++++++++++++++++
+f21000a_frc1the point is 0
++++++++++++++++++++++++++++
+f21000a_phi1the point is 0
++++++++++++++++++++++++++++
+f21000a_spn2the point is 22
++++++++++++++++++++++++++++
+f21000a_frc2the point is 0
++++++++++++++++++++++++++++
+f21000a_phi2the point is 0
++++++++++++++++++++++++++++
+f21000a_spn3the point is 23
++++++++++++++++++++++++++++
+f21000a_frc3the point is 0
++++++++++++++++++++++++++++
+f21000a_phi3the point is 0
++++++++++++++++++++++++++++
+f21000a_spn4the point is 24
++++++++++++++++++++++++++++
+f21000a_frc4the point is 0
++++++++++++++++++++++++++++
+f21000a_phi4the point is 0
++++++++++++++++++++++++++++
+f21000a_spn5the point is 25
++++++++++++++++++++++++++++
+f21000a_frc5the point is 0
++++++++++++++++++++++++++++
+f21000a_phi5the point is 0
++++++++++++++++++++++++++++
+f00980a_typ_the point is 2
++++++++++++++++++++++++++++
+f00980a_mss_the point is 0.99
++++++++++++++++++++++++++++
+f00980a_g10_the point is 0.165
++++++++++++++++++++++++++++
+f00980a_g20_the point is 0.695
++++++++++++++++++++++++++++
+f00980p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f00980k_rho_the point is -25.8774
++++++++++++++++++++++++++++
+f00980a_spn1the point is 1
++++++++++++++++++++++++++++
+f00980a_frc1the point is 0
++++++++++++++++++++++++++++
+f00980a_phi1the point is 1.66823
++++++++++++++++++++++++++++
+f00980a_spn2the point is 2
++++++++++++++++++++++++++++
+f00980a_frc2the point is 4.57319
++++++++++++++++++++++++++++
+f00980a_phi2the point is 0
++++++++++++++++++++++++++++
+f01370a_typ_the point is 1
++++++++++++++++++++++++++++
+f01370a_mss_the point is 1.35
++++++++++++++++++++++++++++
+f01370a_wdt_the point is 0.35
++++++++++++++++++++++++++++
+f01370p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f01370k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f01370a_spn1the point is 1
++++++++++++++++++++++++++++
+f01370a_frc1the point is 0
++++++++++++++++++++++++++++
+f01370a_phi1the point is 0
++++++++++++++++++++++++++++
+f01370a_spn2the point is 2
++++++++++++++++++++++++++++
+f01370a_frc2the point is 0
++++++++++++++++++++++++++++
+f01370a_phi2the point is 0
++++++++++++++++++++++++++++
+f01500a_typ_the point is 1
++++++++++++++++++++++++++++
+f01500a_mss_the point is 1.504
++++++++++++++++++++++++++++
+f01500a_wdt_the point is 0.109
++++++++++++++++++++++++++++
+f01500p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f01500k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f01500a_spn1the point is 1
++++++++++++++++++++++++++++
+f01500a_frc1the point is 0
++++++++++++++++++++++++++++
+f01500a_phi1the point is 0
++++++++++++++++++++++++++++
+f01500a_spn2the point is 2
++++++++++++++++++++++++++++
+f01500a_frc2the point is 0
++++++++++++++++++++++++++++
+f01500a_phi2the point is 0
++++++++++++++++++++++++++++
+f01710a_typ_the point is 1
++++++++++++++++++++++++++++
+f01710a_mss_the point is 1.723
++++++++++++++++++++++++++++
+f01710a_wdt_the point is 0.139
++++++++++++++++++++++++++++
+f01710p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f01710k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f01710a_spn1the point is 1
++++++++++++++++++++++++++++
+f01710a_frc1the point is 0
++++++++++++++++++++++++++++
+f01710a_phi1the point is 0
++++++++++++++++++++++++++++
+f01710a_spn2the point is 2
++++++++++++++++++++++++++++
+f01710a_frc2the point is 0
++++++++++++++++++++++++++++
+f01710a_phi2the point is 0
++++++++++++++++++++++++++++
+f02020a_typ_the point is 1
++++++++++++++++++++++++++++
+f02020a_mss_the point is 1.992
++++++++++++++++++++++++++++
+f02020a_wdt_the point is 0.442
++++++++++++++++++++++++++++
+f02020p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02020k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02020a_spn1the point is 1
++++++++++++++++++++++++++++
+f02020a_frc1the point is 0
++++++++++++++++++++++++++++
+f02020a_phi1the point is 0
++++++++++++++++++++++++++++
+f02020a_spn2the point is 2
++++++++++++++++++++++++++++
+f02020a_frc2the point is 0
++++++++++++++++++++++++++++
+f02020a_phi2the point is 0
++++++++++++++++++++++++++++
+f02100a_typ_the point is 1
++++++++++++++++++++++++++++
+f02100a_mss_the point is 2.1295
++++++++++++++++++++++++++++
+f02100a_wdt_the point is 0.3925
++++++++++++++++++++++++++++
+f02100p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02100k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02100a_spn1the point is 1
++++++++++++++++++++++++++++
+f02100a_frc1the point is 0
++++++++++++++++++++++++++++
+f02100a_phi1the point is 0
++++++++++++++++++++++++++++
+f02100a_spn2the point is 2
++++++++++++++++++++++++++++
+f02100a_frc2the point is 0
++++++++++++++++++++++++++++
+f02100a_phi2the point is 0
++++++++++++++++++++++++++++
+f02200a_typ_the point is 1
++++++++++++++++++++++++++++
+f02200a_mss_the point is 2.189
++++++++++++++++++++++++++++
+f02200a_wdt_the point is 0.238
++++++++++++++++++++++++++++
+f02200p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02200k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02200a_spn1the point is 1
++++++++++++++++++++++++++++
+f02200a_frc1the point is 0
++++++++++++++++++++++++++++
+f02200a_phi1the point is 0
++++++++++++++++++++++++++++
+f02200a_spn2the point is 2
++++++++++++++++++++++++++++
+f02200a_frc2the point is 0
++++++++++++++++++++++++++++
+f02200a_phi2the point is 0
++++++++++++++++++++++++++++
+f02330a_typ_the point is 1
++++++++++++++++++++++++++++
+f02330a_mss_the point is 2.314
++++++++++++++++++++++++++++
+f02330a_wdt_the point is 0.2
++++++++++++++++++++++++++++
+f02330p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02330k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02330a_spn1the point is 1
++++++++++++++++++++++++++++
+f02330a_frc1the point is 0
++++++++++++++++++++++++++++
+f02330a_phi1the point is 0
++++++++++++++++++++++++++++
+f02330a_spn2the point is 2
++++++++++++++++++++++++++++
+f02330a_frc2the point is 0
++++++++++++++++++++++++++++
+f02330a_phi2the point is 0
++++++++++++++++++++++++++++
+f02201a_typ_the point is 1
++++++++++++++++++++++++++++
+f02201a_mss_the point is 2.972
++++++++++++++++++++++++++++
+f02201a_wdt_the point is 0.357
++++++++++++++++++++++++++++
+f02201p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02201k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f02201a_spn1the point is 1
++++++++++++++++++++++++++++
+f02201a_frc1the point is 0
++++++++++++++++++++++++++++
+f02201a_phi1the point is 0
++++++++++++++++++++++++++++
+f02201a_spn2the point is 2
++++++++++++++++++++++++++++
+f02201a_frc2the point is 0
++++++++++++++++++++++++++++
+f02201a_phi2the point is 0
++++++++++++++++++++++++++++
+f21270a_typ_the point is 6
++++++++++++++++++++++++++++
+f21270a_mss_the point is 1.2255
++++++++++++++++++++++++++++
+f21270a_wdt_the point is 0.1856
++++++++++++++++++++++++++++
+f21270p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21270k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21270a_spn1the point is 21
++++++++++++++++++++++++++++
+f21270a_frc1the point is 0
++++++++++++++++++++++++++++
+f21270a_phi1the point is 0
++++++++++++++++++++++++++++
+f21270a_spn2the point is 22
++++++++++++++++++++++++++++
+f21270a_frc2the point is 0
++++++++++++++++++++++++++++
+f21270a_phi2the point is 0
++++++++++++++++++++++++++++
+f21270a_spn3the point is 23
++++++++++++++++++++++++++++
+f21270a_frc3the point is 0
++++++++++++++++++++++++++++
+f21270a_phi3the point is 0
++++++++++++++++++++++++++++
+f21270a_spn4the point is 24
++++++++++++++++++++++++++++
+f21270a_frc4the point is 0
++++++++++++++++++++++++++++
+f21270a_phi4the point is 0
++++++++++++++++++++++++++++
+f21270a_spn5the point is 25
++++++++++++++++++++++++++++
+f21270a_frc5the point is 0
++++++++++++++++++++++++++++
+f21270a_phi5the point is 0
++++++++++++++++++++++++++++
+f21525a_typ_the point is 6
++++++++++++++++++++++++++++
+f21525a_mss_the point is 1.525
++++++++++++++++++++++++++++
+f21525a_wdt_the point is 0.0745
++++++++++++++++++++++++++++
+f21525p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21525k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21525a_spn1the point is 21
++++++++++++++++++++++++++++
+f21525a_frc1the point is 0
++++++++++++++++++++++++++++
+f21525a_phi1the point is 0
++++++++++++++++++++++++++++
+f21525a_spn2the point is 22
++++++++++++++++++++++++++++
+f21525a_frc2the point is 0
++++++++++++++++++++++++++++
+f21525a_phi2the point is 0
++++++++++++++++++++++++++++
+f21525a_spn3the point is 23
++++++++++++++++++++++++++++
+f21525a_frc3the point is 0
++++++++++++++++++++++++++++
+f21525a_phi3the point is 0
++++++++++++++++++++++++++++
+f21525a_spn4the point is 24
++++++++++++++++++++++++++++
+f21525a_frc4the point is 0
++++++++++++++++++++++++++++
+f21525a_phi4the point is 0
++++++++++++++++++++++++++++
+f21525a_spn5the point is 25
++++++++++++++++++++++++++++
+f21525a_frc5the point is 0
++++++++++++++++++++++++++++
+f21525a_phi5the point is 0
++++++++++++++++++++++++++++
+f21501a_typ_the point is 6
++++++++++++++++++++++++++++
+f21501a_mss_the point is 1.499
++++++++++++++++++++++++++++
+f21501a_wdt_the point is 0.16
++++++++++++++++++++++++++++
+f21501p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21501k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21501a_spn1the point is 21
++++++++++++++++++++++++++++
+f21501a_frc1the point is 0
++++++++++++++++++++++++++++
+f21501a_phi1the point is 0
++++++++++++++++++++++++++++
+f21501a_spn2the point is 22
++++++++++++++++++++++++++++
+f21501a_frc2the point is 0
++++++++++++++++++++++++++++
+f21501a_phi2the point is 0
++++++++++++++++++++++++++++
+f21501a_spn3the point is 23
++++++++++++++++++++++++++++
+f21501a_frc3the point is 0
++++++++++++++++++++++++++++
+f21501a_phi3the point is 0
++++++++++++++++++++++++++++
+f21501a_spn4the point is 24
++++++++++++++++++++++++++++
+f21501a_frc4the point is 0
++++++++++++++++++++++++++++
+f21501a_phi4the point is 0
++++++++++++++++++++++++++++
+f21501a_spn5the point is 25
++++++++++++++++++++++++++++
+f21501a_frc5the point is 0
++++++++++++++++++++++++++++
+f21501a_phi5the point is 0
++++++++++++++++++++++++++++
+f21810a_typ_the point is 6
++++++++++++++++++++++++++++
+f21810a_mss_the point is 1.836
++++++++++++++++++++++++++++
+f21810a_wdt_the point is 0.2355
++++++++++++++++++++++++++++
+f21810p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21810k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21810a_spn1the point is 21
++++++++++++++++++++++++++++
+f21810a_frc1the point is 0
++++++++++++++++++++++++++++
+f21810a_phi1the point is 0
++++++++++++++++++++++++++++
+f21810a_spn2the point is 22
++++++++++++++++++++++++++++
+f21810a_frc2the point is 0
++++++++++++++++++++++++++++
+f21810a_phi2the point is 0
++++++++++++++++++++++++++++
+f21810a_spn3the point is 23
++++++++++++++++++++++++++++
+f21810a_frc3the point is 0
++++++++++++++++++++++++++++
+f21810a_phi3the point is 0
++++++++++++++++++++++++++++
+f21810a_spn4the point is 24
++++++++++++++++++++++++++++
+f21810a_frc4the point is 0
++++++++++++++++++++++++++++
+f21810a_phi4the point is 0
++++++++++++++++++++++++++++
+f21810a_spn5the point is 25
++++++++++++++++++++++++++++
+f21810a_frc5the point is 0
++++++++++++++++++++++++++++
+f21810a_phi5the point is 0
++++++++++++++++++++++++++++
+f21910a_typ_the point is 6
++++++++++++++++++++++++++++
+f21910a_mss_the point is 1.921
++++++++++++++++++++++++++++
+f21910a_wdt_the point is 0.1835
++++++++++++++++++++++++++++
+f21910p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21910k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f21910a_spn1the point is 21
++++++++++++++++++++++++++++
+f21910a_frc1the point is 0
++++++++++++++++++++++++++++
+f21910a_phi1the point is 0
++++++++++++++++++++++++++++
+f21910a_spn2the point is 22
++++++++++++++++++++++++++++
+f21910a_frc2the point is 0
++++++++++++++++++++++++++++
+f21910a_phi2the point is 0
++++++++++++++++++++++++++++
+f21910a_spn3the point is 23
++++++++++++++++++++++++++++
+f21910a_frc3the point is 0
++++++++++++++++++++++++++++
+f21910a_phi3the point is 0
++++++++++++++++++++++++++++
+f21910a_spn4the point is 24
++++++++++++++++++++++++++++
+f21910a_frc4the point is 0
++++++++++++++++++++++++++++
+f21910a_phi4the point is 0
++++++++++++++++++++++++++++
+f21910a_spn5the point is 25
++++++++++++++++++++++++++++
+f21910a_frc5the point is 0
++++++++++++++++++++++++++++
+f21910a_phi5the point is 0
++++++++++++++++++++++++++++
+f22150a_typ_the point is 6
++++++++++++++++++++++++++++
+f22150a_mss_the point is 2.18
++++++++++++++++++++++++++++
+f22150a_wdt_the point is 0.241
++++++++++++++++++++++++++++
+f22150p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f22150k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f22150a_spn1the point is 21
++++++++++++++++++++++++++++
+f22150a_frc1the point is 0
++++++++++++++++++++++++++++
+f22150a_phi1the point is 0
++++++++++++++++++++++++++++
+f22150a_spn2the point is 22
++++++++++++++++++++++++++++
+f22150a_frc2the point is 0
++++++++++++++++++++++++++++
+f22150a_phi2the point is 0
++++++++++++++++++++++++++++
+f22150a_spn3the point is 23
++++++++++++++++++++++++++++
+f22150a_frc3the point is 0
++++++++++++++++++++++++++++
+f22150a_phi3the point is 0
++++++++++++++++++++++++++++
+f22150a_spn4the point is 24
++++++++++++++++++++++++++++
+f22150a_frc4the point is 0
++++++++++++++++++++++++++++
+f22150a_phi4the point is 0
++++++++++++++++++++++++++++
+f22150a_spn5the point is 25
++++++++++++++++++++++++++++
+f22150a_frc5the point is 0
++++++++++++++++++++++++++++
+f22150a_phi5the point is 0
++++++++++++++++++++++++++++
+f22300a_typ_the point is 6
++++++++++++++++++++++++++++
+f22300a_mss_the point is 2.297
++++++++++++++++++++++++++++
+f22300a_wdt_the point is 0.159
++++++++++++++++++++++++++++
+f22300p_rho_the point is 23.6
++++++++++++++++++++++++++++
+f22300k_rho_the point is 23.6
++++++++++++++++++++++++++++
+f22300a_spn1the point is 21
++++++++++++++++++++++++++++
+f22300a_frc1the point is 0
++++++++++++++++++++++++++++
+f22300a_phi1the point is 0
++++++++++++++++++++++++++++
+f22300a_spn2the point is 22
++++++++++++++++++++++++++++
+f22300a_frc2the point is 0
++++++++++++++++++++++++++++
+f22300a_phi2the point is 0
++++++++++++++++++++++++++++
+f22300a_spn3the point is 23
++++++++++++++++++++++++++++
+f22300a_frc3the point is 0
++++++++++++++++++++++++++++
+f22300a_phi3the point is 0
++++++++++++++++++++++++++++
+f22300a_spn4the point is 24
++++++++++++++++++++++++++++
+f22300a_frc4the point is 0
++++++++++++++++++++++++++++
+f22300a_phi4the point is 0
++++++++++++++++++++++++++++
+f22300a_spn5the point is 25
++++++++++++++++++++++++++++
+f22300a_frc5the point is 0
++++++++++++++++++++++++++++
+f22300a_phi5the point is 0
+these parameters are reloaded from ../newbase/conf2_fitresult.root
