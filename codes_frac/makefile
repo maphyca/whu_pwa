@@ -24,8 +24,10 @@ CXX=mpic++
 LD=mpic++
 endif
 
-PWASRC = test_minuit2.$(SrcSuf) DPFPWAPoint.$(SrcSuf) DPFAngular.$(SrcSuf) fit_parameter_interface.$(SrcSuf) whu_my_parameter.$(SrcSuf) data_obj.$(SrcSuf) whu_pwa_fcn.$(SrcSuf) whu_propogator.$(SrcSuf) calculate0p.$(SrcSuf)
-PWAOBJ = test_minuit2.$(ObjSuf) DPFPWAPoint.$(ObjSuf) DPFAngular.$(ObjSuf) fit_parameter_interface.$(ObjSuf) whu_my_parameter.$(ObjSuf) data_obj.$(ObjSuf) whu_pwa_fcn.$(ObjSuf) whu_propogator.$(ObjSuf) calculate0p.$(ObjSuf)
+#PWASRC = test_minuit2.$(SrcSuf) DPFPWAPoint.$(SrcSuf) DPFAngular.$(SrcSuf) fit_parameter_interface.$(SrcSuf) whu_my_parameter.$(SrcSuf) data_obj.$(SrcSuf) whu_pwa_fcn.$(SrcSuf) whu_propogator.$(SrcSuf) calculate0p.$(SrcSuf)
+#PWAOBJ = test_minuit2.$(ObjSuf) DPFPWAPoint.$(ObjSuf) DPFAngular.$(ObjSuf) fit_parameter_interface.$(ObjSuf) whu_my_parameter.$(ObjSuf) data_obj.$(ObjSuf) whu_pwa_fcn.$(ObjSuf) whu_propogator.$(ObjSuf) calculate0p.$(ObjSuf) cu_DPFPropogator.$(ObjSuf) kernel_calEva.$(ObjSuf) gpuCode.$(ObjSuf)
+PWASRC = test_minuit2.$(SrcSuf) DPFPWAPoint.$(SrcSuf) fit_parameter_interface.$(SrcSuf) whu_my_parameter.$(SrcSuf) data_obj.$(SrcSuf) whu_pwa_fcn.$(SrcSuf) whu_propogator.$(SrcSuf) calculate0p.$(SrcSuf)
+PWAOBJ = test_minuit2.$(ObjSuf) DPFPWAPoint.$(ObjSuf) fit_parameter_interface.$(ObjSuf) whu_my_parameter.$(ObjSuf) data_obj.$(ObjSuf) whu_pwa_fcn.$(ObjSuf) whu_propogator.$(ObjSuf) calculate0p.$(ObjSuf) cu_DPFPropogator.$(ObjSuf) kernel_calEva.$(ObjSuf) gpuCode.$(ObjSuf)
 PWA = test
 
 OBJS          = $(PWAOBJ)
@@ -40,11 +42,20 @@ $(DEMOMINIMIZER): 	$(DEMOMINIMIZEROBJ)
 			@echo "$@ done"
 
 
-$(PWAOBJ) : DPFPWAPoint.h DPFAngular.h fit_parameter_interface.h whu_constants_and_definitions.h whu_my_parameter.h whu_pwa_fcn.h DPFPropogator.h
+#$(PWAOBJ) : DPFPWAPoint.h DPFAngular.h fit_parameter_interface.h whu_constants_and_definitions.h whu_my_parameter.h whu_pwa_fcn.h DPFPropogator.h cu_DPFPropogator.h kernel_calEva.h
+$(PWAOBJ) : DPFPWAPoint.h fit_parameter_interface.h whu_constants_and_definitions.h whu_my_parameter.h whu_pwa_fcn.h DPFPropogator.h cu_DPFPropogator.h kernel_calEva.h
 $(PWA): $(PWAOBJ)
-	$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@
+	$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@ -lcudart -L/usr/local/cuda/lib64
 	@echo "$@ done"
 
+cu_DPFPropogator.o:cu_DPFPropogator.cu cu_DPFPropogator.h
+	nvcc -arch=sm_61 -dc $< -I/usr/local/cuda/include/
+
+kernel_calEva.o:kernel_calEva.cu cu_DPFPropogator.h kernel_calEva.h
+	nvcc  -Xptxas -v -arch=sm_61 -dc $< -I/usr/local/cuda/include/
+
+gpuCode.o:kernel_calEva.o cu_DPFPropogator.o
+	nvcc kernel_calEva.o cu_DPFPropogator.o -o gpuCode.o -arch=sm_61 -dlink
 
 clean:
 		@rm -f $(OBJS) core
