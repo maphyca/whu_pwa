@@ -40,7 +40,7 @@
 
 #ifndef _KERNEL_CALEVA_H
 #define _KERNEL_CALEVA_H
-#include "/usr/local/cuda/include/cuda_runtime.h"
+#include "/opt/cuda/include/cuda_runtime.h"
 #include "cuComplex.h"
 #include <iostream>
 #include "cu_PWA_PARAS.h"

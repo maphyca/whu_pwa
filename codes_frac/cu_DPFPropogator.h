@@ -1,7 +1,7 @@
 #ifndef CU_DPF_PROPOGATOR_HH
 #define CU_DPF_PROPOGATOR_HH
 
-#include "/usr/local/cuda/include/cuda_runtime.h"
+#include "/opt/cuda/include/cuda_runtime.h"
 
   __device__ double2 cro(double sx, double am1, double am2);
   __device__ double2 propogator980(double mass, double g11, double g22,double sx);

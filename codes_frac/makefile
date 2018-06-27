@@ -45,7 +45,7 @@ $(DEMOMINIMIZER): 	$(DEMOMINIMIZEROBJ)
 #$(PWAOBJ) : DPFPWAPoint.h DPFAngular.h fit_parameter_interface.h whu_constants_and_definitions.h whu_my_parameter.h whu_pwa_fcn.h DPFPropogator.h cu_DPFPropogator.h kernel_calEva.h
 $(PWAOBJ) : DPFPWAPoint.h fit_parameter_interface.h whu_constants_and_definitions.h whu_my_parameter.h whu_pwa_fcn.h DPFPropogator.h cu_DPFPropogator.h kernel_calEva.h
 $(PWA): $(PWAOBJ)
-	$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@ -lcudart -L/usr/local/cuda/lib64
+	$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt)$@ -lcudart -L/opt/cuda/lib64
 	@echo "$@ done"
 
 cu_DPFPropogator.o:cu_DPFPropogator.cu cu_DPFPropogator.h
