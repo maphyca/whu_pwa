@@ -64,7 +64,7 @@ int main()
     //DataObject phsp_kk_200000("../newbase/phsp_pwa_kk_200000.dat", pwa_point_phikk);
 
 
-    FitParametersInterface::prepare_my_parameter_table("../whu_pwa_parameter_table.txt");
+    FitParametersInterface::prepare_my_parameter_table("whu_pwa_parameter_table.txt");
     FitParametersInterface::information_of_parameter_table();
     //FitParametersInterface::information_of_parameter_list_sent_to_minuit();
 
