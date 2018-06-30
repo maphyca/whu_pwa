@@ -2,3 +2,7 @@
 log_*
 *.root
 *.tar
+build/*
+bin/*
+doxygen/html/*
+doxygen/man/*
