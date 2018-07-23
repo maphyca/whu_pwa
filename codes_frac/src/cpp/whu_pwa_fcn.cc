@@ -17,8 +17,7 @@ namespace ROOT {
                 //parameter_list_set_[i]->shape_of_mapping();
                 //parameter_list_set_[i]->shape_of_minuit_parameters();
             }
-
-            //parameter_list_set_[phipp_list_index]->assignment_of_minuit_parameters_from_par(par);
+              //parameter_list_set_[phipp_list_index]->assignment_of_minuit_parameters_from_par(par);
             ((CPUWaveFunc*)data_set_[phipp_phsp_index])->cpu_calEva(
                 parameter_list_set_[phipp_list_index]->get_minuit_parameters(),
                 parameter_list_set_[phipp_list_index]->get_minuit_parameters_back(),
@@ -45,8 +44,6 @@ namespace ROOT {
             penalty_phipp =
                 ((CPUWaveFunc*)data_set_[phipp_phsp_index])->sum_penalty(
                     parameter_list_set_[phipp_list_index]->number_of_amplitudes());
-            cout << "phipp phsp integral = " << phsp_phipp << endl;
-            cout << "phipp phsp penalty = " << penalty_phipp << endl;
 
             phsp_phikk =
                 ((CPUWaveFunc*)data_set_[phikk_phsp_index])->sum_phsp(
@@ -54,8 +51,6 @@ namespace ROOT {
             penalty_phikk =
                 ((CPUWaveFunc*)data_set_[phikk_phsp_index])->sum_penalty(
                     parameter_list_set_[phikk_list_index]->number_of_amplitudes());
-            cout << "phikk phsp integral = " << phsp_phikk << endl;
-            cout << "phikk phsp penalty = " << penalty_phikk << endl;
 
             likelihood_phipp =
                 ((CPUWaveFunc*)data_set_[phipp_data_index])->sum_likelihood(
@@ -63,14 +58,71 @@ namespace ROOT {
             likelihood_phikk =
                 ((CPUWaveFunc*)data_set_[phikk_data_index])->sum_likelihood(
                     parameter_list_set_[phikk_list_index]->number_of_amplitudes());
-            cout << "phipp data likelihood = " << likelihood_phipp << endl;
-            cout << "phikk data likelihood = " << likelihood_phikk << endl;
 
-            for(int i = 0; i < end_list_index; i++) {
-                if (parameter_list_set_[i] == NULL) continue;
-                parameter_list_set_[i]->copy_minuit_parameter_to_back();
-                //parameter_list_set_[i]->shape_of_mapping();
-                //parameter_list_set_[i]->shape_of_minuit_parameters();
+            //gpu part
+            {
+              (kernel_set_[phipp_phsp_index])->par_trans(
+                parameter_list_set_[phipp_list_index]->get_minuit_parameters()
+                                                         );
+            (kernel_set_[phipp_data_index])->par_trans(
+                parameter_list_set_[phipp_list_index]->get_minuit_parameters()
+                                                       );
+            (kernel_set_[phikk_phsp_index])->par_trans(
+                parameter_list_set_[phikk_list_index]->get_minuit_parameters()
+                                                       );
+            (kernel_set_[phikk_data_index])->par_trans(
+                parameter_list_set_[phikk_list_index]->get_minuit_parameters()
+                                                       );
+
+            (kernel_set_[phipp_phsp_index])->calEva();
+            (kernel_set_[phipp_data_index])->calEva();
+            (kernel_set_[phikk_phsp_index])->calEva();
+            (kernel_set_[phikk_data_index])->calEva();
+
+            double gpu_phsp_phipp, gpu_likelihood_phipp, gpu_penalty_phipp;
+            double gpu_phsp_phikk, gpu_likelihood_phikk, gpu_penalty_phikk;
+
+            gpu_phsp_phipp =
+              (kernel_set_[phipp_phsp_index])->sum_phsp();
+            gpu_penalty_phipp =
+                (kernel_set_[phipp_phsp_index])->sum_penalty();
+
+            gpu_phsp_phikk =
+                (kernel_set_[phikk_phsp_index])->sum_phsp();
+            gpu_penalty_phikk =
+                (kernel_set_[phikk_phsp_index])->sum_penalty();
+
+            gpu_likelihood_phipp =
+                (kernel_set_[phipp_data_index])->sum_likelihood();
+            gpu_likelihood_phikk =
+                (kernel_set_[phikk_data_index])->sum_likelihood();
+            
+
+            //message
+
+              cout << "cpu phipp phsp integral = " << phsp_phipp << endl;
+              cout << "cpu phipp phsp penalty = " << penalty_phipp << endl;
+
+              cout << " gpu phipp phsp integral = " << gpu_phsp_phipp << endl;
+              cout << " gpu phipp phsp penalty = " << gpu_penalty_phipp << endl;
+
+              cout << "cpu phikk phsp integral = " << phsp_phikk << endl;
+              cout << "cpu phikk phsp penalty = " << penalty_phikk << endl;
+              
+              cout << "gpu phikk phsp integral = " << gpu_phsp_phikk << endl;
+              cout << "gpu phikk phsp penalty = " << gpu_penalty_phikk << endl;
+              
+              cout << "cpu phipp data likelihood = " << likelihood_phipp << endl;
+              cout << "cpu phikk data likelihood = " << likelihood_phikk << endl;
+
+              cout << "gpu phipp data likelihood = " << gpu_likelihood_phipp << endl;
+              cout << "gpu phikk data likelihood = " << gpu_likelihood_phikk << endl;
+            }
+                     for(int i = 0; i < end_list_index; i++) {
+              if (parameter_list_set_[i] == NULL) continue;
+              parameter_list_set_[i]->copy_minuit_parameter_to_back();
+              //parameter_list_set_[i]->shape_of_mapping();
+              //parameter_list_set_[i]->shape_of_minuit_parameters();
             }
 
             //double _rec = likelihood_phipp + likelihood_phikk;

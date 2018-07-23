@@ -7,6 +7,7 @@
 #include "whu_constants_and_definitions.h"
 #include "fit_parameter_interface.h"
 #include "whu_propogator.h"
+#include "kernel.h"
 
 #include <vector>
 
@@ -22,10 +23,11 @@ namespace ROOT {
             public:
 
                 //PWAFcn(std::vector<DataObject*>& data_set, FitParametersInterface **parameter_list_set) :
-                PWAFcn(std::vector<DataObject*>& data_set, std::vector<AmplitudeMethodWithFitParametersInterface*>& parameter_list_set, int number_of_parameters) :
-                    data_set_(data_set),
-                    parameter_list_set_(parameter_list_set),
-                    number_of_parameters_(number_of_parameters)
+        PWAFcn(std::vector<DataObject*>& data_set, std::vector<AmplitudeMethodWithFitParametersInterface*>& parameter_list_set,std::vector<kernel*>kernel_set ,int number_of_parameters) :
+          data_set_(data_set),
+            parameter_list_set_(parameter_list_set),
+            kernel_set_(kernel_set),
+            number_of_parameters_(number_of_parameters)
             {
                 //for(int i = 0; i < end_data_object_index; i++) {
                 //    std::cout << data_set_[i]->dat_file_name() << std::endl;
@@ -58,6 +60,7 @@ namespace ROOT {
                 virtual double Up() const {return fErrorDef;}
                 virtual double operator()(const std::vector<double>&) const;
                 std::vector<DataObject*> data_set() const { return data_set_; }
+                std::vector<kernel*> kernel_set() const { return kernel_set_; }
                 void SetErrorDef(double def) {fErrorDef = def;}
 
             private:
@@ -65,6 +68,7 @@ namespace ROOT {
 
                 //FitParametersInterface **parameter_list_set_;
                 std::vector<DataObject*> data_set_ ;
+                std::vector<kernel*> kernel_set_ ;
                 std::vector<AmplitudeMethodWithFitParametersInterface*> parameter_list_set_;
                 unsigned number_of_parameters_;
                 double fErrorDef;

@@ -58,8 +58,8 @@ void CPUWaveFunc::cpu_propogator1(double mass, double width, double *sx,
                                   TComplex *fCF0, TComplex *fCF1,
                                   int vec_size) {
     for (int i = 0; i < vec_size; i++) {
-        double crp1 = propogator(mass, width, sx[i]);
-        double cr0p11 = crp1 / b2qjvf2[i];
+        TComplex crp1 = propogator(mass, width, sx[i]);
+        TComplex cr0p11 = crp1 / b2qjvf2[i];
 
         // 01 contribution
         fCF0[i + vec_size * 0] = wu[i + vec_size * 0] * crp1;
@@ -75,8 +75,8 @@ void CPUWaveFunc::cpu_propogator2(double mass, double g11, double g22,
                                   double *w0p22, TComplex *fCF0, TComplex *fCF1,
                                   int vec_size) {
     for (int i = 0; i < vec_size; i++) {
-        double crp1 = propogator980(mass, g11, g22, sx[i]);
-        double cr0p11 = crp1 / b2qjvf2[i];
+        TComplex crp1 = propogator980(mass, g11, g22, sx[i]);
+        TComplex cr0p11 = crp1 / b2qjvf2[i];
 
         // 01 contribution
         fCF0[i + vec_size * 0] = wu[i + vec_size * 0] * crp1;
@@ -92,10 +92,10 @@ void CPUWaveFunc::cpu_propogator7(double mass, double width, double *sv2,
                                   double *b1qjv3, double *b1qbv3, double *w1m12,
                                   double *w1m13, TComplex *fCF, int vec_size) {
     for (int i = 0; i < vec_size; i++) {
-        double crp1 = propogator(mass, width, sv2[i]);
-        double crp11 = propogator(mass, width, sv3[i]);
-        double cr1m12_1 = crp1 / b1qjv2[i] / b1qbv2[i];
-        double cr1m13_1 = crp11 / b1qjv3[i] / b1qbv3[i];
+        TComplex crp1 = propogator(mass, width, sv2[i]);
+        TComplex crp11 = propogator(mass, width, sv3[i]);
+        TComplex cr1m12_1 = crp1 / b1qjv2[i] / b1qbv2[i];
+        TComplex cr1m13_1 = crp11 / b1qjv3[i] / b1qbv3[i];
 
         // 1-__1 contribution
         fCF[i + vec_size * 0] = w1m12[i + vec_size * 0] * cr1m12_1 +
@@ -111,14 +111,14 @@ void CPUWaveFunc::cpu_propogator8(
     double *w1p13_3, double *w1p12_4, double *w1p13_4, TComplex *fCF0,
     TComplex *fCF1, TComplex *fCF2, TComplex *fCF3, int vec_size) {
     for (int i = 0; i < vec_size; i++) {
-        double crp1 = propogator(mass, width, sv2[i]);
-        double crp11 = propogator(mass, width, sv3[i]);
-        double c1p12_12 = crp1 / b2qbv2[i];
-        double c1p13_12 = crp11 / b2qbv3[i];
-        double c1p12_13 = crp1 / b2qjv2[i];
-        double c1p13_13 = crp11 / b2qjv3[i];
-        double c1p12_14 = c1p12_12 / b2qjv2[i];
-        double c1p13_14 = c1p13_12 / b2qjv3[i];
+        TComplex crp1 = propogator(mass, width, sv2[i]);
+        TComplex crp11 = propogator(mass, width, sv3[i]);
+        TComplex c1p12_12 = crp1 / b2qbv2[i];
+        TComplex c1p13_12 = crp11 / b2qbv3[i];
+        TComplex c1p12_13 = crp1 / b2qjv2[i];
+        TComplex c1p13_13 = crp11 / b2qjv3[i];
+        TComplex c1p12_14 = c1p12_12 / b2qjv2[i];
+        TComplex c1p13_14 = c1p13_12 / b2qjv3[i];
 
         // z 1+ 1
         fCF0[i + vec_size * 0] = w1p12_1[i + vec_size * 0] * crp1 +
@@ -153,10 +153,10 @@ void CPUWaveFunc::cpu_propogator6(double mass, double width, double *sx,
                                   TComplex *fCF2, TComplex *fCF3,
                                   TComplex *fCF4, int vec_size) {
     for (int i = 0; i < vec_size; i++) {
-        double crp1 = propogator1270(mass, width, sx[i]);
-        double cw2p11 = crp1 / b2qf2xx[i];
-        double cw2p12 = cw2p11 / b2qjvf2[i];
-        double cw2p15 = cw2p11 / b4qjvf2[i];
+        TComplex crp1 = propogator1270(mass, width, sx[i]);
+        TComplex cw2p11 = crp1 / b2qf2xx[i];
+        TComplex cw2p12 = cw2p11 / b2qjvf2[i];
+        TComplex cw2p15 = cw2p11 / b4qjvf2[i];
 
         // 21 contribution
         fCF0[i + vec_size * 0] = w2p1[i + vec_size * 0] * cw2p11;

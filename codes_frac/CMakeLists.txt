@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(pwa LANGUAGES CXX CUDA)
-#DEBUG 选项
-#set(CUDA_NVCC_FLAGS "-g -G")
-#set(CMAKE_CXX_FLAGS "-g")  
+set(CUDA_NVCC_FLAGS "-g -G")
+set(CMAKE_CXX_FLAGS "-g")  
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib/)
@@ -14,4 +13,4 @@ MESSAGE( STATUS “ROOT_CXX_FLAGS is :” ${ROOT_CXX_FLAGS} )
 include(${ROOT_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/src/include/)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/cpp)
-#add_subdirectory( ${PROJECT_SOURCE_DIR}/src/cuda) GPU部分
+add_subdirectory( ${PROJECT_SOURCE_DIR}/src/cuda) 

@@ -4,5 +4,6 @@ log_*
 *.tar
 build/*
 bin/*
+lib/*
 doxygen/html/*
 doxygen/man/*

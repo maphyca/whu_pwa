@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -64,7 +63,7 @@ int main()
     //DataObject phsp_kk_200000("../newbase/phsp_pwa_kk_200000.dat", pwa_point_phikk);
 
 
-    FitParametersInterface::prepare_my_parameter_table("whu_pwa_parameter_table.txt");
+    FitParametersInterface::prepare_my_parameter_table("../whu_pwa_parameter_table.txt");
     FitParametersInterface::information_of_parameter_table();
     //FitParametersInterface::information_of_parameter_list_sent_to_minuit();
 
@@ -131,12 +130,44 @@ int main()
     //    }
     //}
 
+
+    vector<kernel*> kernel_set(end_data_object_index);
+
+    kernel_set[phipp_phsp_index] = new kernel(((CPUWaveFunc*)data_set[phipp_phsp_index])->hpv,0,0,((CPUWaveFunc*)data_set[phipp_phsp_index])->number_of_events(),parameter_list_set[phipp_list_index]->number_of_amplitudes(),((CPUWaveFunc*)data_set[phipp_phsp_index])->number_of_events());
+    kernel_set[phipp_data_index] = new kernel(((CPUWaveFunc*)data_set[phipp_data_index])->hpv,0,0,((CPUWaveFunc*)data_set[phipp_data_index])->number_of_events(),parameter_list_set[phipp_list_index]->number_of_amplitudes(),((CPUWaveFunc*)data_set[phipp_data_index])->number_of_events());
+    kernel_set[phikk_phsp_index] = new kernel(((CPUWaveFunc*)data_set[phikk_phsp_index])->hpv,0,0,((CPUWaveFunc*)data_set[phikk_phsp_index])->number_of_events(),parameter_list_set[phikk_list_index]->number_of_amplitudes(),((CPUWaveFunc*)data_set[phikk_phsp_index])->number_of_events());
+    kernel_set[phikk_data_index] = new kernel(((CPUWaveFunc*)data_set[phikk_data_index])->hpv,0,0,((CPUWaveFunc*)data_set[phikk_data_index])->number_of_events(),parameter_list_set[phikk_list_index]->number_of_amplitudes(),((CPUWaveFunc*)data_set[phikk_data_index])->number_of_events());
+
+     /*   
+    std::vector<double> test_par(68*end_category),test_par_back(68*end_category);
+    for(int i=0;i<68*end_category;i++)
+      {
+        if(i%end_category==propType_category){
+          test_par[i]=2;
+          test_par_back[i]=2;
+        }
+        else{
+          test_par[i]=rand()/(double)RAND_MAX;
+          test_par_back[i]=rand()/(double)RAND_MAX;
+        }
+      }
+    ((CPUWaveFunc*) data_set[phikk_phsp_index])->cpu_resize_intermediate_variables(68);
+    ((CPUWaveFunc*) data_set[phikk_phsp_index])->cpu_calEva(test_par,test_par_back,68);
+    kernel_set[phikk_phsp_index]->par_trans(test_par);
+    kernel_set[phikk_phsp_index]->calEva();
+    double gpu_phsp=kernel_set[phikk_phsp_index]->sum_phsp();
+
+    double test_phsp=((CPUWaveFunc*) data_set[phikk_phsp_index])->sum_phsp(68);
+    cout<<"cpu phsp : "<<test_phsp<<"   gpu phsp : "<<gpu_phsp<<endl;
+
+    */
+
     {
     MnUserParameters upar;
     setup_mnuserparameters(upar, parameter_list_for_minuit);
     update_mnuserparameters(upar, parameter_list_for_minuit);
 
-    PWAFcn my_pwa_fcn(data_set, parameter_list_set, parameter_list_for_minuit.size());
+    PWAFcn my_pwa_fcn(data_set, parameter_list_set,kernel_set, parameter_list_for_minuit.size());
 
     MnMigrad migrad(my_pwa_fcn, upar);
 
@@ -150,6 +181,6 @@ int main()
                 parameter_list_set[i]->shape_of_minuit_parameters();
             }
 
-    //FitParametersInterface::information_of_parameter_list_sent_to_minuit();
+            //FitParametersInterface::information_of_parameter_list_sent_to_minuit();*/
     return 0;
 }

@@ -52,8 +52,8 @@ operator + (const complex a,const complex b)
 __host__ __device__ complex
 operator - (const double a,const complex b)
 {
-  return complex(a+b.x,
-                      b.y);
+  return complex(a-b.x,
+                      -b.y);
 }
 
 
@@ -61,7 +61,7 @@ __host__ __device__ complex
 operator * (const complex a,const complex b)
 {
   return complex(a.x*b.x-a.y*b.y,
-                      a.x*b.y+a.y*b.y);
+                      a.x*b.y+a.y*b.x);
 }
 
 

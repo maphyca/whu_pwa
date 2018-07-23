@@ -47,12 +47,25 @@ public:
   double *d_phsp;
   double *d_penalty;
   double *d_likelihood;
+  double *d_container;
+
+  double h_penalty;
+  double h_phsp;
+  double h_likelihood;
+
+  //double *h_phsp_array;
+  double *h_fCF_real,*h_fCF_imag;
 
   int number_of_amplitudes;
   int Threads,Blocks;
   int number_of_data;
   kernel(std::vector<double*>, int, int, int, int, int);
-  void par_trans(double  * );
+  kernel();
+  void par_trans(const std::vector<double>  ) const;
   void calEva();
+  double sum_phsp();
+  double sum_likelihood();
+  double sum_penalty();
+
 
 };
