@@ -1,6 +1,8 @@
 #include "whu_pwa_fcn.h"
 #include "whu_constants_and_definitions.h"
-
+#include<sys/time.h>
+struct timeval tp;
+double start_point,end_point,cpu_time,gpu_time;
 
 #include <cassert>
 
@@ -17,6 +19,8 @@ namespace ROOT {
                 //parameter_list_set_[i]->shape_of_mapping();
                 //parameter_list_set_[i]->shape_of_minuit_parameters();
             }
+            gettimeofday(&tp,NULL);
+            start_point=tp.tv_sec+tp.tv_usec/1000000.0;
               //parameter_list_set_[phipp_list_index]->assignment_of_minuit_parameters_from_par(par);
             ((CPUWaveFunc*)data_set_[phipp_phsp_index])->cpu_calEva(
                 parameter_list_set_[phipp_list_index]->get_minuit_parameters(),
@@ -59,8 +63,14 @@ namespace ROOT {
                 ((CPUWaveFunc*)data_set_[phikk_data_index])->sum_likelihood(
                     parameter_list_set_[phikk_list_index]->number_of_amplitudes());
 
+            gettimeofday(&tp,NULL);
+            end_point=tp.tv_sec+tp.tv_usec/1000000.0;
+            cpu_time=end_point-start_point;
             //gpu part
             {
+            gettimeofday(&tp,NULL);
+            start_point=tp.tv_sec+tp.tv_usec/1000000.0;
+
               (kernel_set_[phipp_phsp_index])->par_trans(
                 parameter_list_set_[phipp_list_index]->get_minuit_parameters()
                                                          );
@@ -97,6 +107,9 @@ namespace ROOT {
             gpu_likelihood_phikk =
                 (kernel_set_[phikk_data_index])->sum_likelihood();
             
+            gettimeofday(&tp,NULL);
+            end_point=tp.tv_sec+tp.tv_usec/1000000.0;
+            gpu_time=end_point-start_point;
 
             //message
 
@@ -117,6 +130,7 @@ namespace ROOT {
 
               cout << "gpu phipp data likelihood = " << gpu_likelihood_phipp << endl;
               cout << "gpu phikk data likelihood = " << gpu_likelihood_phikk << endl;
+              cout << "cpu time  : "<<cpu_time<<" s    gpu time  : "<<gpu_time<<" s"<<endl;
             }
                      for(int i = 0; i < end_list_index; i++) {
               if (parameter_list_set_[i] == NULL) continue;

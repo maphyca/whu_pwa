@@ -510,8 +510,6 @@ void kernel::calEva()
         }
     }
 
-   cudaMemcpyAsync(h_fCF_real,fCF_real,2*number_of_amplitudes*number_of_data,cudaMemcpyDeviceToHost);
-   cudaMemcpyAsync(h_fCF_imag,fCF_imag,2*number_of_amplitudes*number_of_data,cudaMemcpyDeviceToHost);
   cudaDeviceSynchronize();
   cal_fCP<<<1,number_of_amplitudes>>>(d_par,fCP_real,fCP_imag,number_of_amplitudes);
   cudaDeviceSynchronize();
@@ -612,9 +610,6 @@ kernel::kernel(std::vector<double *> Data, int Device_id, int start, int end,int
 {
   h_par_back=new double[nAmps*end_category];
   h_par=new double[nAmps*end_category];
-  //h_phsp_array=new double[end-start];
-  h_fCF_real=new double[(nAmps*2*(end-start))];
-  h_fCF_imag=new double[(nAmps*2*(end-start))];
   Threads = threads_per_block;
   Blocks = (end - start + Threads -1)/Threads;
   number_of_data = end-start;

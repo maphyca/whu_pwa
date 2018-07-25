@@ -95,7 +95,7 @@ __global__ void propogator6(
                             int numbers);
 
 __global__ void reduce(double *arrays,int numbers,double *result);
-__global__ void sum_phsp(double *fCP_real, double *fCP_imag, double *fCF_real, double *fCF_imag, double *result,int number_of_amplitudes,int numbers);
-__global__ void sum_likelihood(double *fCP_real, double *fCP_imag, double *fCF_real, double *fCF_imag,double *fx,  int number_of_amplitudes, int numbers);
-__global__ void sum_penalty(double *fCP_real, double *fCP_imag, double *fCF_real, double *fCF_imag,double *result, int number_of_amplitudes, int number);
+__global__ void cal_phsp(double *fCP_real, double *fCP_imag, double *fCF_real, double *fCF_imag, double *result,int number_of_amplitudes,int numbers);
+__global__ void cal_likelihood(double *fCP_real, double *fCP_imag, double *fCF_real, double *fCF_imag,double *fx,  int number_of_amplitudes, int numbers);
+__global__ void cal_penalty(double *fCP_real, double *fCP_imag, double *fCF_real, double *fCF_imag,double *result, int number_of_amplitudes, int number);
 

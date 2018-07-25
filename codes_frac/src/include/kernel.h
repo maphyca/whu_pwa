@@ -53,8 +53,6 @@ public:
   double h_phsp;
   double h_likelihood;
 
-  //double *h_phsp_array;
-  double *h_fCF_real,*h_fCF_imag;
 
   int number_of_amplitudes;
   int Threads,Blocks;
