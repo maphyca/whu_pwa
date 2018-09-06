@@ -81,6 +81,9 @@ class CPUWaveFunc : public DataObject {
 
     vector<TComplex> fCP;
     vector<TComplex *> fCF;
+    double *penalty;
+    double *phsp;
+    double *likelihood;
 };
 
 #endif
