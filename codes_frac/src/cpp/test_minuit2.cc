@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <string>>>>>>>> align_par
-68
+#include <string>
 
 #include <sstream>
 #include "TString.h"
