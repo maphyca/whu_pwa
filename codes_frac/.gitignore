@@ -7,3 +7,5 @@ bin/*
 lib/*
 doxygen/html/*
 doxygen/man/*
+gtest/
+src/include/CMake
