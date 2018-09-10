@@ -7,7 +7,6 @@
 #include "whu_constants_and_definitions.h"
 #include "fit_parameter_interface.h"
 #include "whu_propogator.h"
-#include "kernel.h"
 
 #include <vector>
 

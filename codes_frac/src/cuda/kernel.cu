@@ -610,6 +610,7 @@ kernel::kernel(std::vector<double *> Data, int Device_id, int start, int end,int
 {
   h_par_back=new double[nAmps*end_category];
   h_par=new double[nAmps*end_category];
+  h_phsp_container=new double[numbers];
   Threads = threads_per_block;
   Blocks = (end - start + Threads -1)/Threads;
   number_of_data = end-start;
@@ -826,3 +827,10 @@ double  kernel::sum_likelihood()
      return h_likelihood;
 }
  
+void kernel::trans_phsp()
+{
+    cal_phsp<<<Blocks,Threads>>>(fCP_real, fCP_imag, fCF_real,fCF_imag,d_phsp,number_of_amplitudes,number_of_data);
+    cudaMemcpyAsync(h_phsp_container,d_phsp,number_of_data*sizeof(double),cudaMemcpyDeviceToHost);
+
+}
+

@@ -9,11 +9,12 @@
 #include <TLegend.h>
 #include <TStyle.h>
 
-#include "../codes_frac/phikk_structure.cc"
-#include "../codes_frac/PWA_CTRL.C"
-#include "../codes_frac/common_tools.cc"
+#include "../codes_frac/others/phikk_structure.cc"
+#include "../codes_frac/others/PWA_CTRL.C"
+#include "../codes_frac/others/common_tools.cc"
 
 #include <iomanip>
+#include <iostream>
 
 using namespace std;
 
@@ -69,6 +70,7 @@ TH1F* hist_kk(TString fname, TString tname, TString bname, TString resName, TStr
         //if (!good_event(ss)) continue;
         //if (value_kk("Mphi", dp) > 1.032) continue;
         //if (value_kk("Mphi", dp) < 1.006) continue;
+        //cout<<" test value "<< value_kk(var, dp)<<" weight "<<dp.weight<<endl;
         hh->Fill(value_kk(var, dp), dp.weight);
     }
     return hh;
@@ -82,7 +84,8 @@ void draw_kk(TString var, string cfgFile) {
     readConfigFile(cfgFile, "work_path", path);
     cout << "path = " << path << endl;
     //TString path = "/public/users/caihao1/tmp/baseline_small/";
-    get_para_kk("../phikk/data_ana_kk_signal.root", "signal_tr", "signal_ana_kk", var, _weight, _dmin, _dmax);
+    get_para_kk(path + "kk_weight_all.root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
+    cout<<"test weight" ;
     weight.push_back(_weight);
     dmin.push_back(_dmin);
     dmax.push_back(_dmax);
@@ -95,9 +98,12 @@ void draw_kk(TString var, string cfgFile) {
     readConfigFile(cfgFile, "active_resonances_kk", value1);
     if (value1 != "NONE") {
         value = value + "," + value1;
+        cout<<" not NONE"<<endl;
     }
     vector<string> resNameList;
     string_to_vector(value, resNameList);
+    int test_n=resNameList.size();
+    std::cout<<"test res"<<test_n<<"test string "<<value<<std::endl;
     for(vector<string>::iterator it = resNameList.begin(); it != resNameList.end(); it++) {
         get_para_kk(path + "kk_weight_" + *it + ".root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
         weight.push_back(_weight);
@@ -111,8 +117,9 @@ void draw_kk(TString var, string cfgFile) {
 
     THStack *hs = new THStack("hs_" + var, "");
     double scaleFactor = weight[0] / weight[1];
+    cout<<"scale "<<scaleFactor<<"weight 0 "<<weight[0]<<"  weight 1 "<<weight[1]<<endl;
     int tcolor = 1;
-    TH1F *signal_h = hist_kk("../phikk/data_ana_kk_signal.root", "signal_tr", "signal_ana_kk", "signal", var, _dmin, _dmax);
+    TH1F *signal_h = hist_kk(path + "kk_weight_all.root", "ana_tr", "kk", "signal", var, _dmin, _dmax);
     signal_h->SetLineColor(tcolor++);
     signal_h->SetLineWidth(3);
     signal_h->GetXaxis()->SetTitle(TexName_KK(var));

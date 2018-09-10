@@ -53,6 +53,7 @@ public:
   double h_phsp;
   double h_likelihood;
 
+  double *h_phsp_container;
 
   int number_of_amplitudes;
   int Threads,Blocks;
@@ -64,6 +65,7 @@ public:
   double sum_phsp();
   double sum_likelihood();
   double sum_penalty();
+  void trans_phsp();
 
 
 };

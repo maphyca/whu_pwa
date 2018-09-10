@@ -9,9 +9,9 @@
 #include <TLegend.h>
 #include <TStyle.h>
 
-#include "../codes_frac/phipipi_structure.cc"
-#include "../codes_frac/PWA_CTRL.C"
-#include "../codes_frac/common_tools.cc"
+#include "../codes_frac/others/phipipi_structure.cc"
+#include "../codes_frac/others/PWA_CTRL.C"
+#include "../codes_frac/others/common_tools.cc"
 
 #include <iomanip>
 
@@ -82,7 +82,7 @@ void draw_pipi(TString var, string cfgFile) {
     string path;
     readConfigFile(cfgFile, "work_path", path);
     cout << "path = " << path << endl;
-    get_para_pipi("../phipipi/data_ana_pipi_signal.root", "signal_tr", "signal_ana_pipi", var, _weight, _dmin, _dmax);
+    get_para_pipi(path+"/pipi_weight_all.root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
     weight.push_back(_weight);
     dmin.push_back(_dmin);
     dmax.push_back(_dmax);
@@ -109,7 +109,7 @@ void draw_pipi(TString var, string cfgFile) {
 
     double scaleFactor = weight[0] / weight[1];
     int tcolor = 1;
-    TH1F *signal_h = hist_pipi("../phipipi/data_ana_pipi_signal.root", "signal_tr", "signal_ana_pipi", "signal", var, _dmin, _dmax);
+    TH1F *signal_h = hist_pipi(path+"pipi_weight_all.root", "ana_tr", "pp", "signal", var, _dmin, _dmax);
     signal_h->SetLineColor(tcolor++);
     signal_h->SetLineWidth(3);
     signal_h->GetXaxis()->SetTitle(TexName_PIPI(var));

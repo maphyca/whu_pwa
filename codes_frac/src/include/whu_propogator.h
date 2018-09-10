@@ -4,7 +4,13 @@
 #include <math.h>
 #include "TComplex.h"
 #include "data_obj.h"
+#include "kernel.h"
 
+
+#include "phikk_structure.h"
+#include "phipipi_structure.h"
+#include "TTree.h"
+#include "TFile.h"
 using namespace std;
 
 class CPUWaveFunc : public DataObject {
@@ -72,6 +78,9 @@ class CPUWaveFunc : public DataObject {
     double sum_likelihood(int);
     double sum_phsp(int);
     double sum_penalty(int);
+
+    void test_generate_root_file_kk(kernel ker);
+    void test_generate_root_file_pp(kernel ker);
 
     std::vector<PWA_PARAS> pwa_paras_;  // 利用四动量转换而来的中间变量
     std::vector<bool> whether_hold_flag;

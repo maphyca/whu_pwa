@@ -73,7 +73,7 @@ int main()
     parameter_list_set[phikk_list_index]=new FitParametersOfPhiKK();
 
     vector<string> resonances = {
-        "f00980",
+        "f00980"/*,
         "1p1800",
         "1m1800",
         "f01000",
@@ -92,7 +92,7 @@ int main()
         "f21910",
         "f21950",
         "f22150",
-        "f22300"};
+        "f22300"*/};
     vector<vector<string> > resonance_list_set(end_list_index);
     resonance_list_set[phipp_list_index] = resonances;
     resonance_list_set[phikk_list_index] = resonances;
@@ -181,6 +181,7 @@ int main()
                 parameter_list_set[i]->shape_of_minuit_parameters();
             }
 
+            kernel_set[phikk_phsp_index]->trans_phsp();
             //FitParametersInterface::information_of_parameter_list_sent_to_minuit();*/
     return 0;
 }

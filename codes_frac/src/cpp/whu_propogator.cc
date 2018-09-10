@@ -2,7 +2,6 @@
 //#include "DPFAngular.h"
 #include "TComplex.h"
 #include "whu_constants_and_definitions.h"
-
 // const double rk=0.493677;
 // const double rp=0.139556995;
 
@@ -450,3 +449,98 @@ double CPUWaveFunc::sum_penalty(int number_of_amplitudes) {
     }
     return _sum;
 }
+
+void CPUWaveFunc::test_generate_root_file_kk(kernel ker)
+{
+  //FILE *idp = fopen("/home/arthur/test/old/whu_pwa/newbase/idp_kk_all.dat","r");
+  TString kk_weight_file_name = "../kk_weight_all.root";
+  double idp_list[number_of_events_];
+  int idp_num=0;
+  double tmp=0;
+  /*  while(fscanf(idp,"%d%lf\n",&idp_num,&tmp)!=EOF){
+    idp_list[idp_num] = tmp;
+    cout<<"test idp "<<tmp<<"test  number "<<idp_num<<endl;
+  }
+  fclose(idp);*/
+    DATA_PWA_KK ss;
+    DATA_ANA_KK aa;
+    TFile *fout = new TFile(kk_weight_file_name, "RECREATE");
+    TTree *ana_tr = new TTree("ana_tr", "ana information");
+    
+    ana_tr->Branch("kk", &aa, MEM_ANA_KK);
+    cout<<"test number_of_events : "<<number_of_events_<<endl;
+    for(Int_t i = 0; i < number_of_events_; i++) {
+        ss.Kp2X = mcp2[i][0]; ss.Kp2Y = mcp2[i][1]; ss.Kp2Z = mcp2[i][2]; ss.Kp2E = mcp2[i][3];
+        ss.Km2X = mcp3[i][0]; ss.Km2Y = mcp3[i][1]; ss.Km2Z = mcp3[i][2]; ss.Km2E = mcp3[i][3];
+        ss.Kp1X = mcp4[i][0]; ss.Kp1Y = mcp4[i][1]; ss.Kp1Z = mcp4[i][2]; ss.Kp1E = mcp4[i][3];
+        ss.Km1X = mcp5[i][0]; ss.Km1Y = mcp5[i][1]; ss.Km1Z = mcp5[i][2]; ss.Km1E = mcp5[i][3];
+        if(i==0) cout<<"test ss : "<<endl<<"Kp2x : "<<ss.Kp2X<<endl;
+    //    PWA_PARAS pp;
+    //    _amp.calculate0p(
+    //            mcp1[i][0],mcp1[i][1],mcp1[i][2],mcp1[i][3],
+    //            mcp2[i][0],mcp2[i][1],mcp2[i][2],mcp2[i][3],
+    //            mcp3[i][0],mcp3[i][1],mcp3[i][2],mcp3[i][3],
+    //            mcp4[i][0],mcp4[i][1],mcp4[i][2],mcp4[i][3],
+    //            mcp5[i][0],mcp5[i][1],mcp5[i][2],mcp5[i][3],
+    //            pp);
+
+    //    ss.weight = calEva(pp, i);
+        ss.weight = ker.h_phsp_container[i];
+        
+        //pwa_tr->Fill();
+        DATA_ORIG_KK tt;
+        pwa_to_orig(ss, tt);
+        orig_to_ana(tt, aa);
+        ana_tr->Fill();
+    }
+    
+        cout << "haha: " << __FILE__ << " " << __FUNCTION__ << " " << __LINE__ << endl;
+    //pwa_tr->Write();
+    ana_tr->Write();
+    //fout->Write();
+    fout->Close();
+    cout << kk_weight_file_name << " is created!!!!" << endl;
+  
+}
+void CPUWaveFunc::test_generate_root_file_pp(kernel ker)
+{
+ TString phsp_weight_file_name = "";
+        phsp_weight_file_name = "../pipi_weight_all.root";
+    DATA_PWA_PIPI ss;
+    DATA_ANA_PIPI aa;
+    TFile *fout = new TFile(phsp_weight_file_name, "RECREATE");
+    //TTree *pwa_tr = new TTree("pwa_tr", "pwa information");
+    TTree *ana_tr = new TTree("ana_tr", "ana information");
+    //pwa_tr->Branch("pp", &ss, MEM_PWA_PIPI);
+    ana_tr->Branch("pp", &aa, MEM_ANA_PIPI);
+    for(Int_t i = 0; i < number_of_events_; i++) {
+        ss.pipX = mcp2[i][0]; ss.pipY = mcp2[i][1]; ss.pipZ = mcp2[i][2]; ss.pipE = mcp2[i][3];
+        ss.pimX = mcp3[i][0]; ss.pimY = mcp3[i][1]; ss.pimZ = mcp3[i][2]; ss.pimE = mcp3[i][3];
+        ss.KpX = mcp4[i][0]; ss.KpY = mcp4[i][1]; ss.KpZ = mcp4[i][2]; ss.KpE = mcp4[i][3];
+        ss.KmX = mcp5[i][0];  ss.KmY = mcp5[i][1]; ss.KmZ = mcp5[i][2]; ss.KmE = mcp5[i][3];
+    //    PWA_PARAS pp;
+    //    _amp.calculate0p(
+    //            mcp1[i][0],mcp1[i][1],mcp1[i][2],mcp1[i][3],
+    //            mcp2[i][0],mcp2[i][1],mcp2[i][2],mcp2[i][3],
+    //            mcp3[i][0],mcp3[i][1],mcp3[i][2],mcp3[i][3],
+    //            mcp4[i][0],mcp4[i][1],mcp4[i][2],mcp4[i][3],
+    //            mcp5[i][0],mcp5[i][1],mcp5[i][2],mcp5[i][3],
+    //            pp);
+
+    //    ss.weight = calEva(pp, i);
+        ss.weight = ker.h_phsp_container[i];
+        //pwa_tr->Fill();
+        DATA_ORIG_PIPI tt;
+        pwa_to_orig(ss, tt);
+        orig_to_ana(tt, aa);
+        ana_tr->Fill();
+    }
+        cout << "haha: " << __FILE__ << " " << __FUNCTION__ << "   Line:" << __LINE__ << endl;
+    //pwa_tr->Write();
+    ana_tr->Write();
+    //fout->Write();
+    fout->Close();
+    cout << phsp_weight_file_name << " is created!!!!" << endl;
+}
+
+
