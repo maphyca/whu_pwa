@@ -79,8 +79,8 @@ class CPUWaveFunc : public DataObject {
     double sum_phsp(int);
     double sum_penalty(int);
 
-    void test_generate_root_file_kk(kernel ker);
-    void test_generate_root_file_pp(kernel ker);
+    void test_generate_root_file_kk(kernel *ker,string res);
+    void test_generate_root_file_pp(kernel *ker,string res);
 
     std::vector<PWA_PARAS> pwa_paras_;  // 利用四动量转换而来的中间变量
     std::vector<bool> whether_hold_flag;

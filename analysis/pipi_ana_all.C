@@ -82,14 +82,7 @@ void draw_pipi(TString var, string cfgFile) {
     string path;
     readConfigFile(cfgFile, "work_path", path);
     cout << "path = " << path << endl;
-    get_para_pipi(path+"/pipi_weight_all.root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
-    weight.push_back(_weight);
-    dmin.push_back(_dmin);
-    dmax.push_back(_dmax);
-    get_para_pipi(path + "pipi_weight_all.root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
-    weight.push_back(_weight);
-    dmin.push_back(_dmin);
-    dmax.push_back(_dmax);
+
     string value, value1;
     readConfigFile(cfgFile, "active_resonances", value);
     readConfigFile(cfgFile, "active_resonances_pp", value1);
@@ -99,6 +92,14 @@ void draw_pipi(TString var, string cfgFile) {
     vector<string> resNameList;
     string_to_vector(value, resNameList);
     for(vector<string>::iterator it = resNameList.begin(); it != resNameList.end(); it++) {
+    get_para_pipi(path+"pipi_weight_"+ *it +".root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
+    weight.push_back(_weight);
+    dmin.push_back(_dmin);
+    dmax.push_back(_dmax);
+    get_para_pipi(path + "pipi_weight_"+ *it +".root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
+    weight.push_back(_weight);
+    dmin.push_back(_dmin);
+    dmax.push_back(_dmax);
         get_para_pipi(path + "pipi_weight_" + *it + ".root", "ana_tr", "pp", var, _weight, _dmin, _dmax);
         weight.push_back(_weight);
         dmin.push_back(_dmin);
@@ -109,7 +110,8 @@ void draw_pipi(TString var, string cfgFile) {
 
     double scaleFactor = weight[0] / weight[1];
     int tcolor = 1;
-    TH1F *signal_h = hist_pipi(path+"pipi_weight_all.root", "ana_tr", "pp", "signal", var, _dmin, _dmax);
+    string *start = &value;
+    TH1F *signal_h = hist_pipi(path+"pipi_weight_"+*start+".root", "ana_tr", "pp", "signal", var, _dmin, _dmax);
     signal_h->SetLineColor(tcolor++);
     signal_h->SetLineWidth(3);
     signal_h->GetXaxis()->SetTitle(TexName_PIPI(var));
@@ -117,7 +119,7 @@ void draw_pipi(TString var, string cfgFile) {
     double sp = valid_digits((_dmax - _dmin) / 100, 2);
     signal_h->GetYaxis()->SetTitle("Entries / " + Double2Str(sp));
 
-    TH1F *all_h = hist_pipi(path + "pipi_weight_all.root", "ana_tr", "pp", "all", var, _dmin, _dmax);
+    TH1F *all_h = hist_pipi(path + "pipi_weight_"+*start+".root", "ana_tr", "pp", "all", var, _dmin, _dmax);
     all_h->SetLineColor(tcolor++);
     all_h->SetLineWidth(2);
     all_h->GetXaxis()->SetTitle(TexName_PIPI(var));
@@ -246,9 +248,9 @@ void UpdataFigure_sideband() {
     test("Qpippim", "");
 }
 
-void draw(string conf)
+void pipi_ana_all()
 {
-  //string conf = "../test08/test08_conf";
+  string conf = "analysis_conf";
   UpdateFigure("Mphi", conf);
   UpdateFigure("MKppim", conf);
   UpdateFigure("MKmpip", conf);
@@ -261,5 +263,9 @@ void draw(string conf)
   UpdateFigure("QKp", conf);
   UpdateFigure("QKm", conf);
   UpdateFigure("Qpippim", conf);
+  UpdateFigure("QKpKm",conf);
+  UpdateFigure("Qpippim",conf);
+  UpdateFigure("Qpip",conf);
+
 }
 

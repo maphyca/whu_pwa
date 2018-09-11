@@ -62,7 +62,7 @@ namespace ROOT {
                 std::vector<kernel*> kernel_set() const { return kernel_set_; }
                 void SetErrorDef(double def) {fErrorDef = def;}
 
-            private:
+            
 
 
                 //FitParametersInterface **parameter_list_set_;

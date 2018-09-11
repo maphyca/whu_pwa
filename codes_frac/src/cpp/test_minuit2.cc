@@ -71,28 +71,28 @@ int main()
     vector<AmplitudeMethodWithFitParametersInterface*> parameter_list_set(end_list_index, NULL);
     parameter_list_set[phipp_list_index]=new FitParametersOfPhiPP();
     parameter_list_set[phikk_list_index]=new FitParametersOfPhiKK();
-
     vector<string> resonances = {
-        "f00980"/*,
-        "1p1800",
-        "1m1800",
-        "f01000",
-        "f01370",
-        "f01500",
-        "f01710",
-        "f02020",
-        "f02100",
-        "f02200",
-        "f02330",
-        "f21000",
-        "f21270",
-        "f21525",
-        "f21501",
-        "f21810",
-        "f21910",
-        "f21950",
-        "f22150",
-        "f22300"*/};
+                                 // "f00980",
+                                 //"1p1800",
+                                 //"1m1800",
+                                 //"f01000",
+                                 // "f01370",
+                                 //"f01500",
+                                 //"f01710",
+                                 //"f02020",
+                                 //"f02100",
+                                 //"f02200",
+                                 //"f02330",
+                                 "f21000",
+                                 //"f21270",
+                                 //"f21525",
+                                 //"f21501",
+                                 //"f21810",
+                                 //"f21910",
+                                 //"f21950",
+                                 //"f22150",
+                                 //"f22300"
+    };
     vector<vector<string> > resonance_list_set(end_list_index);
     resonance_list_set[phipp_list_index] = resonances;
     resonance_list_set[phikk_list_index] = resonances;
@@ -167,21 +167,51 @@ int main()
     setup_mnuserparameters(upar, parameter_list_for_minuit);
     update_mnuserparameters(upar, parameter_list_for_minuit);
 
-    PWAFcn my_pwa_fcn(data_set, parameter_list_set,kernel_set, parameter_list_for_minuit.size());
+     PWAFcn my_pwa_fcn(data_set, parameter_list_set,kernel_set, parameter_list_for_minuit.size());
 
-    MnMigrad migrad(my_pwa_fcn, upar);
+     MnMigrad migrad(my_pwa_fcn, upar);
 
-    update_mnmigrad(migrad, parameter_list_for_minuit);
-
-    FunctionMinimum min = migrad();
-    }
-            for(int i = 0; i < end_list_index; i++) {
-                if (parameter_list_set[i] == NULL) continue;
-                parameter_list_set[i]->shape_of_mapping();
-                parameter_list_set[i]->shape_of_minuit_parameters();
+     update_mnmigrad(migrad, parameter_list_for_minuit);
+     
+     std::cout<<"parmeter : "<<upar<<endl;
+     int list_size = end_category * parameter_list_set[phipp_list_index]->number_of_amplitudes();
+     vector<double> test_par(list_size);
+     assert(upar.Params().size() == my_pwa_fcn.number_of_parameters_);
+     for(int i = 0; i < end_list_index; i++) {
+       if (my_pwa_fcn.parameter_list_set_[i] == NULL) continue;
+       my_pwa_fcn.parameter_list_set_[i]->assignment_of_minuit_parameters_from_par(upar.Params());
+       //parameter_list_set_[i]->shape_of_mapping();
+       //parameter_list_set_[i]->shape_of_minuit_parameters();
             }
+     test_par=my_pwa_fcn.parameter_list_set_[phipp_list_index]->get_minuit_parameters();
+     for(int i=0;i<list_size;i++)
+       {
+         cout<<"test cout"<<"  "<< test_par[i]<<endl;
+         }
+     (kernel_set[phipp_phsp_index])->par_trans(
+                                                my_pwa_fcn.parameter_list_set_[phipp_list_index]->get_minuit_parameters()
+                                                );
+     (kernel_set[phipp_data_index])->par_trans(
+                                               my_pwa_fcn.parameter_list_set_[phipp_list_index]->get_minuit_parameters()
+                                                );
+     (kernel_set[phikk_phsp_index])->par_trans(
+                                               my_pwa_fcn.parameter_list_set_[phikk_list_index]->get_minuit_parameters()
+                                                );
+     (kernel_set[phikk_data_index])->par_trans(
+                                               my_pwa_fcn.parameter_list_set_[phikk_list_index]->get_minuit_parameters()
+                                                );
 
-            kernel_set[phikk_phsp_index]->trans_phsp();
-            //FitParametersInterface::information_of_parameter_list_sent_to_minuit();*/
+     kernel_set[phikk_phsp_index]->calEva();
+     kernel_set[phipp_phsp_index]->calEva();
+
+     kernel_set[phikk_phsp_index]->trans_phsp();
+     kernel_set[phipp_phsp_index]->trans_phsp();
+     ((CPUWaveFunc*)data_set[phikk_phsp_index])->test_generate_root_file_kk(kernel_set[phikk_phsp_index],resonances[0]);
+     ((CPUWaveFunc*)data_set[phipp_phsp_index])->test_generate_root_file_pp(kernel_set[phipp_phsp_index],resonances[0]);
+
+     //upar.Params();
+     //FunctionMinimum min = migrad();
+    }
+                                   //FitParametersInterface::information_of_parameter_list_sent_to_minuit();*/
     return 0;
 }

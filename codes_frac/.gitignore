@@ -7,3 +7,4 @@ bin/*
 lib/*
 doxygen/html/*
 doxygen/man/*
+test/*

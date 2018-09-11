@@ -829,8 +829,10 @@ double  kernel::sum_likelihood()
  
 void kernel::trans_phsp()
 {
+  calEva();
     cal_phsp<<<Blocks,Threads>>>(fCP_real, fCP_imag, fCF_real,fCF_imag,d_phsp,number_of_amplitudes,number_of_data);
     cudaMemcpyAsync(h_phsp_container,d_phsp,number_of_data*sizeof(double),cudaMemcpyDeviceToHost);
+    cudaDeviceSynchronize();
 
 }
 

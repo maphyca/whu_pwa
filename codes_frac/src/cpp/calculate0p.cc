@@ -549,7 +549,7 @@ double CPUWaveFunc::cpu_calculate0p(int id, std::vector<double> &hp) {
             for (int j2 = 0; j2 < 3; j2++) {
                 for (int j3 = 0; j3 < 3; j3++) {
                     for (int j4 = 0; j4 < 3; j4++) {
-                        double tmp = E[i][j1][j2][4] * E[j2][j3][j4][4];
+                        double tmp = E[i][j1][j2][3] * E[j2][j3][j4][3];
                         vv(w1m12, i) = vv(w1m12, i) +
                                        tmp * vv(akv2m3w, j1) * vv(ak12w, j3) *
                                            vv(wt, j4) * ss(b1qbv2);

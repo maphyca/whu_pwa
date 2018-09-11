@@ -1,2 +1,4 @@
-work_path=/home/arthur/test/whu_pwa/newbase/ 
-active_resonances=f00980
+work_path=/home/arthur/test/whu_pwa/codes_frac/test/f02100/
+active_resonances=f02100
+active_resonances_pp=NONE
+active_resonances_kk=NONE

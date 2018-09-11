@@ -81,19 +81,7 @@ void draw_kk(TString var, string cfgFile) {
     vector<double> weight, dmin, dmax;
     double _weight, _dmin, _dmax;
     string path;
-    readConfigFile(cfgFile, "work_path", path);
-    cout << "path = " << path << endl;
-    //TString path = "/public/users/caihao1/tmp/baseline_small/";
-    get_para_kk(path + "kk_weight_all.root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
-    cout<<"test weight" ;
-    weight.push_back(_weight);
-    dmin.push_back(_dmin);
-    dmax.push_back(_dmax);
-    get_para_kk(path + "kk_weight_all.root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
-    weight.push_back(_weight);
-    dmin.push_back(_dmin);
-    dmax.push_back(_dmax);
-    string value, value1;
+     string value, value1;
     readConfigFile(cfgFile, "active_resonances", value);
     readConfigFile(cfgFile, "active_resonances_kk", value1);
     if (value1 != "NONE") {
@@ -102,6 +90,19 @@ void draw_kk(TString var, string cfgFile) {
     }
     vector<string> resNameList;
     string_to_vector(value, resNameList);
+   readConfigFile(cfgFile, "work_path", path);
+   vector<string>::iterator start = resNameList.begin();
+    cout << "path = " << path << endl;
+    //TString path = "/public/users/caihao1/tmp/baseline_small/";
+    get_para_kk(path + "kk_weight_"+*start+".root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
+    cout<<"test weight" ;
+    weight.push_back(_weight);
+    dmin.push_back(_dmin);
+    dmax.push_back(_dmax);
+    get_para_kk(path + "kk_weight_"+*start+".root", "ana_tr", "kk", var, _weight, _dmin, _dmax);
+    weight.push_back(_weight);
+    dmin.push_back(_dmin);
+    dmax.push_back(_dmax);
     int test_n=resNameList.size();
     std::cout<<"test res"<<test_n<<"test string "<<value<<std::endl;
     for(vector<string>::iterator it = resNameList.begin(); it != resNameList.end(); it++) {
@@ -119,7 +120,7 @@ void draw_kk(TString var, string cfgFile) {
     double scaleFactor = weight[0] / weight[1];
     cout<<"scale "<<scaleFactor<<"weight 0 "<<weight[0]<<"  weight 1 "<<weight[1]<<endl;
     int tcolor = 1;
-    TH1F *signal_h = hist_kk(path + "kk_weight_all.root", "ana_tr", "kk", "signal", var, _dmin, _dmax);
+    TH1F *signal_h = hist_kk(path + "kk_weight_"+*start+".root", "ana_tr", "kk", "signal", var, _dmin, _dmax);
     signal_h->SetLineColor(tcolor++);
     signal_h->SetLineWidth(3);
     signal_h->GetXaxis()->SetTitle(TexName_KK(var));
@@ -127,7 +128,7 @@ void draw_kk(TString var, string cfgFile) {
     double sp = valid_digits((_dmax - _dmin) / 100, 2);
     signal_h->GetYaxis()->SetTitle("Entries / " + Double2Str(sp));
 
-    TH1F *all_h = hist_kk(path + "kk_weight_all.root", "ana_tr", "kk", "all", var, _dmin, _dmax);
+    TH1F *all_h = hist_kk(path + "kk_weight_"+*start+".root", "ana_tr", "kk", "all", var, _dmin, _dmax);
     all_h->SetLineColor(tcolor++);
     all_h->SetLineWidth(2);
     all_h->GetXaxis()->SetTitle(TexName_KK(var));
@@ -174,7 +175,7 @@ void draw_kk(TString var, string cfgFile) {
     leg->SetFillStyle(kFDotted1);
     leg->Draw();
     //hs->Draw();
-    tc->SaveAs(path + "figs/" + var + ".png");
+    tc->SaveAs(path + "figs_kk/" + var + ".png");
 }
 
 
@@ -269,9 +270,9 @@ void UpdataFigure_sideband() {
     test("QKp2Km2", "");
 }
 
-void draw(string conf)
+void kk_ana_all()
 {
-  //string conf = "../test05/test05_conf";
+  string conf = "analysis_conf";
   UpdateFigure("Mphi", conf);
   UpdateFigure("MKp1Km1", conf);
   UpdateFigure("MKp2Km2", conf);

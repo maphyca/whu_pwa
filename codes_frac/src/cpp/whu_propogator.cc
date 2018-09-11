@@ -450,10 +450,10 @@ double CPUWaveFunc::sum_penalty(int number_of_amplitudes) {
     return _sum;
 }
 
-void CPUWaveFunc::test_generate_root_file_kk(kernel ker)
+void CPUWaveFunc::test_generate_root_file_kk(kernel *ker,string res)
 {
   //FILE *idp = fopen("/home/arthur/test/old/whu_pwa/newbase/idp_kk_all.dat","r");
-  TString kk_weight_file_name = "../kk_weight_all.root";
+  TString kk_weight_file_name = "../test/"+res+"/kk_weight_"+res+".root";
   double idp_list[number_of_events_];
   int idp_num=0;
   double tmp=0;
@@ -485,7 +485,7 @@ void CPUWaveFunc::test_generate_root_file_kk(kernel ker)
     //            pp);
 
     //    ss.weight = calEva(pp, i);
-        ss.weight = ker.h_phsp_container[i];
+        ss.weight = ker->h_phsp_container[i];
         
         //pwa_tr->Fill();
         DATA_ORIG_KK tt;
@@ -502,10 +502,9 @@ void CPUWaveFunc::test_generate_root_file_kk(kernel ker)
     cout << kk_weight_file_name << " is created!!!!" << endl;
   
 }
-void CPUWaveFunc::test_generate_root_file_pp(kernel ker)
+void CPUWaveFunc::test_generate_root_file_pp(kernel *ker,string res)
 {
- TString phsp_weight_file_name = "";
-        phsp_weight_file_name = "../pipi_weight_all.root";
+ TString phsp_weight_file_name = "../test/"+res+"/pipi_weight_"+res+".root";
     DATA_PWA_PIPI ss;
     DATA_ANA_PIPI aa;
     TFile *fout = new TFile(phsp_weight_file_name, "RECREATE");
@@ -528,7 +527,7 @@ void CPUWaveFunc::test_generate_root_file_pp(kernel ker)
     //            pp);
 
     //    ss.weight = calEva(pp, i);
-        ss.weight = ker.h_phsp_container[i];
+        ss.weight = ker->h_phsp_container[i];
         //pwa_tr->Fill();
         DATA_ORIG_PIPI tt;
         pwa_to_orig(ss, tt);
