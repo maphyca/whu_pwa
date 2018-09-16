@@ -543,3 +543,7 @@ void CPUWaveFunc::test_generate_root_file_pp(kernel *ker,string res)
 }
 
 
+void test_record(double *val,int number,string fname)
+{
+  
+}
