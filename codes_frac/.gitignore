@@ -11,3 +11,4 @@ test/*
 GPATH
 GTAGS
 GRTAGS
+src/include/CMake/*
