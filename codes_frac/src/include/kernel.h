@@ -48,6 +48,7 @@ public:
   double *d_penalty;
   double *d_likelihood;
   double *d_container;
+  double *d_weight;
 
   double h_penalty;
   double h_phsp;

@@ -15,6 +15,11 @@
 #include "whu_constants_and_definitions.h"
 using namespace std;
 
+#define ss(x) (hp[x])
+#define vv(x, y) (hp[x + y])
+#define vp(x) (&hp[x])
+#define mm(x, y, z) (hp[x + y * 4 + z])
+
 DataObject::DataObject()
 {
   cerr<<"warning : a new empty class is being created ";
@@ -27,21 +32,23 @@ DataObject::~DataObject()
 
 }
 
-DataObject::DataObject(string d_name)
+DataObject::DataObject(string d_name, DPFPWAPoint* pwa_point)
 {
   data_file_name = d_name;
   read_data();
   _weight = new double[_number_of_events];
   fill(_weight,_weight+_number_of_events,1.0);//权重统一初始化为1，避免出错
+  _dp = pwa_point;
 }
 
-DataObject::DataObject(string d_name, string w_name)
+DataObject::DataObject(string d_name, string w_name,DPFPWAPoint* pwa_point)
 {
   data_file_name = d_name;
   weight_file_name = w_name;
   read_data();
   _weight = new double[_number_of_events];
   read_weight();
+  _dp = pwa_point;
 }
 
 void DataObject::read_weight()
@@ -79,7 +86,7 @@ void DataObject::read_data()
       _number_of_events = n/5;
       cout<<" n evenet "<<_number_of_events<<endl;
       if(n%5 !=0)
-        cerr<<"warning : the number of lines in data fileis not a multiple of 5, please check your data file "<<endl;
+        cerr<<"warning : the number of lines in data file is not a multiple of 5, please check your data file "<<endl;
       _mcp = new double[20*_number_of_events];
       idf.clear();
       idf.seekg(0,ios::beg);
@@ -87,6 +94,7 @@ void DataObject::read_data()
         {
           idf>>_mcp[i*4]>>_mcp[i*4+1]>>_mcp[i*4+2]>>_mcp[i*4+3];
         }
+      _hpv = new double[_number_of_events*parameter_vector_index_end];
     }
   else
     {
@@ -95,38 +103,39 @@ void DataObject::read_data()
 }
   //cout << df << " have " << n << " lines." << endl;
 
-
-void DataObject::calculate0p()
+void DataObject::read_pwa()
 {
-  //#include "DPFAngular.h"
-#define ss(x) (hp[x])
-#define vv(x, y) (hp[x + y])
-#define vp(x) (&hp[x])
-#define mm(x, y, z) (hp[x + y * 4 + z])
-
-double CPUWaveFunc::cpu_calculate0p(int id, std::vector<double> &hp) {
+  for(int i=0;i<_number_of_events;i++)
+    {
+      double* hp = new double[parameter_vector_index_end];
+      calculate0p(i,hp);
+      store_parameters(i, hp);
+    }
+}
+void DataObject::calculate0p(int id, double* hp)
+{
     double ap23[4], apv2[4], apv3[4];
     double ak1[4], ak2[4], ak3[4], ak4[4], ak5[4];
-    ak1[0] = mcp1[id][0];
-    ak1[1] = mcp1[id][1];
-    ak1[2] = mcp1[id][2];
-    ak1[3] = mcp1[id][3];
-    ak2[0] = mcp2[id][0];
-    ak2[1] = mcp2[id][1];
-    ak2[2] = mcp2[id][2];
-    ak2[3] = mcp2[id][3];
-    ak3[0] = mcp3[id][0];
-    ak3[1] = mcp3[id][1];
-    ak3[2] = mcp3[id][2];
-    ak3[3] = mcp3[id][3];
-    ak4[0] = mcp4[id][0];
-    ak4[1] = mcp4[id][1];
-    ak4[2] = mcp4[id][2];
-    ak4[3] = mcp4[id][3];
-    ak5[0] = mcp5[id][0];
-    ak5[1] = mcp5[id][1];
-    ak5[2] = mcp5[id][2];
-    ak5[3] = mcp5[id][3];
+    ak1[0] = _mcp[id*20+0];
+    ak1[1] = _mcp[id*20+1];
+    ak1[2] = _mcp[id*20+2];
+    ak1[3] = _mcp[id*20+3];
+    ak2[0] = _mcp[id*20+4];
+    ak2[1] = _mcp[id*20+5];
+    ak2[2] = _mcp[id*20+6];
+    ak2[3] = _mcp[id*20+7];
+    ak3[0] = _mcp[id*20+8];
+    ak3[1] = _mcp[id*20+9];
+    ak3[2] = _mcp[id*20+10];
+    ak3[3] = _mcp[id*20+11];
+    ak4[0] = _mcp[id*20+12];
+    ak4[1] = _mcp[id*20+13];
+    ak4[2] = _mcp[id*20+14];
+    ak4[3] = _mcp[id*20+15];
+    ak5[0] = _mcp[id*20+16];
+    ak5[1] = _mcp[id*20+17];
+    ak5[2] = _mcp[id*20+18];
+    ak5[3] = _mcp[id*20+19];
     double(*fDel)[4], (*fGel)[4], (*E)[4][4][4], (*G1)[4][4][4],
         (*G3)[4][4][4][4][4];
     double t4wvf[4][4][4][4], ttfw[4][4][4];
@@ -677,31 +686,24 @@ double CPUWaveFunc::cpu_calculate0p(int id, std::vector<double> &hp) {
             // -\tilde{T}^{(2)\mu\nu}(phi f0) \tilde{t}_nu(34)
         }
     }
-    return 0;
 }
-void CPUWaveFunc::store_parameters(int id, const std::vector<double>&hp) {
-    for (int i = parameter_vector_index_start; i < parameter_vector_index_end;
-         i++) {
-        if (i > one_dimensional_start && i < one_dimensional_end) {
-            hpv[i][id] = hp[i];
-        }
-        if (i > two_dimensional_start && i < two_dimensional_end &&
-            (i - two_dimensional_start) % 2 == 1) {
-            hpv[i + 0][id] = hp[i + 0];
-            hpv[i + 1][id] = hp[i + 0];
-        }
-        if (i > four_dimensional_start && i < four_dimensional_end &&
-            (i - four_dimensional_start) % 4 == 1) {
-            hpv[i + 0][id] = hp[i + 0];
-            hpv[i + 1][id] = hp[i + 1];
-            hpv[i + 2][id] = hp[i + 2];
-            hpv[i + 3][id] = hp[i + 3];
-        }
+void DataObject::store_parameters(int id, const double* hp) {
+    for (int i = parameter_vector_index_start; i < parameter_vector_index_end;i++)
+      {
+        _hpv[i * _number_of_events + id] = hp[i];
+      }
+}
+
+double DataObject::scalar(double* a1, double* a2) const
+{
+  double scal=0;
+
+  for(int i=0;i<4;i++)
+    {
+      scal+=a1[i]*a2[i]*_dp->fDel[i][i];
     }
+  return scal;
 }
-
-}
-
 double* DataObject::Get_mcp()
 {
   return _mcp;

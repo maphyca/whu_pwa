@@ -1,5 +1,5 @@
-#ifndef PROPOGATOR_HH
-#define PROPOGATOR_HH
+#ifndef PROPOGATOR_H
+#define PROPOGATOR_H
 
 #include <math.h>
 #include "TComplex.h"

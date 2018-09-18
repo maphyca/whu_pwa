@@ -8,3 +8,6 @@ lib/*
 doxygen/html/*
 doxygen/man/*
 test/*
+GPATH
+GTAGS
+GRTAGS

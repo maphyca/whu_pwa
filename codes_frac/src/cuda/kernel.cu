@@ -618,6 +618,7 @@ kernel::kernel(std::vector<double *> Data, int Device_id, int start, int end,int
   CUDA_CALL(cudaSetDevice(Device_id));
   CUDA_CALL(cudaMalloc((void **)&d_par,number_of_amplitudes*sizeof(double)*end_category));
   CUDA_CALL(cudaMalloc((void **)&d_container,(end-start)*sizeof(double)));
+  CUDA_CALL(cudaMalloc((void **)&d_weight,(end-start)*sizeof(double)));
 
   //prop1
   CUDA_CALL(cudaMalloc((void **)&d_w0p22, 2*(end-start)*sizeof(double)));

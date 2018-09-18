@@ -50,6 +50,10 @@
 #include<string>
 #endif
 
+#ifndef POINT_H
+#define POINT_H
+#include"DPFPWAPoint.h"
+#endif
 /**
  * @brief 存储事例的四动量，权重系数，并开放接口用于获取转换后的中间参量\n
  * 通过read_weight_file与read_data读取数据和权重，read_trans_result读取转换后的中间参量，利用Get可以获取类中所存储的数据。
@@ -70,14 +74,14 @@ class DataObject
    * @param d_name phsp数据文件名称
    *
    */
-  explicit DataObject(std::string d_name);
+  explicit DataObject(std::string d_name, DPFPWAPoint* pwa_point);
 
   /**
    * @brief data   数据构造函数，需要数据文件与weight文件
    * @param d_name data数据文件名称
    * @param w_name data权重文件名称
    */
-  explicit DataObject(std::string d_name,std::string w_name);
+  explicit DataObject(std::string d_name,std::string w_name, DPFPWAPoint* pwa_point);
 
   /**
    * @brief 基类析构函数
@@ -91,6 +95,14 @@ class DataObject
    * @param d    被输出的DataObject对象
    */
    friend std::ostream& operator <<(std::ostream &out,DataObject &d);
+
+   /**
+    * @brief 友元类，使得计算模块可以操作数据模块数据
+    *
+    *
+    */
+   friend class CPUKernel;
+   friend class CUDAKernel;
 
   /**
    * @brief 读取权重参数
@@ -122,10 +134,28 @@ class DataObject
   double* Get_weight();
 
   /**
-   * @brief 计算中间变量
+   * @brief 计算scalar
+   * @return 计算结果
+   */
+  double scalar(double *a1,double *a2) const;
+
+  /**
+   * @brief 计算单一事例对应中间变量
    * 
    */
-  void calculate0p();
+  void calculate0p(int id, double* hp);
+
+  /**
+   * @brief pwa中间变量获取接口
+   * 
+   */
+  void read_pwa();
+
+  /**
+   * @bref 存储单一事例的中间变量
+   *
+   */
+  void store_parameters(int id,const double *hp);
 
   /**
    * @bref 获取中间变量指针
@@ -141,6 +171,7 @@ class DataObject
   double* _weight; ///权重文件存放数组对应指针
   int _number_of_events; ///事例数
   double *_hpv; ///中间变量
+  DPFPWAPoint* _dp;//point
 
 };
 
